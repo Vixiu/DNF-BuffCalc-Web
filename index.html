@@ -1,1169 +1,1714 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>DNF 辅助职业奶量计算器 - 主人专属喵~</title>
-<style>
-  /* ==========================================
+  <style>
+    /* ==========================================
    ☀️ 1. 浅色 / 🌙 暗色 主题变量声明
    ========================================== */
-:root {
-  --bg-color: #f0f2f5;
-  --card-bg: #ffffff;
-  --card-inner: #f8f9fa;
-  --primary: #d97706;
-  --text-main: #1f2937;
-  --text-muted: #6b7280;
-  --border-color: #e5e7eb;
-  --input-bg: #ffffff;
-  --input-disabled-bg: #e5e7eb;
-  --output-bg: #f3f4f6;
-  --accent-blue: #2563eb;
-  --accent-pink: #9333ea;
-  --accent-green: #16a34a;
-  --accent-purple: #9333ea;
-  --btn-base-bg: rgba(217, 119, 6, 0.1);
-  --btn-base-border: #d97706;
-  --btn-base-text: #d97706;
-}
+    :root {
+      --bg-color: #f0f2f5;
+      --card-bg: #ffffff;
+      --card-inner: #f8f9fa;
+      --primary: #d97706;
+      --text-main: #1f2937;
+      --text-muted: #6b7280;
+      --border-color: #e5e7eb;
+      --input-bg: #ffffff;
+      --input-disabled-bg: #e5e7eb;
+      --output-bg: #f3f4f6;
+      --accent-blue: #2563eb;
+      --accent-pink: #9333ea;
+      --accent-green: #16a34a;
+      --accent-purple: #9333ea;
+      --btn-base-bg: rgba(217, 119, 6, 0.1);
+      --btn-base-border: #d97706;
+      --btn-base-text: #d97706;
+    }
 
-body.dark-theme {
-  --bg-color: #0f111a;
-  --card-bg: #1a1d2e;
-  --card-inner: #24283b;
-  --primary: #ff9e3b;
-  --text-main: #c0caf5;
-  --text-muted: #7982a9;
-  --border-color: #2f354f;
-  --input-bg: #0f111a;
-  --input-disabled-bg: #141724;
-  --output-bg: rgba(0, 0, 0, 0.25);
-  --accent-blue: #7aa2f7;
-  --accent-pink: #bb9af7;
-  --accent-green: #9ece6a;
-  --accent-purple: #c084fc;
-  --btn-base-bg: rgba(255, 158, 59, 0.15);
-  --btn-base-border: #ff9e3b;
-  --btn-base-text: #ff9e3b;
-}
+    body.dark-theme {
+      --bg-color: #0f111a;
+      --card-bg: #1a1d2e;
+      --card-inner: #24283b;
+      --primary: #ff9e3b;
+      --text-main: #c0caf5;
+      --text-muted: #7982a9;
+      --border-color: #2f354f;
+      --input-bg: #0f111a;
+      --input-disabled-bg: #141724;
+      --output-bg: rgba(0, 0, 0, 0.25);
+      --accent-blue: #7aa2f7;
+      --accent-pink: #bb9af7;
+      --accent-green: #9ece6a;
+      --accent-purple: #c084fc;
+      --btn-base-bg: rgba(255, 158, 59, 0.15);
+      --btn-base-border: #ff9e3b;
+      --btn-base-text: #ff9e3b;
+    }
 
-/* ==========================================
+    /* ==========================================
    🛠️ 2. 全局重置与基础布局
    ========================================== */
-* {
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
-}
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+    }
 
-/* 🚫 隐藏所有数字输入框微调箭头 */
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-input[type=number] {
-  -moz-appearance: textfield;
-}
+    /* 🚫 隐藏所有数字输入框微调箭头 */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background-color: var(--bg-color);
-  color: var(--text-main);
-  margin: 0;
-  padding: 20px;
-  display: flex;
-  justify-content: center;
-  min-height: 100vh;
-}
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
 
-.calculator-container {
-  width: 96%;
-  max-width: 1700px;
-  background: var(--card-bg);
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-  padding: 28px;
-  border: 1px solid var(--border-color);
-}
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
 
-.top-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
+    .calculator-container {
+      width: 90%;
+      /* 👈 从 96% 调到 90%，两侧留出更多呼吸空间喵~ */
+      max-width: 1400px;
+      /* 👈 从 1700px 调到 1400px，电脑端两边边距更明显！ */
+      background: var(--card-bg);
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      padding: 36px 48px;
+      /* 👈 上下 36px，左右 48px！内边距大幅增加喵！ */
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+      margin: 0 auto;
+      /* 居中对齐 */
+    }
 
-.header-title {
-  margin: 0;
-  color: var(--primary);
-  font-size: 24px;
-}
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
 
-.theme-toggle-btn {
-  background: var(--card-inner);
-  border: 1px solid var(--border-color);
-  color: var(--text-main);
-  padding: 8px 16px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: bold;
-}
+    .header-title {
+      margin: 0;
+      color: var(--primary);
+      font-size: 24px;
+    }
 
-/* ==========================================
+    .theme-toggle-btn {
+      background: var(--card-inner);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    /* ==========================================
    👔 3. 职业选择与配置栏
    ========================================== */
-.job-select-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 24px;
-  flex-wrap: wrap;
-}
+    .job-select-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
 
-.job-select-left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex: 1;
-}
+    .job-select-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+    }
 
-.job-select-container label {
-  font-weight: bold;
-  color: var(--text-main);
-  font-size: 15px;
-  white-space: nowrap;
-}
+    .job-select-container label {
+      font-weight: bold;
+      color: var(--text-main);
+      font-size: 15px;
+      white-space: nowrap;
+    }
 
-.job-select {
-  flex: 1;
-  max-width: 280px;
-  background: var(--input-bg);
-  border: 1px solid var(--border-color);
-  color: var(--text-main);
-  padding: 10px 14px;
-  border-radius: 8px;
-  font-size: 15px;
-  font-weight: bold;
-  outline: none;
-  cursor: pointer;
-}
+    .job-select {
+      flex: 1;
+      max-width: 280px;
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: bold;
+      outline: none;
+      cursor: pointer;
+    }
 
-.config-action-right {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+    .config-action-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-.btn-save-config {
-  background: rgba(37, 99, 235, 0.1);
-  border: 1px solid var(--accent-blue);
-  color: var(--accent-blue);
-  padding: 9px 16px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: bold;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
+    .btn-save-config {
+      background: rgba(37, 99, 235, 0.1);
+      border: 1px solid var(--accent-blue);
+      color: var(--accent-blue);
+      padding: 9px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
 
-.btn-save-config:hover {
-  background: var(--accent-blue);
-  color: #ffffff;
-}
+    .btn-save-config:hover {
+      background: var(--accent-blue);
+      color: #ffffff;
+    }
 
-.config-load-select {
-  background: var(--input-bg);
-  border: 1px solid var(--border-color);
-  color: var(--text-main);
-  padding: 9px 12px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: bold;
-  outline: none;
-  cursor: pointer;
-  min-width: 160px;
-}
+    .config-load-select {
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 9px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: bold;
+      outline: none;
+      cursor: pointer;
+      min-width: 160px;
+    }
 
-/* ==========================================
+    /* ==========================================
    📦 4. 面板与 Form 网格结构
    ========================================== */
-.inputs-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  margin-bottom: 24px;
-  align-items: stretch;
-}
+    .inputs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+      align-items: stretch;
+    }
 
-.column {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
+    .column {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
 
-.panel {
-  background: var(--card-inner);
-  border-radius: 12px;
-  padding: 20px;
-  border: 1px solid var(--border-color);
-}
+    .panel {
+      background: var(--card-inner);
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+    }
 
-.panel-subtitle {
-  font-size: 15px;
-  font-weight: bold;
-  color: var(--primary);
-  margin-top: 0;
-  margin-bottom: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid var(--border-color);
-  padding-bottom: 8px;
-}
+    .panel-subtitle {
+      font-size: 15px;
+      font-weight: bold;
+      color: var(--primary);
+      margin-top: 0;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 8px;
+    }
 
-.form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0;
+      /* ✨ 允许缩小自适应，防爆排版 */
+    }
 
-.form-group label {
-  font-size: 13px;
-  color: var(--text-muted);
-}
+    .form-group label {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
 
-.form-group input {
-  background: var(--input-bg);
-  border: 1px solid var(--border-color);
-  color: var(--text-main);
-  padding: 9px 12px;
-  border-radius: 8px;
-  font-size: 14px;
-  height: 38px;
-  outline: none;
-  width: 100%;
-}
+    .form-group input {
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 9px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      height: 38px;
+      outline: none;
+      width: 100%;
+    }
 
-.form-group input:focus {
-  border-color: var(--primary);
-}
+    .form-group input:focus {
+      border-color: var(--primary);
+    }
 
-/* 🚫 输入框禁用统一样式 */
-.buff-pct-item input:disabled,
-.form-group input:disabled {
-  background-color: var(--input-disabled-bg) !important;
-  color: var(--text-muted) !important;
-  border-color: var(--border-color) !important;
-  cursor: not-allowed !important;
-  opacity: 0.7 !important;
-  user-select: none !important;
-}
+    /* 🚫 输入框禁用统一样式 */
+    .buff-pct-item input:disabled,
+    .form-group input:disabled {
+      background-color: var(--input-disabled-bg) !important;
+      color: var(--text-muted) !important;
+      border-color: var(--border-color) !important;
+      cursor: not-allowed !important;
+      opacity: 0.7 !important;
+      user-select: none !important;
+    }
 
-/* ==========================================
-   ✨ 5. 核心技能行 (统一 1px 翡翠绿边框 #10b981)
+    /* ==========================================
+   ✨ 5. 核心技能行 (1px 统一翡翠绿边框 #10b981)
    ========================================== */
-.passive-input-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
-}
+    .passive-input-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+    }
 
-.passive-input-row input {
-  flex: 1 !important;
-  width: 100% !important;
-  border: 1px solid #10b981 !important;
-  color: var(--text-main);
-  border-radius: 8px;
-}
+    .passive-input-row input {
+      flex: 1 !important;
+      width: 100% !important;
+      border: 1px solid #10b981 !important;
+      color: var(--text-main);
+      border-radius: 8px;
+      min-width: 0;
+    }
 
-.passive-input-row input:focus {
-  border-color: #10b981 !important;
-  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
-}
+    .passive-input-row input:focus {
+      border-color: #10b981 !important;
+      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+    }
 
-.passive-stat-tip {
-  font-size: 13px;
-  font-weight: bold;
-  color: #10b981;
-  white-space: nowrap;
-  user-select: none;
-}
+    .passive-stat-tip {
+      font-size: 13px;
+      font-weight: bold;
+      color: #10b981;
+      white-space: nowrap;
+      user-select: none;
+    }
 
-.passive-stat-tip.negative {
-  color: #ef4444;
-}
+    .passive-stat-tip.negative {
+      color: #ef4444;
+    }
 
-.btn-apply-passive {
-  white-space: nowrap;
-  padding: 0 12px;
-  height: 38px;
-  font-size: 13px;
-  font-weight: bold;
-  background: rgba(16, 185, 129, 0.08);
-  border: 1px solid #10b981;
-  color: #10b981;
-  border-radius: 8px;
-  cursor: pointer;
-  user-select: none;
-  transition: all 0.2s ease;
-}
+    .btn-apply-passive {
+      white-space: nowrap;
+      padding: 0 12px;
+      height: 38px;
+      font-size: 13px;
+      font-weight: bold;
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid #10b981;
+      color: #10b981;
+      border-radius: 8px;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
 
-.btn-apply-passive:hover {
-  background: #10b981;
-  color: #ffffff;
-}
+    .btn-apply-passive:hover {
+      background: #10b981;
+      color: #ffffff;
+    }
 
-.btn-apply-passive:active {
-  transform: scale(0.95);
-}
+    .btn-apply-passive:active {
+      transform: scale(0.95);
+    }
 
-.btn-apply-passive.applied-success {
-  background-color: #059669 !important;
-  border-color: #059669 !important;
-  color: #ffffff !important;
-  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
-  transform: scale(1.02);
-}
+    .btn-apply-passive.applied-success {
+      background-color: #059669 !important;
+      border-color: #059669 !important;
+      color: #ffffff !important;
+      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
+      transform: scale(1.02);
+    }
 
-/* ==========================================
+    /* ==========================================
    ✨ 6. 胶囊单选组 (Segmented Control)
    ========================================== */
-.segmented-control {
-  display: flex;
-  background: var(--input-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 3px;
-  gap: 4px;
-  height: 38px;
-  width: 100%;
-}
+    .segmented-control {
+      display: flex;
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 3px;
+      gap: 4px;
+      height: 38px;
+      width: 100%;
+    }
 
-.segmented-control label {
-  flex: 1;
-  display: flex;
-  margin: 0;
-  padding: 0;
-  cursor: pointer;
-}
+    .segmented-control label {
+      flex: 1;
+      display: flex;
+      margin: 0;
+      padding: 0;
+      cursor: pointer;
+      min-width: 0;
+    }
 
-.segmented-control input[type="radio"] {
-  position: absolute !important;
-  opacity: 0 !important;
-  width: 0 !important;
-  height: 0 !important;
-  pointer-events: none !important;
-}
+    .segmented-control input[type="radio"] {
+      position: absolute !important;
+      opacity: 0 !important;
+      width: 0 !important;
+      height: 0 !important;
+      pointer-events: none !important;
+    }
 
-.segmented-btn {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 13px;
-  font-weight: bold;
-  color: var(--text-muted);
-  border-radius: 6px;
-  cursor: pointer;
-  user-select: none;
-  transition: all 0.2s ease;
-  height: 100%;
-  width: 100%;
-}
+    .segmented-btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: bold;
+      color: var(--text-muted);
+      border-radius: 6px;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s ease;
+      height: 100%;
+      width: 100%;
+      white-space: nowrap;
+    }
 
-.segmented-btn:hover {
-  color: var(--text-main);
-  background: rgba(217, 119, 6, 0.08);
-}
+    .segmented-btn:hover {
+      color: var(--text-main);
+      background: rgba(217, 119, 6, 0.08);
+    }
 
-.segmented-control input[type="radio"]:checked + .segmented-btn {
-  background: var(--primary) !important;
-  color: #ffffff !important;
-  box-shadow: 0 2px 6px rgba(217, 119, 6, 0.3);
-}
+    .segmented-control input[type="radio"]:checked+.segmented-btn {
+      background: var(--primary) !important;
+      color: #ffffff !important;
+      box-shadow: 0 2px 6px rgba(217, 119, 6, 0.3);
+    }
 
-/* ==========================================
-   🌟 7. 中间带文字的嵌入式分割线 (加粗加深版)
+    /* ==========================================
+   🌟 7. 分割线
    ========================================== */
-.panel-divider-text {
-  grid-column: span 2;
-  display: flex;
-  align-items: center;
-  margin: 12px 0 8px 0;
-  font-size: 13px;
-  font-weight: bold;
-  color: var(--primary);
-}
+    .panel-divider-text {
+      grid-column: span 2;
+      display: flex;
+      align-items: center;
+      margin: 12px 0 8px 0;
+      font-size: 13px;
+      font-weight: bold;
+      color: var(--primary);
+    }
 
-.panel-divider-text::before,
-.panel-divider-text::after {
-  content: "";
-  flex: 1;
-  border-bottom: 2px solid var(--border-color);
-  opacity: 1;
-}
+    .panel-divider-text::before,
+    .panel-divider-text::after {
+      content: "";
+      flex: 1;
+      border-bottom: 2px solid var(--border-color);
+      opacity: 1;
+    }
 
-body.dark-theme .panel-divider-text::before,
-body.dark-theme .panel-divider-text::after {
-  border-bottom-color: rgba(255, 255, 255, 0.35);
-}
+    body.dark-theme .panel-divider-text::before,
+    body.dark-theme .panel-divider-text::after {
+      border-bottom-color: rgba(255, 255, 255, 0.35);
+    }
 
-.panel-divider-text::before {
-  margin-right: 12px;
-}
+    .panel-divider-text::before {
+      margin-right: 12px;
+    }
 
-.panel-divider-text::after {
-  margin-left: 12px;
-}
+    .panel-divider-text::after {
+      margin-left: 12px;
+    }
 
-.panel-divider-text span {
-  white-space: nowrap;
-  user-select: none;
-}
+    .panel-divider-text span {
+      white-space: nowrap;
+      user-select: none;
+    }
 
-/* ==========================================
+    /* ==========================================
    🔮 8. 辟邪玉矩阵网格
    ========================================== */
-.jade-matrix-grid {
-  display: grid;
-  grid-template-columns: max-content 1fr;
-  column-gap: 32px;
-  row-gap: 16px;
-  align-items: start;
-}
+    .jade-matrix-grid {
+      display: grid;
+      grid-template-columns: max-content 1fr;
+      column-gap: 20px;
+      row-gap: 16px;
+      align-items: center;
+    }
 
-.jade-matrix-grid .form-group label {
-  font-size: 14px !important;
-  font-weight: bold !important;
-  color: var(--text-main) !important;
-  white-space: nowrap;
-}
+    .jade-matrix-grid .form-group label {
+      font-size: 13px !important;
+      font-weight: bold !important;
+      color: var(--text-main) !important;
+      white-space: nowrap;
+    }
 
-.jade-matrix-grid .inputs-container {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: nowrap;
-}
+    .jade-matrix-grid .inputs-container {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: nowrap;
+      width: 100%;
+    }
 
-.jade-matrix-grid input,
-.jade-matrix-grid .compact-input {
-  background: transparent !important;
-  border: none !important;
-  border-bottom: 2px solid var(--border-color) !important;
-  border-radius: 0 !important;
-  color: var(--text-main);
-  padding: 4px 2px !important;
-  font-size: 14px;
-  height: 34px;
-  outline: none;
-  text-align: center;
-  font-weight: bold;
-  width: 95px !important;
-  transition: border-color 0.2s ease, border-bottom-width 0.2s ease;
-}
+    .jade-matrix-grid input,
+    .jade-matrix-grid .compact-input {
+      background: transparent !important;
+      border: none !important;
+      border-bottom: 2px solid var(--border-color) !important;
+      border-radius: 0 !important;
+      color: var(--text-main);
+      padding: 4px 2px !important;
+      font-size: 14px;
+      height: 34px;
+      outline: none;
+      text-align: center;
+      font-weight: bold;
+      flex: 1;
+      /* ✨ 弹性铺满，不再固定 95px */
+      min-width: 0;
+      width: 100% !important;
+      transition: border-color 0.2s ease, border-bottom-width 0.2s ease;
+    }
 
-.jade-matrix-grid input:hover:not(:disabled) {
-  border-bottom-color: var(--primary) !important;
-  border-bottom-width: 3px !important;
-}
+    .jade-matrix-grid input:hover:not(:disabled) {
+      border-bottom-color: var(--primary) !important;
+      border-bottom-width: 3px !important;
+    }
 
-.jade-matrix-grid input:focus {
-  border-bottom-color: var(--primary) !important;
-  border-bottom-width: 3px !important;
-}
+    .jade-matrix-grid input:focus {
+      border-bottom-color: var(--primary) !important;
+      border-bottom-width: 3px !important;
+    }
 
-/* ==========================================
+    /* ==========================================
    🧮 9. 开关与算式行
    ========================================== */
-.toggle-switch-container {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 12px;
-  color: var(--text-muted);
-  cursor: pointer;
-}
+    .toggle-switch-container {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
 
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 38px;
-  height: 20px;
-  flex-shrink: 0;
-}
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 38px;
+      height: 20px;
+      flex-shrink: 0;
+    }
 
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
 
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-color: var(--border-color);
-  transition: .3s;
-  border-radius: 20px;
-}
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--border-color);
+      transition: .3s;
+      border-radius: 20px;
+    }
 
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 14px;
-  width: 14px;
-  left: 3px;
-  bottom: 3px;
-  background-color: white;
-  transition: .3s;
-  border-radius: 50%;
-}
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 14px;
+      width: 14px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+    }
 
-input:checked + .slider {
-  background-color: var(--primary);
-}
+    input:checked+.slider {
+      background-color: var(--primary);
+    }
 
-input:checked + .slider:before {
-  transform: translateX(18px);
-}
+    input:checked+.slider:before {
+      transform: translateX(18px);
+    }
 
-.buff-pct-row {
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: flex-end;
-  gap: 8px;
-  width: 100%;
-}
+    .buff-pct-row {
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: flex-end;
+      gap: 8px;
+      width: 100%;
+    }
 
-.buff-pct-item {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
+    .buff-pct-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 0;
+    }
 
-.buff-pct-item label {
-  font-size: 12px;
-  color: var(--text-muted);
-  text-align: center;
-}
+    .buff-pct-item label {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-align: center;
+    }
 
-.buff-pct-item input {
-  background: var(--input-bg);
-  border: 1px solid var(--border-color);
-  color: var(--text-main);
-  border-radius: 8px;
-  padding: 8px 4px;
-  text-align: center;
-  font-size: 14px;
-  font-weight: bold;
-  height: 38px;
-  outline: none;
-  width: 100%;
-}
+    .buff-pct-item input {
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      border-radius: 8px;
+      padding: 8px 4px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: bold;
+      height: 38px;
+      outline: none;
+      width: 100%;
+    }
 
-.buff-pct-item input.jade-disabled-input {
-  background: var(--input-disabled-bg) !important;
-  color: var(--accent-purple) !important;
-  border-color: var(--border-color) !important;
-  cursor: not-allowed;
-}
+    .buff-pct-item input.jade-disabled-input {
+      background: var(--input-disabled-bg) !important;
+      color: var(--accent-purple) !important;
+      border-color: var(--border-color) !important;
+      cursor: not-allowed;
+    }
 
-.buff-pct-operator {
-  font-size: 18px;
-  font-weight: bold;
-  color: var(--primary);
-  height: 38px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 2px;
-}
+    .buff-pct-operator {
+      font-size: 18px;
+      font-weight: bold;
+      color: var(--primary);
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 2px;
+    }
 
-/* ==========================================
-   📊 10. 结算表格与响应式
+    /* ==========================================
+   📊 10. 结算表格
    ========================================== */
-.output-box {
-  background: var(--output-bg);
-  border-radius: 12px;
-  padding: 24px;
-  border: 1px solid var(--border-color);
-  width: 100%;
-}
+    .output-box {
+      background: var(--output-bg);
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid var(--border-color);
+      width: 100%;
+    }
 
-.output-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--border-color);
-}
+    .output-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-color);
+    }
 
-.output-header h3 {
-  margin: 0;
-  font-size: 18px;
-  color: var(--primary);
-}
+    .output-header h3 {
+      margin: 0;
+      font-size: 18px;
+      color: var(--primary);
+    }
 
-.btn-set-base {
-  background: var(--btn-base-bg);
-  border: 1px solid var(--btn-base-border);
-  color: var(--btn-base-text);
-  padding: 8px 18px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: bold;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: all 0.2s ease;
-  user-select: none;
-}
+    .btn-set-base {
+      background: var(--btn-base-bg);
+      border: 1px solid var(--btn-base-border);
+      color: var(--btn-base-text);
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
 
-.result-table-wrapper {
-  width: 100%;
-  overflow-x: auto;
-}
+    .result-table-wrapper {
+      width: 100%;
+      overflow-x: auto;
+    }
 
-.result-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: var(--card-inner);
-  border-radius: 10px;
-  overflow: hidden;
-  border: 1px solid var(--border-color);
-  text-align: center;
-}
+    .result-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card-inner);
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      text-align: center;
+    }
 
-.result-table th {
-  background: rgba(217, 119, 6, 0.08);
-  color: var(--primary);
-  padding: 14px 16px;
-  font-size: 15px;
-  font-weight: bold;
-  border-bottom: 1px solid var(--border-color);
-  width: 25%;
-}
+    .result-table th {
+      background: rgba(217, 119, 6, 0.08);
+      color: var(--primary);
+      padding: 14px 16px;
+      font-size: 15px;
+      font-weight: bold;
+      border-bottom: 1px solid var(--border-color);
+      width: 25%;
+    }
 
-.result-table td {
-  padding: 14px 16px;
-  font-size: 15px;
-  border-bottom: 1px solid var(--border-color);
-  color: var(--text-main);
-  font-weight: 500;
-}
+    .result-table td {
+      padding: 14px 16px;
+      font-size: 15px;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-main);
+      font-weight: 500;
+    }
 
-.result-table td.skill-name {
-  font-weight: bold;
-  text-align: left;
-  padding-left: 24px;
-}
+    .result-table td.skill-name {
+      font-weight: bold;
+      text-align: left;
+      padding-left: 24px;
+    }
 
-.result-table td.val-highlight {
-  font-weight: bold;
-  font-size: 17px;
-  color: var(--accent-green);
-}
+    .result-table td.val-highlight {
+      font-weight: bold;
+      font-size: 17px;
+      color: var(--accent-green);
+    }
 
-.result-table td.rate-highlight {
-  font-weight: bold;
-  font-size: 17px;
-  color: var(--accent-purple);
-}
+    .result-table td.rate-highlight {
+      font-weight: bold;
+      font-size: 17px;
+      color: var(--accent-purple);
+    }
 
-@media (max-width: 860px) {
-  body { padding: 8px; }
-  .calculator-container { width: 100%; padding: 16px; }
-  .inputs-grid { grid-template-columns: 1fr; gap: 16px; }
-  .jade-matrix-grid { grid-template-columns: 1fr; }
-  .job-select-container { flex-direction: column; align-items: stretch; }
-  .config-action-right { justify-content: flex-end; }
+    /* ==========================================
+   📱 11. 手机端极致自适应 (@media)
+   ========================================== */
+    @media (max-width: 860px) {
+      body {
+        padding: 8px;
+      }
+
+      .calculator-container {
+        width: 100%;
+        padding: 14px;
+      }
+
+      /* 切换为单列排版 */
+      .inputs-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+        /* ✨ 手机端表单变单列，不会互相挤压 */
+      }
+
+      .panel-divider-text {
+        grid-column: span 1;
+        /* 分割线在单列模式占 1 列 */
+      }
+
+      #jobCustomCategorySlots {
+        grid-column: span 1 !important;
+        grid-template-columns: 1fr !important;
+      }
+
+      /* 辟邪玉网格改为上下垂直叠放 */
+      .jade-matrix-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .job-select-container {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .config-action-right {
+        justify-content: flex-end;
+      }
+
+      .result-table th,
+      .result-table td {
+        padding: 10px 6px;
+        font-size: 12px;
+      }
+
+      .result-table td.skill-name {
+        padding-left: 8px;
+      }
+    }
+    /* 🚫 胶囊单选框禁用状态视觉反馈 喵！ */
+.segmented-control input[type="radio"]:disabled + .segmented-btn {
+  background: var(--input-disabled-bg) !important;
+  color: var(--text-muted) !important;
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important; /* 彻底禁止鼠标点击喵！ */
+  box-shadow: none !important;
 }
-</style>
+  </style>
 </head>
 
 
 
 <body>
 
-<div class="calculator-container">
-  <div class="top-bar">
-    <h1 class="header-title">⚔️ DNF 奶量计算器</h1>
-    <button class="theme-toggle-btn" id="themeBtn">🌙 暗色主题</button>
-  </div>
-
-  <div class="job-select-container">
-    <div class="job-select-left">
-      <label for="jobSelect">职业选择：</label>
-      <select id="jobSelect" class="job-select">
-        <option value="ma">⚡ 奶妈（女圣骑）</option>
-        <option value="ba">✝️ 奶爸（男圣骑）</option>
-        <option value="luo">🧸 奶萝（小魔女）</option>
-        <option value="gong">🏹 奶弓（缪斯）</option>
-        <option value="qiang">🔫 奶枪（协战师）</option>
-      </select>
+  <div class="calculator-container">
+    <div class="top-bar">
+      <h1 class="header-title">⚔️ DNF 奶量计算器</h1>
+      <button class="theme-toggle-btn" id="themeBtn">🌙 暗色主题</button>
     </div>
 
-    <div class="config-action-right">
-      <button class="btn-save-config" id="btnSaveConfig">💾 保存</button>
-      <select id="configLoadSelect" class="config-load-select">
-        <option value="" disabled selected>📁 读取</option>
-        <option value="config1">预设 1: 毕业打造方案</option>
-        <option value="config2">预设 2: 平民打造方案</option>
-      </select>
-    </div>
-  </div>
+    <div class="job-select-container">
+      <div class="job-select-left">
+        <label for="jobSelect">职业选择：</label>
+        <select id="jobSelect" class="job-select">
+          <option value="ma">⚡ 奶妈（女圣骑）</option>
+          <option value="ba">✝️ 奶爸（男圣骑）</option>
+          <option value="luo">🧸 奶萝（小魔女）</option>
+          <option value="gong">🏹 奶弓（缪斯）</option>
+          <option value="qiang">🔫 奶枪（协战师）</option>
+        </select>
+      </div>
 
-  <div class="inputs-grid">
-
-    <!-- ⬅️ 左侧栏：基础面板与适用修正 -->
-    <div class="column">
-
-      <!-- 1. ⚙️ 角色基础 (图外) -->
-   <div class="panel">
-  <div class="panel-subtitle">⚙️ 角色基础 (图外)</div>
-
-  <div class="form-grid">
-    <div class="form-group">
-      <label>站街四维</label>
-      <input type="number" id="buffStat" value="10000" inputmode="numeric" placeholder="请输入站街面板四维">
-    </div>
-
-    <div class="form-group">
-      <label>增益量</label>
-      <input type="number" id="buffBuff" value="200000" inputmode="numeric" placeholder="请输入站街增益量">
-    </div>
-
-    <div class="form-group">
-      <label>Buff 等级</label>
-      <input type="number" id="buffLv" value="50" inputmode="numeric" placeholder="请输入 Buff 等级">
-    </div>
-
-    <!-- ✨ 核心技能 -->
-    <div class="form-group">
-      <label id="skillLv1Label">Lv15 核心技能</label>
-      <div class="passive-input-row">
-        <input type="number" id="skillLv1" value="10" placeholder="10" min="1" max="100" inputmode="numeric">
-        <span class="passive-stat-tip" id="skillLv1StatTip"></span>
-        <button type="button" class="btn-apply-passive" id="btnApplyPassive">✨ 设为基准</button>
+      <div class="config-action-right">
+        <button class="btn-save-config" id="btnSaveConfig">💾 保存</button>
+        <select id="configLoadSelect" class="config-load-select">
+          <option value="" disabled selected>📁 读取</option>
+          <option value="config1">预设 1: 毕业打造方案</option>
+          <option value="config2">预设 2: 平民打造方案</option>
+        </select>
       </div>
     </div>
 
-    <!-- 🌟 中间带文字的横向分割线 -->
-    <div class="panel-divider-text">
-      <span>🧮 自动推算</span>
-    </div>
+    <div class="inputs-grid">
 
-    <!-- ✨ 白金数量 -->
-    <div class="form-group">
-      <label>Lv15 被动白金数量</label>
-      <div class="segmented-control">
-        <label>
-          <input type="radio" name="passPlatinum15" value="0" checked>
-          <span class="segmented-btn">没有</span>
-        </label>
-        <label>
-          <input type="radio" name="passPlatinum15" value="1">
-          <span class="segmented-btn">1 个</span>
-        </label>
-        <label>
-          <input type="radio" name="passPlatinum15" value="2">
-          <span class="segmented-btn">2 个</span>
-        </label>
-      </div>
-    </div>
+      <!-- ⬅️ 左侧栏：基础面板与适用修正 -->
+      <div class="column">
 
-    <!-- ✨ 训练教官 -->
-    <div class="form-group">
-      <label>训练教官</label>
-      <div class="segmented-control">
-        <label>
-          <input type="radio" name="trainerInstructor" value="0" checked>
-          <span class="segmented-btn">未开启</span>
-        </label>
-        <label>
-          <input type="radio" name="trainerInstructor" value="1">
-          <span class="segmented-btn">已开启</span>
-        </label>
-      </div>
-    </div>
+        <!-- 1. ⚙️ 角色基础 (图外) -->
+        <div class="panel">
+          <div class="panel-subtitle">⚙️ 角色基础 (图外)</div>
 
-    <!-- ✨ 新增固定推算项：黄金乡 -->
-    <div class="form-group">
-      <label>黄金乡</label>
-      <div class="segmented-control">
-        <label>
-          <input type="radio" name="goldenLand" value="0" checked>
-          <span class="segmented-btn">红10及下</span>
-        </label>
-        <label>
-          <input type="radio" name="goldenLand" value="11">
-          <span class="segmented-btn">红11</span>
-        </label>
-        <label>
-          <input type="radio" name="goldenLand" value="12">
-          <span class="segmented-btn">红12+</span>
-        </label>
-      </div>
-    </div>
-
-    <!-- 📌 动态预留插槽 -->
-    <div id="jobCustomCategorySlots" style="grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr; gap: 12px;"></div>
-  </div>
-</div>
-
-
-
-      <!-- 2. 🛡️ 图内适用修正 -->
-      <div class="panel">
-        <div class="panel-subtitle" style="color: var(--accent-blue);">
-          <span>🛡️ 图内适用修正</span>
-          <label class="toggle-switch-container">
-            <span id="autoCalcStatusText">自动推算 (开启)</span>
-            <div class="switch">
-              <input type="checkbox" id="autoCalcSwitch" checked>
-              <span class="slider"></span>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>站街四维</label>
+              <input type="number" id="buffStat" value="10000" inputmode="numeric" placeholder="10000">
             </div>
-          </label>
-        </div>
-        <div class="form-grid">
-          <div class="form-group">
-            <label>BUFF 适用四维</label>
-            <input type="number" id="buffStatApplicable" value="10000" inputmode="numeric" placeholder="Buff 适用四维">
-          </div>
-          <div class="form-group">
-            <label>Buff 适用等级</label>
-            <input type="number" id="buffLvApplicable" value="50" inputmode="numeric" placeholder="Buff 适用等级">
-          </div>
 
-          <div class="form-group">
-            <label>太阳 适用四维</label>
-            <input type="number" id="sunStatApplicable" value="10000" inputmode="numeric" placeholder="太阳适用四维">
-          </div>
-          <div class="form-group">
-            <label>增益量</label>
-            <input type="number" id="buffInGame" value="200000" inputmode="numeric" placeholder="图内适用增益量">
-          </div>
+            <div class="form-group">
+              <label>增益量</label>
+              <input type="number" id="buffBuff" value="200000" inputmode="numeric" placeholder="1000000">
+            </div>
 
-          <div class="form-group">
-            <label>太阳 适用等级</label>
-            <input type="number" id="sunLvApplicable" value="40" inputmode="numeric" placeholder="太阳适用等级">
+            <div class="form-group">
+              <label>Buff 等级</label>
+              <input type="number" id="buffLv" value="31" inputmode="numeric"  min="1" max="70" placeholder="37">
+            </div>
+
+            <!-- ✨ 核心技能 -->
+            <div class="form-group">
+              <label id="skillLv15Label">Lv15 核心技能</label>
+              <div class="passive-input-row">
+                <input type="number" id="skillLv15" value="10" placeholder="10" min="1" max="70" inputmode="numeric">
+                <span class="passive-stat-tip" id="skillLv15StatTip"></span>
+                <button type="button" class="btn-apply-passive" id="btnApplyPassive">✨ 设为基准</button>
+              </div>
+            </div>
+
+            <!-- 🌟 中间带文字的横向分割线 -->
+            <div class="panel-divider-text">
+              <span>🧮 自动推算</span>
+            </div>
+
+            <!-- ✨ 白金数量 -->
+            <div class="form-group">
+              <label id="platinumLabel">Lv15 被动白金数量</label>
+              <div class="segmented-control">
+                <label>
+                  <input type="radio" name="passPlatinum15" value="0" checked>
+                  <span class="segmented-btn">没有</span>
+                </label>
+                <label>
+                  <input type="radio" name="passPlatinum15" value="1">
+                  <span class="segmented-btn">1 个</span>
+                </label>
+                <label>
+                  <input type="radio" name="passPlatinum15" value="2">
+                  <span class="segmented-btn">2 个</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- ✨ 训练教官 -->
+            <div class="form-group">
+              <label>训练教官</label>
+              <div class="segmented-control">
+                <label>
+                  <input type="radio" name="trainerInstructor" value="0" checked>
+                  <span class="segmented-btn">未开启</span>
+                </label>
+                <label>
+                  <input type="radio" name="trainerInstructor" value="1">
+                  <span class="segmented-btn">已开启</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- ✨ 新增固定推算项：黄金乡 -->
+            <div class="form-group">
+              <label>黄金乡</label>
+              <div class="segmented-control">
+                <label>
+                  <input type="radio" name="goldenLand" value="0" checked>
+                  <span class="segmented-btn">红10及下</span>
+                </label>
+                <label>
+                  <input type="radio" name="goldenLand" value="11">
+                  <span class="segmented-btn">红11</span>
+                </label>
+                <label>
+                  <input type="radio" name="goldenLand" value="12">
+                  <span class="segmented-btn">红12+</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 📌 动态预留插槽 -->
+    <!-- 📌 动态预留插槽：去掉了 grid-column: span 2，允许与上方元素同行接续排版喵！ -->
+<div id="jobCustomCategorySlots" style="display: contents;"></div>
           </div>
         </div>
-      </div>
 
-    </div>
 
-    <!-- ➡️ 右侧栏：算式 + 辟邪玉 + C模板 -->
-    <div class="column">
 
-      <!-- 🧮 增益量算式面板 -->
-      <div class="panel">
-        <div class="panel-subtitle">
-          <span>🧮 增益量增幅</span>
-          <label class="toggle-switch-container">
-            <span id="modeStatusText">输入包含辟邪玉 (填总数)</span>
-            <div class="switch">
-              <input type="checkbox" id="modeSwitch" checked>
-              <span class="slider"></span>
+        <!-- 2. 🛡️ 图内适用修正 -->
+        <div class="panel">
+          <div class="panel-subtitle" style="color: var(--accent-blue);">
+            <span>🛡️ 图内适用修正</span>
+            <label class="toggle-switch-container">
+              <span id="autoCalcStatusText">自动推算 (开启)</span>
+              <div class="switch">
+                <input type="checkbox" id="autoCalcSwitch" checked>
+                <span class="slider"></span>
+              </div>
+            </label>
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>BUFF 适用四维</label>
+              <input type="number" id="buffStatApplicable" value="10000" inputmode="numeric" placeholder="Buff 适用四维">
             </div>
-          </label>
-        </div>
-
-        <div class="buff-pct-row">
-          <div class="buff-pct-item">
-            <label>基础 %</label>
-            <input type="number" id="baseBuffPct" value="150" inputmode="decimal">
-          </div>
-
-          <span class="buff-pct-operator">+</span>
-
-          <div class="buff-pct-item">
-            <label>辟邪玉 %</label>
-            <input type="text" id="jadeBuffPctDisplay" value="0.0%" class="jade-disabled-input" disabled>
-          </div>
-
-          <span class="buff-pct-operator">=</span>
-
-          <div class="buff-pct-item">
-            <label>总增益量增幅</label>
-            <input type="number" id="totalBuffPct" value="150" inputmode="decimal">
-          </div>
-        </div>
-      </div>
-
-      <!-- 🔮 辟邪玉面板 -->
-      <div class="panel">
-        <div class="panel-subtitle" style="color: var(--accent-purple);">🔮 辟邪玉属性加成</div>
-
-        <div class="jade-matrix-grid">
-          <div class="form-group">
-            <label>Buff 固定三攻</label>
-            <input type="number" id="jadeBuffAtkFlat" class="compact-input" value="" inputmode="numeric">
-          </div>
-
-          <div class="form-group">
-            <label>Buff 百分比三攻 (%)</label>
-            <div class="inputs-container">
-              <input type="number" class="compact-input jade-pct-atk" value="" inputmode="decimal">
-              <input type="number" class="compact-input jade-pct-atk" value="" inputmode="decimal">
-              <input type="number" class="compact-input jade-pct-atk" value="" inputmode="decimal">
-              <input type="number" class="compact-input jade-pct-atk" value="" inputmode="decimal">
+            <div class="form-group">
+              <label>Buff 适用等级</label>
+              <input type="number" id="buffLvApplicable" value="50" inputmode="numeric" placeholder="Buff 适用等级">
             </div>
-          </div>
 
-          <div class="form-group">
-            <label>Buff 固定力智</label>
-            <input type="number" id="jadeBuffStatFlat" class="compact-input" value="" inputmode="numeric">
-          </div>
-
-          <div class="form-group">
-            <label>Buff 百分比力智 (%)</label>
-            <div class="inputs-container">
-              <input type="number" class="compact-input jade-pct-buff-stat" value="" inputmode="decimal">
-              <input type="number" class="compact-input jade-pct-buff-stat" value="" inputmode="decimal">
-              <input type="number" class="compact-input jade-pct-buff-stat" value="" inputmode="decimal">
-              <input type="number" class="compact-input jade-pct-buff-stat" value="" inputmode="decimal">
+            <div class="form-group">
+              <label>太阳 适用四维</label>
+              <input type="number" id="sunStatApplicable" value="10000" inputmode="numeric" placeholder="太阳适用四维">
             </div>
-          </div>
+            <div class="form-group">
+              <label>增益量</label>
+              <input type="number" id="buffInGame" value="200000" inputmode="numeric" placeholder="图内适用增益量">
+            </div>
 
-          <div class="form-group">
-            <label>太阳 固定力智</label>
-            <input type="number" id="jadeSunStatFlat" class="compact-input" value="" inputmode="numeric">
-          </div>
-
-          <div class="form-group">
-            <label>太阳 百分比力智 (%)</label>
-            <div class="inputs-container">
-              <input type="number" class="compact-input jade-pct-sun-stat" value="" inputmode="decimal">
-              <input type="number" class="compact-input jade-pct-sun-stat" value="" inputmode="decimal">
-              <input type="number" class="compact-input jade-pct-sun-stat" value="" inputmode="decimal">
-              <input type="number" class="compact-input jade-pct-sun-stat" value="" inputmode="decimal">
+            <div class="form-group">
+              <label>太阳 适用等级</label>
+              <input type="number" id="sunLvApplicable" value="40" inputmode="numeric" placeholder="太阳适用等级">
             </div>
           </div>
         </div>
+
       </div>
 
-      <!-- 📜 C模板 面板卡片 -->
-      <div class="panel">
-        <div class="panel-subtitle" style="color: #ef4444;">📜 C模板 (影响倍率)</div>
-        <div class="form-grid">
-          <div class="form-group">
-            <label>三攻</label>
-            <input type="number" id="cAtk" value="3000" inputmode="numeric">
+      <!-- ➡️ 右侧栏：算式 + 辟邪玉 + C模板 -->
+      <div class="column">
+
+        <!-- 🧮 增益量算式面板 -->
+        <div class="panel">
+          <div class="panel-subtitle">
+            <span>🧮 增益量增幅</span>
+            <label class="toggle-switch-container">
+              <span id="modeStatusText">输入包含辟邪玉 (填总数)</span>
+              <div class="switch">
+                <input type="checkbox" id="modeSwitch" checked>
+                <span class="slider"></span>
+              </div>
+            </label>
           </div>
-          <div class="form-group">
-            <label>力智</label>
-            <input type="number" id="cStat" value="5000" inputmode="numeric">
+
+          <div class="buff-pct-row">
+            <div class="buff-pct-item">
+              <label>基础 %</label>
+              <input type="number" id="baseBuffPct" value="150" inputmode="decimal">
+            </div>
+
+            <span class="buff-pct-operator">+</span>
+
+            <div class="buff-pct-item">
+              <label>辟邪玉 %</label>
+              <input type="text" id="jadeBuffPctDisplay" value="0.0%" class="jade-disabled-input" disabled>
+            </div>
+
+            <span class="buff-pct-operator">=</span>
+
+            <div class="buff-pct-item">
+              <label>总增益量增幅</label>
+              <input type="number" id="totalBuffPct" value="150" inputmode="decimal">
+            </div>
           </div>
         </div>
+
+        <!-- 🔮 辟邪玉面板 -->
+        <div class="panel">
+          <div class="panel-subtitle" style="color: var(--accent-purple);">🔮 辟邪玉属性加成</div>
+
+          <div class="jade-matrix-grid">
+            <div class="form-group">
+              <label>Buff 固定三攻</label>
+              <input type="number" id="jadeBuffAtkFlat" class="compact-input" value="" inputmode="numeric">
+            </div>
+
+            <div class="form-group">
+              <label>Buff 百分比三攻 (%)</label>
+              <div class="inputs-container">
+                <input type="number" class="compact-input jade-pct-atk" value="" inputmode="decimal">
+                <input type="number" class="compact-input jade-pct-atk" value="" inputmode="decimal">
+                <input type="number" class="compact-input jade-pct-atk" value="" inputmode="decimal">
+                <input type="number" class="compact-input jade-pct-atk" value="" inputmode="decimal">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Buff 固定力智</label>
+              <input type="number" id="jadeBuffStatFlat" class="compact-input" value="" inputmode="numeric">
+            </div>
+
+            <div class="form-group">
+              <label>Buff 百分比力智 (%)</label>
+              <div class="inputs-container">
+                <input type="number" class="compact-input jade-pct-buff-stat" value="" inputmode="decimal">
+                <input type="number" class="compact-input jade-pct-buff-stat" value="" inputmode="decimal">
+                <input type="number" class="compact-input jade-pct-buff-stat" value="" inputmode="decimal">
+                <input type="number" class="compact-input jade-pct-buff-stat" value="" inputmode="decimal">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>太阳 固定力智</label>
+              <input type="number" id="jadeSunStatFlat" class="compact-input" value="" inputmode="numeric">
+            </div>
+
+            <div class="form-group">
+              <label>太阳 百分比力智 (%)</label>
+              <div class="inputs-container">
+                <input type="number" class="compact-input jade-pct-sun-stat" value="" inputmode="decimal">
+                <input type="number" class="compact-input jade-pct-sun-stat" value="" inputmode="decimal">
+                <input type="number" class="compact-input jade-pct-sun-stat" value="" inputmode="decimal">
+                <input type="number" class="compact-input jade-pct-sun-stat" value="" inputmode="decimal">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 📜 C模板 面板卡片 -->
+        <div class="panel">
+          <div class="panel-subtitle" style="color: #ef4444;">📜 C模板 (影响倍率)</div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>三攻</label>
+              <input type="number" id="cAtk" value="3000" inputmode="numeric">
+            </div>
+            <div class="form-group">
+              <label>力智</label>
+              <input type="number" id="cStat" value="5000" inputmode="numeric">
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 下层：最终奶量结算输出 -->
+    <div class="output-box">
+      <div class="output-header">
+        <h3>📊 最终奶量</h3>
+        <button id="baseBtn" class="btn-set-base">📌 将结果设为基准</button>
       </div>
 
+      <div class="result-table-wrapper">
+        <table class="result-table">
+          <thead>
+            <tr>
+              <th>技能</th>
+              <th>三攻</th>
+              <th>力智</th>
+              <th>倍率</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="skill-name">✨ Buff 效果</td>
+              <td class="val-highlight" id="buffAtk">0</td>
+              <td class="val-highlight" id="resBuffStat">0</td>
+              <td class="rate-highlight" id="buffRate">0.00%</td>
+            </tr>
+            <tr>
+              <td class="skill-name">☀️ 觉醒太阳效果</td>
+              <td style="color: var(--text-muted);">-</td>
+              <td class="val-highlight" id="sunStat" style="color: var(--accent-pink);">0</td>
+              <td class="rate-highlight" id="sunRate">0.00%</td>
+            </tr>
+            <tr style="background: rgba(37, 99, 235, 0.04);">
+              <td class="skill-name" style="color: var(--accent-blue);">💥 总计 (Buff + 太阳)</td>
+              <td class="val-highlight" id="totalAtk">0</td>
+              <td class="val-highlight" id="totalStat">0</td>
+              <td class="rate-highlight" id="totalRate" style="font-size: 18px;">0.00%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
+
   </div>
-
-  <!-- 下层：最终奶量结算输出 -->
-  <div class="output-box">
-    <div class="output-header">
-      <h3>📊 最终奶量</h3>
-      <button id="baseBtn" class="btn-set-base">📌 将结果设为基准</button>
-    </div>
-
-    <div class="result-table-wrapper">
-      <table class="result-table">
-        <thead>
-          <tr>
-            <th>技能</th>
-            <th>三攻</th>
-            <th>力智</th>
-            <th>倍率</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="skill-name">✨ Buff 效果</td>
-            <td class="val-highlight" id="buffAtk">0</td>
-            <td class="val-highlight" id="resBuffStat">0</td>
-            <td class="rate-highlight" id="buffRate">0.00%</td>
-          </tr>
-          <tr>
-            <td class="skill-name">☀️ 觉醒太阳效果</td>
-            <td style="color: var(--text-muted);">-</td>
-            <td class="val-highlight" id="sunStat" style="color: var(--accent-pink);">0</td>
-            <td class="rate-highlight" id="sunRate">0.00%</td>
-          </tr>
-          <tr style="background: rgba(37, 99, 235, 0.04);">
-            <td class="skill-name" style="color: var(--accent-blue);">💥 总计 (Buff + 太阳)</td>
-            <td class="val-highlight" id="totalAtk">0</td>
-            <td class="val-highlight" id="totalStat">0</td>
-            <td class="rate-highlight" id="totalRate" style="font-size: 18px;">0.00%</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-</div>
 
 <script>
 
-// 📜 各职业被动技能数据库 (全新结构)
+// 📜 各职业技能数据库 
 const JOB_SKILLS_DATA = {
-        'ma': {
-            'lv15': {
-                name: 'Lv15 启示:颂歌',
-                data: [136, 140, 144, 148, 152, 157, 162, 167, 173, 179, 185, 191, 197, 204, 211, 219, 227, 235, 243, 251, 260, 269, 279, 288, 298, 308, 319, 329, 340, 351, 363, 375, 387, 399, 411, 425, 438, 451, 465, 479, 493, 507, 523, 537, 553, 569, 585, 601, 617, 634, 648, 664, 680, 696, 712, 727, 743, 759, 775, 791, 806, 822, 838, 854, 870, 885, 901, 917, 933, 949]
-            },
-            'outMap': [
-                {
-                    name: 'Lv50 虔诚信念',
-                    data: [14, 37, 59, 82, 104, 127, 149, 172, 194, 217, 239, 262, 284, 307, 329, 352, 374, 397, 419, 442, 464, 487, 509, 532, 554, 577, 599, 622, 644, 667, 689, 712, 734, 757, 779, 802, 824, 847, 869, 892, 914, 937, 959, 982, 1004, 1027, 1049, 1072, 1094, 1117]
-                },
-            ]
-
+    'ma': {
+      'lv15': {
+        name: 'Lv15 启示:颂歌',
+        data: [136, 140, 144, 148, 152, 157, 162, 167, 173, 179, 185, 191, 197, 204, 211, 219, 227, 235, 243, 251, 260, 269, 279, 288, 298, 308, 319, 329, 340, 351, 363, 375, 387, 399, 411, 425, 438, 451, 465, 479, 493, 507, 523, 537, 553, 569, 585, 601, 617, 634, 648, 664, 680, 696, 712, 727, 743, 759, 775, 791, 806, 822, 838, 854, 870, 885, 901, 917, 933, 949]
+      },
+      'outMap': [
+        {
+          name: 'Lv50 虔诚信念',
+          data: [14, 37, 59, 82, 104, 127, 149, 172, 194, 217, 239, 262, 284, 307, 329, 352, 374, 397, 419, 442, 464, 487, 509, 532, 554, 577, 599, 622, 644, 667, 689, 712, 734, 757, 779, 802, 824, 847, 869, 892, 914, 937, 959, 982, 1004, 1027, 1049, 1072, 1094, 1117]
         },
-        'ba': {
-            'lv15': {
-                name: '守护恩赐',
-                data: [220, 224, 228, 232, 236, 241, 246, 251, 257, 263, 269, 275, 281, 288, 295, 303, 311, 319, 327, 335, 344, 353, 363, 372, 382, 392, 403, 413, 424, 435, 447, 459, 471, 483, 495, 509, 522, 535, 549, 563, 577, 591, 607, 621, 637, 653, 669, 685, 701, 718, 732, 748, 764, 780, 796, 811, 827, 843, 859, 875, 890, 906, 922, 937, 953, 969, 985, 1001, 1016, 1032]
+      ]
 
-            },
-            'outMap': [
-                {
-                    name: 'Lv50 信念光环',
-                    data: [10, 29, 48, 67, 86, 105, 124, 143, 162, 181, 200, 219, 238, 257, 276, 295, 314, 333, 352, 371, 390, 409, 428, 447, 466, 489, 511, 534, 556, 579, 601, 624, 646, 669, 691, 714, 736, 759, 781, 804, 826, 849, 871, 894, 916, 939, 961, 984, 1006, 1029]
-                },
+    },
+    'ba': {
+      'lv15': {
+        name: 'Lv15 守护恩赐',
+        data: [220, 224, 228, 232, 236, 241, 246, 251, 257, 263, 269, 275, 281, 288, 295, 303, 311, 319, 327, 335, 344, 353, 363, 372, 382, 392, 403, 413, 424, 435, 447, 459, 471, 483, 495, 509, 522, 535, 549, 563, 577, 591, 607, 621, 637, 653, 669, 685, 701, 718, 732, 748, 764, 780, 796, 811, 827, 843, 859, 875, 890, 906, 922, 937, 953, 969, 985, 1001, 1016, 1032]
 
-                {
-                    name: 'Lv25守护徽章',
-                    data: [94, 98, 102, 107, 112, 116, 122, 127, 131, 137, 141, 147, 153, 158, 163, 169, 175, 181, 187, 192]
-                },
-            ]
-        },
-        'luo': {
-            'lv15': {
-                name: 'Lv15 人偶操纵者',
-
-                data: [69, 73, 77, 81, 85, 90, 95, 100, 106, 112, 118, 124, 130, 137, 144, 152, 160, 168, 176, 184, 193, 202, 212, 221, 231, 241, 252, 262, 273, 284, 296, 308, 320, 332, 344, 358, 371, 384, 398, 412, 426, 440, 456, 470, 486, 502, 518, 534, 550, 567, 581, 597, 613, 629, 645, 660, 676, 692, 708, 724, 739, 755, 771, 787, 803, 818, 834, 850, 866, 882]
-
-            },
-            'outMap': [
-                {
-                    name: 'Lv50 少女的爱',
-                    data: [14, 37, 59, 82, 104, 127, 149, 172, 194, 217, 239, 262, 284, 307, 329, 352, 374, 397, 419, 442, 464, 487, 509, 532, 554, 577, 599, 622, 644, 667, 689, 712, 734, 757, 779, 802, 824, 847, 869, 892, 914, 937, 959, 982, 1004, 1027, 1049, 1072, 1094, 1117]
-                },
-            ]
-        },
-        'qiang': {
-            'lv15': {
-                name: 'Lv15 系统·战场信息',
-                data: [266, 270, 274, 278, 282, 287, 292, 297, 303, 309, 315, 321, 327, 334, 341, 349, 357, 365, 373, 381, 390, 399, 409, 418, 428, 438, 449, 459, 470, 481, 493, 505, 517, 529, 541, 555, 568, 581, 595, 609, 623, 637, 653, 667, 683, 699, 715, 731, 747, 764, 778, 794, 810, 826, 842, 857, 873, 889, 905, 921, 936, 952, 968, 983, 999, 1015, 1031, 1047, 1062, 1078]
-
-            },
-            'outMap': [
-                {
-                    name: 'Lv25 装甲强化',
-
-                    data: [94, 98, 102, 107, 112, 116, 122, 127, 131, 137, 141, 147, 153, 158, 163, 169, 175, 181, 187, 192]
-                },
-                {
-                    name: 'Lv50 系统·作战应对',
-
-                    data: [10, 29, 48, 67, 86, 105, 124, 143, 162, 181, 200, 219, 238, 257, 276, 295, 314, 333, 352, 371, 390, 409, 428, 447, 466, 489, 511, 534, 556, 579, 601, 624, 646, 669, 691, 714, 736, 759, 781, 804, 826, 849, 871, 894, 916, 939, 961, 984, 1006, 1029]
-                },
-            ]
-        },
-        'gong': {
-            'lv15': {
-                name: 'Lv15 多彩感性',
-                data: [276, 280, 284, 288, 292, 297, 302, 307, 313, 319, 325, 331, 337, 344, 351, 359, 367, 375, 383, 391, 400, 409, 419, 428, 438, 448, 459, 469, 480, 491, 503, 515, 527, 539, 551, 565, 578, 591, 605, 619, 633, 647, 663, 677, 693, 709, 725, 741, 757, 774, 788, 804, 820, 836, 852, 867, 883, 899, 915, 931, 946, 962, 978, 994, 1010, 1025, 1041, 1057, 1073, 1089]
-
-            },
-            'outMap': [
-                {
-                    name: 'Lv50 明星气场',
-                    data: [6, 25, 44, 63, 82, 101, 120, 139, 158, 177, 196, 215, 234, 253, 272, 291, 310, 329, 348, 367, 386, 405, 424, 443, 462, 485, 507, 530, 552, 575, 597, 620, 642, 665, 687, 710, 732, 755, 777, 800, 822, 845, 867, 890, 912, 935, 957, 980, 1002, 1025]
-                },
-                {
-                    name: 'Lv20 主角登场',
-                    data: [94, 98, 102, 107, 112, 116, 122, 127, 131, 137, 141, 147, 153, 158, 163, 169, 175, 181, 187, 192]
-                },
-
-            ]
+      },
+      'outMap': [
+        {
+          name: 'Lv50 信念光环',
+          data: [10, 29, 48, 67, 86, 105, 124, 143, 162, 181, 200, 219, 238, 257, 276, 295, 314, 333, 352, 371, 390, 409, 428, 447, 466, 489, 511, 534, 556, 579, 601, 624, 646, 669, 691, 714, 736, 759, 781, 804, 826, 849, 871, 894, 916, 939, 961, 984, 1006, 1029]
         },
 
-    }
+        {
+          name: 'Lv25 守护徽章',
+          data: [94, 98, 102, 107, 112, 116, 122, 127, 131, 137, 141, 147, 153, 158, 163, 169, 175, 181, 187, 192]
+        },
+      ]
+    },
+    'luo': {
+      'lv15': {
+        name: 'Lv15 人偶操纵者',
 
-  // 主题切换
-function initTheme() {
-  const themeBtn = document.getElementById('themeBtn');
-  const savedTheme = localStorage.getItem('theme');
+        data: [69, 73, 77, 81, 85, 90, 95, 100, 106, 112, 118, 124, 130, 137, 144, 152, 160, 168, 176, 184, 193, 202, 212, 221, 231, 241, 252, 262, 273, 284, 296, 308, 320, 332, 344, 358, 371, 384, 398, 412, 426, 440, 456, 470, 486, 502, 518, 534, 550, 567, 581, 597, 613, 629, 645, 660, 676, 692, 708, 724, 739, 755, 771, 787, 803, 818, 834, 850, 866, 882]
 
-  if (savedTheme === 'dark') {
-    document.body.classList.add('dark-theme');
-    if (themeBtn) themeBtn.textContent = '☀️ 浅色主题';
-  } else {
-    document.body.classList.remove('dark-theme');
-    if (themeBtn) themeBtn.textContent = '🌙 暗色主题';
+      },
+      'outMap': [
+        {
+          name: 'Lv50 少女的爱',
+          data: [14, 37, 59, 82, 104, 127, 149, 172, 194, 217, 239, 262, 284, 307, 329, 352, 374, 397, 419, 442, 464, 487, 509, 532, 554, 577, 599, 622, 644, 667, 689, 712, 734, 757, 779, 802, 824, 847, 869, 892, 914, 937, 959, 982, 1004, 1027, 1049, 1072, 1094, 1117]
+        },
+      ]
+    },
+    'qiang': {
+      'lv15': {
+        name: 'Lv15 系统·战场信息',
+        data: [266, 270, 274, 278, 282, 287, 292, 297, 303, 309, 315, 321, 327, 334, 341, 349, 357, 365, 373, 381, 390, 399, 409, 418, 428, 438, 449, 459, 470, 481, 493, 505, 517, 529, 541, 555, 568, 581, 595, 609, 623, 637, 653, 667, 683, 699, 715, 731, 747, 764, 778, 794, 810, 826, 842, 857, 873, 889, 905, 921, 936, 952, 968, 983, 999, 1015, 1031, 1047, 1062, 1078]
+
+      },
+      'outMap': [
+        {
+          name: 'Lv25 装甲强化',
+
+          data: [94, 98, 102, 107, 112, 116, 122, 127, 131, 137, 141, 147, 153, 158, 163, 169, 175, 181, 187, 192]
+        },
+        {
+          name: 'Lv50 系统·作战应对',
+
+          data: [10, 29, 48, 67, 86, 105, 124, 143, 162, 181, 200, 219, 238, 257, 276, 295, 314, 333, 352, 371, 390, 409, 428, 447, 466, 489, 511, 534, 556, 579, 601, 624, 646, 669, 691, 714, 736, 759, 781, 804, 826, 849, 871, 894, 916, 939, 961, 984, 1006, 1029]
+        },
+      ]
+    },
+    'gong': {
+      'lv15': {
+        name: 'Lv15 多彩感性',
+        data: [276, 280, 284, 288, 292, 297, 302, 307, 313, 319, 325, 331, 337, 344, 351, 359, 367, 375, 383, 391, 400, 409, 419, 428, 438, 448, 459, 469, 480, 491, 503, 515, 527, 539, 551, 565, 578, 591, 605, 619, 633, 647, 663, 677, 693, 709, 725, 741, 757, 774, 788, 804, 820, 836, 852, 867, 883, 899, 915, 931, 946, 962, 978, 994, 1010, 1025, 1041, 1057, 1073, 1089]
+
+      },
+      'outMap': [
+        {
+          name: 'Lv50 明星气场',
+          data: [6, 25, 44, 63, 82, 101, 120, 139, 158, 177, 196, 215, 234, 253, 272, 291, 310, 329, 348, 367, 386, 405, 424, 443, 462, 485, 507, 530, 552, 575, 597, 620, 642, 665, 687, 710, 732, 755, 777, 800, 822, 845, 867, 890, 912, 935, 957, 980, 1002, 1025]
+        },
+        {
+          name: 'Lv20 主角登场',
+          data: [94, 98, 102, 107, 112, 116, 122, 127, 131, 137, 141, 147, 153, 158, 163, 169, 175, 181, 187, 192]
+        },
+
+      ]
+    },
+
+  }
+// ==========================================
+// 📦 1. 全局状态源 (State) - 唯一的真相数据源喵！
+// ==========================================
+const state = {
+  // 1. 职业与全局设置
+  currentJob: 'ma',            // 当前选中职业 ('ma', 'ba', 'luo', 'qiang', 'gong')
+  isAutoCalc: true,            // 自动推算开关 (true: 开启, false: 手动)
+  isJadeIncluded: true,        // 增益量模式 (true: 包含辟邪玉, false: 不含)
+  
+  // 2. 基础数据 (图外)
+  buffStat: 10000,             // 站街四维
+  buffBuff: 200000,            // 站街增益量
+  buffLv: 50,                  // Buff 等级
+  skillLv15: 10,               // Lv15 核心技能等级
+  baselineLv15: null,          // Lv15 核心技能基准等级 (null 代表未设置)
+
+  // 3. 自动推算参数
+  passPlatinum15: 0,           // 被动白金数量 (0, 1, 2)
+  trainerInstructor: 0,        // 训练教官 (0: 未开启, 1: 已开启)
+  goldenLand: 0,               // 黄金乡 (0: 红10及下, 11: 红11, 12: 红12+)
+  outMapSkills: {},            // 动态 outMap 技能等级 (例如 {0: 10, 1: 10})
+
+  // 4. 图内适用修正 (由自动推算算出，或手动填写)
+  buffStatApplicable: 10000,   // BUFF 适用四维
+  buffLvApplicable: 50,        // Buff 适用等级
+  sunStatApplicable: 10000,    // 太阳适用四维
+  buffInGame: 200000,          // 图内适用增益量
+  sunLvApplicable: 40,         // 太阳适用等级
+
+  // 5. C 模板
+  cAtk: 3000,                  // C 模板三攻
+  cStat: 5000                  // C 模板力智
+};
+// ==========================================
+// 🚀 2. 中央事件分发中心 (Dispatcher)
+// ==========================================
+
+/**
+ * 映射表：把控件的 ID / Name 映射到对应的专属 Handler 函数
+ */
+const handlerRegistry = {
+   'jobSelect': onJobSelectChange,
+  'autoCalcSwitch': onAutoCalcSwitchChange,
+  'btnApplyPassive': handleSetBaseline,
+  'themeBtn': handleThemeToggle,
+  'modeSwitch': onModeSwitchChange
+};
+
+/**
+ * 🛠️ 通用工具：校验输入框并获取合法数值
+ * @param {HTMLInputElement} input - 当前触发事件的输入框 DOM 节点
+ * @returns {number} 校验后的合法数值
+ */
+function getValidInputValue(input) {
+  if (!input) return 0;
+
+  let valStr = input.value.trim();
+
+  // 🌟 3. 用户清空输入框时：不补齐输入框 UI，但计算时隐式读取 placeholder 的默认值！
+  if (valStr === '' && input.placeholder) {
+    valStr = input.placeholder;
   }
 
-  if (themeBtn) {
-    themeBtn.addEventListener('click', () => {
-      const isDark = document.body.classList.toggle('dark-theme');
-      themeBtn.textContent = isDark ? '☀️ 浅色主题' : '🌙 暗色主题';
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    });
+  let num = parseFloat(valStr);
+  if (isNaN(num)) num = 0;
+
+  // 🌟 1. 超过最大值：强制设为 max
+  if (input.hasAttribute('max')) {
+    const max = parseFloat(input.max);
+    if (!isNaN(max) && num > max) {
+      num = max;
+      input.value = max; // 强制修正 UI 显示
+    }
+  }
+
+  // 🌟 2. 小于最小值：强制设为 min（仅在有有效输入时截断，避免影响清空状态）
+  if (input.hasAttribute('min') && input.value.trim() !== '') {
+    const min = parseFloat(input.min);
+    if (!isNaN(min) && num < min) {
+      num = min;
+      input.value = min; // 强制修正 UI 显示
+    }
+  }
+
+  return num;
+}
+
+
+/**
+ * 核心流水线调度器：执行 Handler -> 触发计算 -> 触发渲染
+ * @param {string} key - 控件的 id 或 name
+ * @param {HTMLElement} target - 触发事件的 DOM 节点
+ * @param {Event} event - 原生事件对象
+ */
+/**
+ * 🚀 核心流水线调度器：执行 Handler -> (条件判断) -> 触发计算 -> 触发渲染
+ */
+/**
+ * 🚀 核心流水线调度器：执行 Handler -> (条件判断) -> 触发计算 -> 触发渲染
+ */
+function dispatchAndPipeline(key, target, event) {
+  let shouldCalc = true;
+
+  // 1. 优先调用专属 Handler 函数
+  if (key && handlerRegistry[key]) {
+    const res = handlerRegistry[key](target, event);
+    if (res === false) {
+      shouldCalc = false;
+    }
+  } 
+  // 🌟 2. 通用回退：自动更新 state 喵！
+  else if (key) {
+    // A. 如果是动态生成的 outMap 技能插槽 (例如 outMapSkill0)
+    if (key.startsWith('outMapSkill')) {
+      const idx = parseInt(key.replace('outMapSkill', ''), 10);
+      if (!isNaN(idx)) {
+        state.outMapSkills[idx] = getValidInputValue(target);
+      }
+    } 
+    // B. 如果是 State 中定义的普通属性
+    else if (state.hasOwnProperty(key)) {
+      if (target.type === 'checkbox') {
+        state[key] = target.checked;
+      } else if (target.type === 'radio') {
+        state[key] = parseFloat(target.value) || 0;
+      } else if (target.tagName === 'INPUT') {
+        state[key] = getValidInputValue(target);
+      }
+    }
+  }
+  // 3. 运行纯计算引擎 (根据 shouldCalc 判断)
+  let calcResult = {};
+  if (shouldCalc && typeof runCalculations === 'function') {
+    calcResult = runCalculations();
+  }
+
+  // 4. 运行 UI 渲染器
+  if (typeof renderUI === 'function') {
+    renderUI(calcResult);
   }
 }
-// 模式与正反算逻辑
-function initBuffMode() {
-  const modeSwitch = document.getElementById('modeSwitch');
+/**
+ * 全局统一监听入口：只在容器上绑定这 3 个代理事件！
+ */
+function initGlobalEventListeners() {
+  const container = document.querySelector('.calculator-container') || document.body;
+
+  // A. 监听输入框打字 (input 事件)
+  container.addEventListener('input', (e) => {
+    const target = e.target;
+    if (target.tagName === 'INPUT' && target.type !== 'radio' && target.type !== 'checkbox') {
+      dispatchAndPipeline(target.id, target, e);
+    }
+  });
+
+  // B. 监听单选框/复选框/下拉框切换 (change 事件)
+  container.addEventListener('change', (e) => {
+    const target = e.target;
+    // 如果是 radio 单选框，用它的 name 匹配；否则用 id 匹配 喵！
+    const key = target.type === 'radio' ? target.name : target.id;
+    dispatchAndPipeline(key, target, e);
+  });
+
+  // C. 监听按钮点击 (click 事件)
+  container.addEventListener('click', (e) => {
+    const btn = e.target.closest('button');
+    if (btn) {
+      dispatchAndPipeline(btn.id, btn, e);
+    }
+  });
+  // 🌟 D. 监听失焦 (focusout 事件)：对 min / max 进行强制修正，清空时不做补齐 喵！
+  container.addEventListener('focusout', (e) => {
+    const target = e.target;
+    if (target.tagName === 'INPUT' && target.type === 'number') {
+      const valStr = target.value.trim();
+
+      // 如果输入框不为空，才进行 min / max 的强制修正喵~
+      if (valStr !== '') {
+        let val = parseFloat(valStr);
+
+        if (!isNaN(val)) {
+          let corrected = false;
+
+          // 1. 超过最大值 -> 强制设置为最大值
+          if (target.hasAttribute('max')) {
+            const max = parseFloat(target.max);
+            if (!isNaN(max) && val > max) {
+              target.value = max;
+              corrected = true;
+            }
+          }
+
+          // 2. 小于最小值 -> 强制设置为最小值
+          if (target.hasAttribute('min')) {
+            const min = parseFloat(target.min);
+            if (!isNaN(min) && val < min) {
+              target.value = min;
+              corrected = true;
+            }
+          }
+
+          // 如果发生过修正，同步触发一次 pipeline 更新 state 喵！
+          if (corrected) {
+            dispatchAndPipeline(target.id, target, e);
+          }
+        }
+      }
+    }
+  });
+}
+// ==========================================
+// 🧮 3. 纯计算引擎 (Calculator) - 只算数据，不碰 DOM！
+// ==========================================
+
+
+// ==========================================
+// 🧮 3. 纯计算引擎 (Calculator) - 只算数据，不碰 DOM！
+// ==========================================
+function runCalculations() {
+  // A. 自动推算逻辑 (仅在开启自动推算时计算)
+  if (state.isAutoCalc) {
+    const jobData = JOB_SKILLS_DATA[state.currentJob] || JOB_SKILLS_DATA['ma'];
+
+    // 🌟 推算规则 1：Buff 适用等级 = Buff 等级
+    state.buffLvApplicable = state.buffLv;
+
+    // 🌟 推算规则 2：黄金乡对图内适用增益量 (buffInGame) 加成
+    let goldenLandAdd = 0;
+    if (state.goldenLand === 11) goldenLandAdd = 1500;
+    else if (state.goldenLand === 12) goldenLandAdd = 3000;
+    state.buffInGame = state.buffBuff + goldenLandAdd;
+
+    // 🌟 推算规则 3：BUFF 适用四维与太阳适用四维 喵！
+    // ① 基础站街四维
+    let calcBuffStat = state.buffStat;
+
+    // ② 加上 jobCustomCategorySlots (outMap) 各技能在当前等级下的四维数值
+    if (jobData.outMap && Array.isArray(jobData.outMap)) {
+      jobData.outMap.forEach((skill, idx) => {
+        // 读取插槽里该技能填写的当前等级 (默认 10)
+        const lvl = state.outMapSkills[idx] !== undefined ? state.outMapSkills[idx] : 10;
+        if (skill.data && skill.data.length > 0) {
+          // 下标越界保护
+          const valIndex = Math.min(Math.max(lvl - 1, 0), skill.data.length - 1);
+          calcBuffStat += (skill.data[valIndex] || 0);
+        }
+      });
+    }
+
+    // ③ 训练教官加成：开启时 +80，不开不加
+    if (state.trainerInstructor === 1) {
+      calcBuffStat += 80;
+    }
+    
+    // ☀️ 太阳适用四维（只包含：站街 + outMap + 教官，不计算 Lv15 差值）
+    state.sunStatApplicable = calcBuffStat; 
+
+    // ④ Lv15 技能在 (当前等级 - 白金数量) 时的数值 - 技能在 (基准等级) 时的数值
+    if (jobData.lv15 && jobData.lv15.data) {
+      const lv15Data = jobData.lv15.data;
+      
+      // 当前真实有效等级 = 当前技能等级 - 白金数量
+      const actualLv = state.skillLv15 - state.passPlatinum15;
+      
+      // 🌟 如果没设置基准 (null)，默认以当前 skillLv15 作为基准等级 喵！
+      const baseLv = state.baselineLv15 !== null ? state.baselineLv15 : state.skillLv15;
+      
+      const curIndex = Math.min(Math.max(actualLv - 1, 0), lv15Data.length - 1);
+      const baseIndex = Math.min(Math.max(baseLv - 1, 0), lv15Data.length - 1);
+
+      const curVal = lv15Data[curIndex] || 0;
+      const baseVal = lv15Data[baseIndex] || 0;
+
+      calcBuffStat += (curVal - baseVal);
+    }
+
+    // 最终更新到 State 喵！
+    state.buffStatApplicable = calcBuffStat;
+  }
+
+  // B. 计算 Lv15 核心技能等级差值提示 (纯 UI 反馈)
+  let lv15Diff = 0;
+  if (state.baselineLv15 !== null) {
+    const jobData = JOB_SKILLS_DATA[state.currentJob] || JOB_SKILLS_DATA['ma'];
+    if (jobData.lv15 && jobData.lv15.data) {
+      const dataArr = jobData.lv15.data;
+      const baseVal = dataArr[Math.min(Math.max(state.baselineLv15 - 1, 0), dataArr.length - 1)] || 0;
+      const curVal = dataArr[Math.min(Math.max(state.skillLv15 - 1, 0), dataArr.length - 1)] || 0;
+      lv15Diff = curVal - baseVal;
+    }
+  }
+  return {
+    lv15Diff: lv15Diff
+  };
+}
+// ==========================================
+// 🎨 4. 视图渲染器 (Render) - 只读取 State / CalcResult 渲染 HTML！
+// ==========================================
+function renderUI(calcResult = {}) {
+  // A. 渲染【图内适用修正】输入框 (同步 State 的值与禁用状态)
+  const buffLvApplicableInput = document.getElementById('buffLvApplicable');
+  if (buffLvApplicableInput) {
+    buffLvApplicableInput.value = state.buffLvApplicable;
+    buffLvApplicableInput.disabled = state.isAutoCalc;
+  }
+
+  // 🌟 绘制图内适用增益量输入框 (同步自动推算出的数值) 喵！
+  const buffInGameInput = document.getElementById('buffInGame');
+  if (buffInGameInput) {
+
+    buffInGameInput.value = state.buffInGame;
+    buffInGameInput.disabled = state.isAutoCalc;
+  }
+// 🌟 渲染 BUFF 适用四维输入框 (同步推算出的最新数值与禁用状态) 喵！
+  const buffStatApplicableInput = document.getElementById('buffStatApplicable');
+  if (buffStatApplicableInput) {
+    buffStatApplicableInput.value = state.buffStatApplicable;
+    buffStatApplicableInput.disabled = state.isAutoCalc;
+  }
+  // 🌟 渲染 太阳适用四维输入框 喵！
+  const sunStatApplicableInput = document.getElementById('sunStatApplicable');
+  if (sunStatApplicableInput) {
+    sunStatApplicableInput.value = state.sunStatApplicable;
+    sunStatApplicableInput.disabled = state.isAutoCalc;
+  }
+
+  // 禁用/启用 其他图内适用输入框 喵~
+  const otherApplicableIds = ['buffStatApplicable', 'sunStatApplicable', 'buffInGame'];
+  otherApplicableIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.disabled = state.isAutoCalc;
+  });
+
+  // 渲染单选框组 (被动白金、训练教官、黄金乡) 的禁用状态
+  ['passPlatinum15', 'trainerInstructor', 'goldenLand'].forEach(name => {
+    const radios = document.querySelectorAll(`input[name="${name}"]`);
+    radios.forEach(radio => radio.disabled = !state.isAutoCalc);
+  });
+
+  // 渲染自动推算开关提示文本
+  const autoStatusText = document.getElementById('autoCalcStatusText');
+  if (autoStatusText) {
+    autoStatusText.textContent = state.isAutoCalc ? '自动推算 (开启)' : '自动推算 (关闭)';
+  }
+
+  const slotsContainer = document.getElementById('jobCustomCategorySlots');
+  if (slotsContainer) {
+    const customInputs = slotsContainer.querySelectorAll('input');
+    customInputs.forEach(input => {
+      // 开启自动推算时启用 (false)，关闭自动推算时禁用 (true) 喵！
+      input.disabled = !state.isAutoCalc;
+    });
+  }
+
+  // 渲染 Lv15 差值提示
+  const tipSpan = document.getElementById('skillLv15StatTip');
+  if (tipSpan) {
+    if (state.baselineLv15 === null || calcResult.lv15Diff === 0) {
+      tipSpan.textContent = '';
+      tipSpan.classList.remove('negative');
+    } else if (calcResult.lv15Diff > 0) {
+      tipSpan.textContent = `(+${calcResult.lv15Diff})`;
+      tipSpan.classList.remove('negative');
+    } else {
+      tipSpan.textContent = `(${calcResult.lv15Diff})`;
+      tipSpan.classList.add('negative');
+    }
+  }
+} 
+
+// ==========================================
+// 🎯 5. 专属 Handler 处理函数 (只负责修改 state 或处理 UI 动画喵！)
+// ==========================================
+
+/**
+ * 切换职业时的 Handler
+ */
+function onJobSelectChange(target) {
+  state.currentJob = target.value || 'ma';
+  state.baselineLv15 = null; // 重置基准等级
+  renderJobSkillsDOM();      // 动态渲染新职业的技能插槽
+}
+
+/**
+ * 切换“自动推算”开关时的 Handler
+ */
+function onAutoCalcSwitchChange(target) {
+  state.isAutoCalc = target.checked;
+  return false; 
+}
+
+/**
+ * 点击“设为基准”按钮时的 Handler
+ */
+function handleSetBaseline(btn) {
+  state.baselineLv15 = state.skillLv15;
+  // 此处或许可以提示用户把差值加到站街面板内
+  if (btn) {
+    btn.textContent = '✓ 已设基准';
+    btn.classList.add('applied-success');
+    setTimeout(() => {
+      btn.textContent = '✨ 设为基准';
+      btn.classList.remove('applied-success');
+    }, 1500);
+  }
+}
+
+/**
+ * 切换“暗色/浅色主题”时的 Handler
+ */
+function handleThemeToggle(btn) {
+  state.isDarkTheme = document.body.classList.toggle('dark-theme');
+  if (btn) {
+    btn.textContent = state.isDarkTheme ? '☀️ 浅色主题' : '🌙 暗色主题';
+  }
+  localStorage.setItem('theme', state.isDarkTheme ? 'dark' : 'light');
+  return false; // 🌟 切换主题不需要重新计算奶量，直接返回 false 喵！
+}
+
+/**
+ * 切换“增益量模式” (包含/不包含辟邪玉) 时的 Handler
+ */
+function onModeSwitchChange(target) {
+  state.isJadeIncluded = target.checked;
   const modeStatusText = document.getElementById('modeStatusText');
   const baseBuffPct = document.getElementById('baseBuffPct');
   const totalBuffPct = document.getElementById('totalBuffPct');
 
-  function updateModeState() {
-    if (!modeSwitch || !baseBuffPct || !totalBuffPct) return;
-    if (modeSwitch.checked) {
-      if (modeStatusText) modeStatusText.textContent = '输入包含辟邪玉 (填总数)';
-      totalBuffPct.disabled = false;
-      baseBuffPct.disabled = true;
-    } else {
-      if (modeStatusText) modeStatusText.textContent = '输入不含辟邪玉 (填基础)';
-      baseBuffPct.disabled = false;
-      totalBuffPct.disabled = true;
-    }
-  }
-
-  if (modeSwitch) {
-    modeSwitch.addEventListener('change', updateModeState);
-    updateModeState();
+  if (state.isJadeIncluded) {
+    if (modeStatusText) modeStatusText.textContent = '输入包含辟邪玉 (填总数)';
+    if (totalBuffPct) totalBuffPct.disabled = false;
+    if (baseBuffPct) baseBuffPct.disabled = true;
+  } else {
+    if (modeStatusText) modeStatusText.textContent = '输入不含辟邪玉 (填基础)';
+    if (baseBuffPct) baseBuffPct.disabled = false;
+    if (totalBuffPct) totalBuffPct.disabled = true;
   }
 }
 
-  document.addEventListener('DOMContentLoaded', () => {
-    initTheme();
-    initBuffMode();
- 
-  });
+
+
+// ==========================================
+// 🛠️ 6. 辅助 DOM 渲染 (职业技能插槽与初始化)
+// ==========================================
+
+/**
+ * 渲染不同职业的 Lv15 名称和 outMap 技能插槽
+ */
+function renderJobSkillsDOM() {
+  const jobData = JOB_SKILLS_DATA[state.currentJob] || JOB_SKILLS_DATA['ma'];
+  const lv15Label = document.getElementById('skillLv15Label');
+  const lv15Input = document.getElementById('skillLv15');
+  const platinumLabel = document.getElementById('platinumLabel');
+
+  if (jobData.lv15) {
+    const skillName = jobData.lv15.name;
+    if (lv15Label) lv15Label.textContent = `${skillName} 等级`;
+    if (lv15Input) lv15Input.max = jobData.lv15.data.length;
+    if (platinumLabel) platinumLabel.textContent = `${skillName} 白金数量`;
+  }
+
+  // 渲染动态 outMap 插槽
+  const slotsContainer = document.getElementById('jobCustomCategorySlots');
+  if (slotsContainer) {
+    slotsContainer.innerHTML = '';
+    if (jobData.outMap && Array.isArray(jobData.outMap)) {
+      jobData.outMap.forEach((skill, idx) => {
+        const formGroup = document.createElement('div');
+        formGroup.className = 'form-group';
+        formGroup.innerHTML = `
+          <label id="outMapSkill${idx}Label">${skill.name}</label>
+          <input type="number" 
+                 id="outMapSkill${idx}" 
+                 value="10" 
+                 placeholder="10" 
+                 min="1" 
+                 max="${skill.data.length}" 
+                 inputmode="numeric">
+        `;
+        slotsContainer.appendChild(formGroup);
+      });
+    }
+  }
+}
+
+/**
+ * 🚀 应用初始化总入口
+ */
+function initApp() {
+  // 1. 初始化主题
+  const savedTheme = localStorage.getItem('theme');
+  const themeBtn = document.getElementById('themeBtn');
+  if (savedTheme === 'dark') {
+    state.isDarkTheme = true;
+    document.body.classList.add('dark-theme');
+    if (themeBtn) themeBtn.textContent = '☀️ 浅色主题';
+  }
+
+  // 2. 渲染初始职业 DOM
+  renderJobSkillsDOM();
+  const modeSwitch = document.getElementById('modeSwitch');
+  if (modeSwitch) {
+    onModeSwitchChange(modeSwitch);
+  }
+
+  // 3. 启动全局统一事件监听代理 (Dispatcher)
+  initGlobalEventListeners();
+
+  // 4. 首次触发计算与视图渲染喵~！
+  dispatchAndPipeline();
+}
+
+// 页面 DOM 加载完毕后启动应用！
+document.addEventListener('DOMContentLoaded', initApp);
 </script>
 </body>
 
