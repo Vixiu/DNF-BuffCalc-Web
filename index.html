@@ -773,15 +773,20 @@
       padding-left: 24px;
     }
 
-    .result-table td.val-highlight {
-      font-weight: bold;
-      font-size: 17px;
-      color: var(--accent-green);
-    }
 
+.result-table td.val-highlight {
+  font-weight: 800;
+  font-size: 18px;
+  color: #555657f1; 
+}
+
+
+body.dark-theme .result-table td.val-highlight {
+  color: #cbd5e1; /* 暗色模式：柔和浅烟灰 */
+}
     .result-table td.rate-highlight {
-      font-weight: bold;
-      font-size: 17px;
+      font-weight: 850;
+      font-size: 18px;
       color: var(--accent-purple);
     }
 
@@ -879,6 +884,28 @@
   background: var(--btn-base-border) !important;
   color: #ffffff !important;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* 📊 结算表格内的差值提示文本样式 喵！ */
+/* 📊 结算表格内的差值提示文本样式 - 绝对垂直居中版 喵！ */
+.diff-tag {
+  display: inline-flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: bold;
+  margin-left: 6px;
+  vertical-align: baseline; /* 保持基线对齐或配合 flex 居中 */
+  line-height: 1;
+}
+
+/* 正差值：翡翠绿 (上升) */
+.diff-tag.positive {
+  color: #10b981;
+}
+
+/* 负差值：警告红 (下降) */
+.diff-tag.negative {
+  color: #ef4444;
 }
 </style>
 </head>
@@ -1199,7 +1226,7 @@
             <tr>
               <td class="skill-name">☀️ 觉醒太阳效果</td>
               <td style="color: var(--text-muted);">-</td>
-              <td class="val-highlight" id="sunStat" style="color: var(--accent-pink);">0</td>
+              <td class="val-highlight" id="sunStat">0</td>
               <td class="rate-highlight" id="sunRate">0.00%</td>
             </tr>
             <tr style="background: rgba(37, 99, 235, 0.04);">
@@ -1211,8 +1238,27 @@
           </tbody>
         </table>
       </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     </div>
 
+
+
+
+
+
+
+
+    
   </div>
 
 <script>
@@ -1303,7 +1349,36 @@ const JOB_SKILLS_DATA = {
     },
 
   }
+
 // ==========================================
+// 💾 多预设配置管理系统 (按职业隔离 + 默认预设防护 + Placeholder特效) 喵！
+// ==========================================
+
+const PRESET_STORAGE_KEY = 'dnf_buff_calc_presets_v2';
+const LAST_PRESET_KEY = 'dnf_buff_calc_last_presets_v1';
+/**
+ * 🌟 各职业【系统内置默认预设库】(不可修改/不可删除，绝对不存入 localStorage) 喵！
+ */
+const SYSTEM_DEFAULT_PRESETS = {
+  'ma': [
+    { id: 'sys_ma_1', name: '🔒 系统预设: 奶妈-毕业基准打造', isSystem: true, data: { buffStat: 10000, buffBuff: 200000, buffLv: 50, skillLv15: 10, totalBuffPct: 150 } }
+  ],
+  'ba': [
+    { id: 'sys_ba_1', name: '🔒 系统预设: 奶爸-体精基准打造', isSystem: true, data: { buffStat: 10500, buffBuff: 210000, buffLv: 50, skillLv15: 10, totalBuffPct: 150 } },
+    { id: 'sys_ba_2', name: '🔒 系统预设: 奶爸-极限太阳打造', isSystem: true, data: { buffStat: 11000, buffBuff: 220000, buffLv: 50, skillLv15: 10, totalBuffPct: 160 } }
+  ],
+  'luo': [
+    { id: 'sys_luo_1', name: '🔒 系统预设: 奶萝-毕业基准打造', isSystem: true, data: { buffStat: 10000, buffBuff: 200000, buffLv: 50, skillLv15: 10, totalBuffPct: 150 } }
+  ],
+  'gong': [
+    { id: 'sys_gong_1', name: '🔒 系统预设: 缪斯-毕业基准打造', isSystem: true, data: { buffStat: 10200, buffBuff: 205000, buffLv: 50, skillLv15: 10, totalBuffPct: 150 } }
+  ],
+  'qiang': [
+    { id: 'sys_qiang_1', name: '🔒 系统预设: 协战师-毕业基准打造', isSystem: true, data: { buffStat: 10000, buffBuff: 200000, buffLv: 50, skillLv15: 10, totalBuffPct: 150 } }
+  ]
+};
+
+  // ==========================================
 // 📦 1. 全局状态源 (State) - 唯一的真相数据源喵！
 // ==========================================
 const state = {
@@ -1367,8 +1442,492 @@ const handlerRegistry = {
   'autoCalcSwitch': onAutoCalcSwitchChange,
   'btnApplyPassive': handleSetBaseline,
   'themeBtn': handleThemeToggle,
-  'modeSwitch': onModeSwitchChange
+  'modeSwitch': onModeSwitchChange,
+  'baseBtn':handleSetBaseResult,
+  'btnSaveConfig': handleSaveConfig,
+  'btnAddConfig': handleAddNewConfig,
+  'btnDeleteConfig': handleDeleteConfig,
+  'configLoadSelect': handleSelectConfigChange
 };
+// 存储“基准奶量”数据的变量 (null 代表未设置基准)
+let baselineResults = null;
+/**
+ * 🌟 1. 最终奶量计算函数 (占位框架，固定返回三行数据列表)
+ * @returns {Array} 包含三行技能奶量的对象列表
+ */
+function calculateFinalBuff() {
+  // 💡 TODO: 此处后续填充真实的 DNF 奶量计算公式！
+  // 目前先使用占位模拟数据喵~
+  
+  // 模拟计算逻辑（后续更换为实际算法）：
+  const mockBuffAtk = Math.round(state.buffStatApplicable * 0.005);
+  const mockBuffStat = Math.round(state.buffStatApplicable * 0.8);
+  const mockBuffRate = Math.round(mockBuffStat*0.001);
+  const mockSunStat = Math.round(state.buffStatApplicable * 1.5 );
+  const mockSunRate = Math.round(mockSunStat*0.002);
+
+  const mockTotalAtk = mockBuffAtk;
+  const mockTotalStat = mockBuffStat + mockSunStat;
+  const mockTotalRate = mockBuffRate + mockSunRate;
+
+  // 🌟 固定格式输出列表 喵！
+  return [
+    {
+      key: 'buff',
+      name: '✨ Buff 效果',
+      atk: mockBuffAtk,
+      stat: mockBuffStat,
+      rate: mockBuffRate
+    },
+    {
+      key: 'sun',
+      name: '☀️ 觉醒太阳效果',
+      atk: '-', // 太阳无三攻
+      stat: mockSunStat,
+      rate: mockSunRate
+    },
+    {
+      key: 'total',
+      name: '💥 总计 (Buff + 太阳)',
+      atk: mockTotalAtk,
+      stat: mockTotalStat,
+      rate: mockTotalRate
+    }
+  ];
+}
+
+/**
+ * 🛠️ 获取所有职业“上一次选择的预设 ID 字典”
+ */
+function getLastSelectedPresets() {
+  try {
+    const raw = localStorage.getItem(LAST_PRESET_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch (e) {
+    return {};
+  }
+}
+
+/**
+ * 🛠️ 记录当前职业选中的预设 ID 到本地
+ */
+function saveLastSelectedPreset(jobKey, presetId) {
+  try {
+    const store = getLastSelectedPresets();
+    store[jobKey] = presetId;
+    localStorage.setItem(LAST_PRESET_KEY, JSON.stringify(store));
+  } catch (e) {
+    console.error('保存职业预设记忆失败:', e);
+  }
+}
+/**
+ * 🛠️ 1. 从 localStorage 读取全量“用户自定义预设字典”
+ */
+function getUserCustomPresets() {
+  try {
+    const raw = localStorage.getItem(PRESET_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch (e) {
+    console.error('读取本地预设失败:', e);
+    return {};
+  }
+}
+
+/**
+ * 🛠️ 2. 将全量“用户自定义预设字典”保存回 localStorage
+ */
+function saveUserCustomPresets(allUserStore) {
+  try {
+    localStorage.setItem(PRESET_STORAGE_KEY, JSON.stringify(allUserStore));
+  } catch (e) {
+    console.error('保存本地预设失败:', e);
+  }
+}
+
+/**
+ * 🛠️ 3. 获取【当前职业】的所有可用预设（系统默认列表 + 本地自定义列表）喵！
+ */
+function getJobPresets(jobKey) {
+  const currentJobKey = jobKey || state.currentJob || 'ma';
+
+  // A. 获取该职业的系统预设列表
+  const sysList = SYSTEM_DEFAULT_PRESETS[currentJobKey] || [
+    { id: `sys_${currentJobKey}_default`, name: '🔒 系统默认基准', isSystem: true, data: JSON.parse(JSON.stringify(state)) }
+  ];
+
+  // B. 获取该职业的用户自定义预设字典
+  const allUserStore = getUserCustomPresets();
+  const userJobPresets = allUserStore[currentJobKey] || {}; // { presetId: { id, name, isSystem: false, data } }
+
+  // C. 动态合并（系统预设排前面，绝对不写回 localStorage）
+  const mergedPresets = {};
+  sysList.forEach(item => {
+    mergedPresets[item.id] = item;
+  });
+
+  Object.keys(userJobPresets).forEach(id => {
+    mergedPresets[id] = userJobPresets[id];
+  });
+
+  return mergedPresets;
+}
+
+/**
+ * 🎨 4. 动态渲染当前职业的预设下拉框 (<select id="configLoadSelect">) 喵！
+ */
+function renderConfigSelect() {
+  const selectEl = document.getElementById('configLoadSelect');
+  if (!selectEl) return;
+
+  const presets = getJobPresets(state.currentJob);
+  const keys = Object.keys(presets);
+
+  selectEl.innerHTML = '<option value="" disabled selected>📁 读取/选择预设</option>';
+
+  keys.forEach(id => {
+    const item = presets[id];
+    const opt = document.createElement('option');
+    opt.value = item.id;
+    opt.textContent = item.name;
+    selectEl.appendChild(opt);
+  });
+}
+
+/**
+ * 🛠️ 5. 清空 DOM 输入框 value 并将 state 数值格式化写入 placeholder 喵！
+ */
+/**
+ * 🎨 全量 DOM 状态同步函数 喵！
+ * 1. 普通数字/文本输入框：清空 value，将 state 值写入 placeholder
+ * 2. 复选框/开关 (checkbox)：同步 checked 勾选状态
+ * 3. 单选框 (radio)：同步被选中项
+ */
+/**
+ * 🎨 全量 DOM 状态同步函数（含开关与单选框完整联动）喵！
+ */
+function applyStateToDOM() {
+  // 1. 修正/同步两个特例开关 (autoCalcSwitch & modeSwitch)
+  const autoCalcSwitch = document.getElementById('autoCalcSwitch');
+  if (autoCalcSwitch) {
+    autoCalcSwitch.checked = Boolean(state.isAutoCalc);
+  }
+
+  const modeSwitch = document.getElementById('modeSwitch');
+  if (modeSwitch) {
+    modeSwitch.checked = Boolean(state.isJadeIncluded);
+  }
+
+  // 2. 遍历 state 中的所有属性
+  for (const key in state) {
+    if (!state.hasOwnProperty(key)) continue;
+    const val = state[key];
+
+    // 处理普通 checkbox 开关
+    const checkboxEl = document.getElementById(key);
+    if (checkboxEl && checkboxEl.type === 'checkbox') {
+      checkboxEl.checked = Boolean(val);
+      continue;
+    }
+
+    // 处理单选框组 Segmented Control (passPlatinum15, trainerInstructor, goldenLand 等)
+    const radios = document.querySelectorAll(`input[type="radio"][name="${key}"]`);
+    if (radios.length > 0) {
+      radios.forEach(radio => {
+        radio.checked = (parseFloat(radio.value) === parseFloat(val) || radio.value === String(val));
+      });
+      continue;
+    }
+
+    // 处理普通文本/数字输入框 (清空 value，写入 placeholder)
+    const inputEl = document.getElementById(key);
+    if (inputEl && inputEl.tagName === 'INPUT' && inputEl.type !== 'radio' && inputEl.type !== 'checkbox') {
+      inputEl.placeholder = (val !== undefined && val !== null && val !== '') ? val : '0';
+      inputEl.value = ''; // 彻底清空显示的值
+    }
+  }
+
+  // 3. 处理辟邪玉 4 个百分比框 (class 数组)
+  updateClassPlaceholders('jade-pct-atk', state.jadePctAtkArr);
+  updateClassPlaceholders('jade-pct-buff-stat', state.jadePctBuffStatArr);
+  updateClassPlaceholders('jade-pct-sun-stat', state.jadePctSunStatArr);
+
+  // 4. 处理动态技能插槽 (outMap) 的 placeholder 和 value
+  if (state.outMapSkills) {
+    Object.keys(state.outMapSkills).forEach(idx => {
+      const el = document.getElementById(`outMapSkill${idx}`);
+      if (el) {
+        const val = state.outMapSkills[idx];
+        el.placeholder = (val !== undefined && val !== null) ? val : '10';
+        el.value = '';
+      }
+    });
+  }
+}
+/**
+ * 🛠️ 辅助：批量为 class 类输入框设置 placeholder 并清空 value
+ */
+function updateClassPlaceholders(className, arrData) {
+  if (!Array.isArray(arrData)) return;
+  const inputs = document.querySelectorAll(`.${className}`);
+  inputs.forEach((input, index) => {
+    if (index < inputs.length) {
+      const val = arrData[index];
+      input.placeholder = (val !== undefined && val !== null && val !== 0) ? val : '0';
+      input.value = ''; // 彻底清空 value！
+    }
+  });
+}
+
+// ==========================================
+// 🚀 预设管理核心 Handler 动作函数 喵！
+// ==========================================
+
+/**
+ * 📁 1. 读取选中的预设
+ */
+function handleSelectConfigChange(target) {
+  const selectedId = target.value;
+  if (!selectedId) return;
+
+  const presets = getJobPresets(state.currentJob);
+  const configObj = presets[selectedId];
+
+  if (configObj && configObj.data) {
+    // A. 恢复 State（保持当前职业属性不变）
+    const jobKey = state.currentJob;
+    Object.assign(state, JSON.parse(JSON.stringify(configObj.data)));
+    state.currentJob = jobKey;
+
+    // B. 保存当前选中的预设 ID 到本地记忆喵！
+    saveLastSelectedPreset(state.currentJob, selectedId);
+
+    // C. 清空 value 并同步到 DOM (包含 placeholder、开关与单选框)
+    applyStateToDOM();
+
+    // D. 触发全局流水线重新计算与渲染
+    dispatchAndPipeline();
+
+    console.log(`成功读取预设【${configObj.name}】，值已更新至 Placeholder 喵！`);
+  }
+}
+/**
+ * 💾 2. 保存当前预设 (防覆盖系统预设)
+ */
+function handleSaveConfig() {
+  const selectEl = document.getElementById('configLoadSelect');
+  const selectedId = selectEl ? selectEl.value : '';
+  const presets = getJobPresets(state.currentJob);
+
+  // A. 如果未选中任何预设或当前选中了系统默认预设 -> 拦截并引导“新增”
+  if (!selectedId || (presets[selectedId] && presets[selectedId].isSystem)) {
+    alert('系统默认预设不可以被修改覆盖喵！请点击 “➕” 按钮保存为自定义预设喵~！(๑>◡<๑)');
+    return;
+  }
+
+  // B. 覆盖更新自定义预设
+  const allUserStore = getUserCustomPresets();
+  const currentJob = state.currentJob;
+
+  if (!allUserStore[currentJob]) {
+    allUserStore[currentJob] = {};
+  }
+
+  allUserStore[currentJob][selectedId].data = JSON.parse(JSON.stringify(state));
+  saveUserCustomPresets(allUserStore);
+
+  // C. 触发清空并转存 placeholder
+  applyStateToDOM();
+  dispatchAndPipeline();
+   saveLastSelectedPreset(state.currentJob, selectedId);
+
+  alert(`成功覆盖保存到预设：【${allUserStore[currentJob][selectedId].name}】喵~！✨`);
+}
+
+
+/**
+ * ➕ 3. 新建当前职业的自定义预设
+ */
+function handleAddNewConfig() {
+  const name = prompt('请输入新预设的名称喵（例如：毕业红12打造）：', '自定义预设');
+  if (!name || !name.trim()) return;
+
+  const currentJob = state.currentJob;
+  const newId = 'preset_' + Date.now();
+  const allUserStore = getUserCustomPresets();
+
+  if (!allUserStore[currentJob]) {
+    allUserStore[currentJob] = {};
+  }
+
+  // A. 写入新预设
+  allUserStore[currentJob][newId] = {
+    id: newId,
+    name: name.trim(),
+    isSystem: false,
+    data: JSON.parse(JSON.stringify(state))
+  };
+
+  saveUserCustomPresets(allUserStore);
+
+  // B. 重新渲染下拉框并自动选中新建的项
+  renderConfigSelect();
+  const selectEl = document.getElementById('configLoadSelect');
+  if (selectEl) selectEl.value = newId;
+
+  // C. 清空 value 并转写 placeholder
+  applyStateToDOM();
+  dispatchAndPipeline();
+  // 在新建成功并选中后加上这一句：
+saveLastSelectedPreset(currentJob, newId);
+
+}
+
+/**
+ * 🗑️ 4. 删除当前选中的自定义预设 (防删除系统预设)
+ */
+function handleDeleteConfig() {
+  const selectEl = document.getElementById('configLoadSelect');
+  const selectedId = selectEl ? selectEl.value : '';
+
+  if (!selectedId) {
+    alert('请先在下拉框中选择要删除的预设喵~！');
+    return;
+  }
+
+  const presets = getJobPresets(state.currentJob);
+  const configObj = presets[selectedId];
+
+  // A. 拦截系统预设删除
+  if (!configObj || configObj.isSystem) {
+    alert('系统默认预设不可以被删除喵！');
+    return;
+  }
+
+  // B. 确认删除逻辑
+  if (confirm(`确定要删除预设【${configObj.name}】吗喵？`)) {
+    const allUserStore = getUserCustomPresets();
+    const currentJob = state.currentJob;
+
+    if (allUserStore[currentJob] && allUserStore[currentJob][selectedId]) {
+      delete allUserStore[currentJob][selectedId];
+      saveUserCustomPresets(allUserStore);
+    }
+
+    // C. 刷新下拉框
+    renderConfigSelect();
+  }
+}
+
+
+
+/**
+ * 📌 点击“将结果设为基准” Handler
+ */
+function handleSetBaseResult(btn) {
+  // 1. 重新计算当前最新的奶量数据作为基准
+  const currentResults = calculateFinalBuff();
+  
+  // 2. 转换为 key 映射的对象存储
+  baselineResults = {};
+  currentResults.forEach(item => {
+    baselineResults[item.key] = { ...item };
+  });
+
+  // 3. 按钮加上反馈样式
+  if (btn) {
+    btn.textContent = '✓ 已锁定基准';
+    btn.classList.add('applied-success');
+    setTimeout(() => {
+      btn.textContent = '📌 更新基准结果';
+      btn.classList.remove('applied-success');
+    }, 1500);
+  }
+
+  // 4. 重新触发一次 UI 渲染，刷新基准差值显示喵！
+  dispatchAndPipeline();
+  return false;
+}
+
+
+
+
+/**
+ * 🛠️ 格式化数值与基准差值显示的辅助函数
+ */
+/**
+ * 🛠️ 格式化数值与基准差值显示的辅助函数 喵！
+ */
+function formatValWithDiff(currentVal, baseVal, isRate = false) {
+  if (typeof currentVal !== 'number') return currentVal; // 处理 '-'
+
+  const formattedCur = isRate ? `${currentVal.toFixed(2)}%` : currentVal.toLocaleString();
+
+  // 没有设置基准时，只显示当前数值
+  if (!baseVal || typeof baseVal.val !== 'number') {
+    return formattedCur;
+  }
+
+  const diff = currentVal - baseVal.val;
+  if (diff === 0) return formattedCur;
+
+  // 格式化差值文本
+  const diffFormatted = isRate ? Math.abs(diff).toFixed(2) + '%' : Math.abs(diff).toLocaleString();
+  const diffSign = diff > 0 ? `+${diffFormatted}` : `-${diffFormatted}`;
+  const diffClass = diff > 0 ? 'positive' : 'negative';
+
+  // 拼接 HTML
+  return `${formattedCur} <span class="diff-tag ${diffClass}">${diffSign}</span>`;
+}
+
+
+/**
+ * 🎨 渲染最终奶量表格 (在 renderUI 底部添加此段)
+ */
+function renderFinalBuffTable(finalBuffList) {
+  if (!Array.isArray(finalBuffList)) return;
+
+  // 映射 DOM 节点 ID
+  const mapDOM = {
+    'buff': { atk: 'buffAtk', stat: 'resBuffStat', rate: 'buffRate' },
+    'sun': { atk: null, stat: 'sunStat', rate: 'sunRate' },
+    'total': { atk: 'totalAtk', stat: 'totalStat', rate: 'totalRate' }
+  };
+
+  finalBuffList.forEach(item => {
+    const doms = mapDOM[item.key];
+    if (!doms) return;
+
+    // 1. 三攻渲染
+    if (doms.atk) {
+      const el = document.getElementById(doms.atk);
+      if (el) {
+        const baseAtk = baselineResults ? { val: baselineResults[item.key].atk } : null;
+        el.innerHTML = formatValWithDiff(item.atk, baseAtk, false);
+      }
+    }
+
+    // 2. 力智渲染
+    if (doms.stat) {
+      const el = document.getElementById(doms.stat);
+      if (el) {
+        const baseStat = baselineResults ? { val: baselineResults[item.key].stat } : null;
+        el.innerHTML = formatValWithDiff(item.stat, baseStat, false);
+      }
+    }
+
+    // 3. 倍率渲染
+    if (doms.rate) {
+      const el = document.getElementById(doms.rate);
+      if (el) {
+        const baseRate = baselineResults ? { val: baselineResults[item.key].rate } : null;
+        el.innerHTML = formatValWithDiff(item.rate, baseRate, true);
+      }
+    }
+  });
+}
+
+
+
 
 /**
  * 🛠️ 通用工具：校验输入框并获取合法数值
@@ -1689,14 +2248,17 @@ if (state.isJadeIncluded) {
   }
   
   
-  
+  const finalBuffList = calculateFinalBuff();
   return {
-    lv15Diff: lv15Diff
+    lv15Diff: lv15Diff,
+    finalBuffList: finalBuffList 
   };
 }
 // ==========================================
 // 🎨 4. 视图渲染器 (Render) - 只读取 State / CalcResult 渲染 HTML！
 // ==========================================
+
+
 function renderUI(calcResult = {}) {
   // ==========================================
   // ⚡ 1. 自动推算相关控件与图内适用修正框渲染
@@ -1805,6 +2367,10 @@ function renderUI(calcResult = {}) {
       tipSpan.classList.add('negative');
     }
   }
+
+  if (calcResult && calcResult.finalBuffList) {
+  renderFinalBuffTable(calcResult.finalBuffList);
+}
 }
 // ==========================================
 // 🎯 5. 专属 Handler 处理函数 (只负责修改 state 或处理 UI 动画喵！)
@@ -1813,10 +2379,61 @@ function renderUI(calcResult = {}) {
 /**
  * 切换职业时的 Handler
  */
+/**
+ * 👔 切换职业时的 Handler (带本地记忆恢复喵！)
+ */
+/**
+ * 👔 切换职业时的 Handler (带本地记忆恢复喵！)
+ */
 function onJobSelectChange(target) {
-  state.currentJob = target.value || 'ma';
-  state.baselineLv15 = null; // 重置基准等级
-  renderJobSkillsDOM();      // 动态渲染新职业的技能插槽
+  // 1. 更新当前选中的职业 key 并保存职业记忆
+  state.currentJob = target ? target.value : 'ma';
+  state.baselineLv15 = null; // 重置 Lv15 基准等级
+  localStorage.setItem('dnf_last_selected_job', state.currentJob);
+
+  // 2. 动态渲染新职业的专属技能插槽 DOM (outMap)
+  renderJobSkillsDOM();
+
+  // 3. 重新渲染属于新职业的预设下拉框菜单
+  renderConfigSelect();
+
+  // 🌟 4. 寻找该职业上一次使用的预设 ID（找不到则默认用第一个系统预设）喵！
+  const presets = getJobPresets(state.currentJob);
+  const presetKeys = Object.keys(presets);
+  const lastPresetMap = getLastSelectedPresets();
+  
+  // 检查记忆中的 ID 是否还存在于当前预设列表中
+  let targetPresetId = lastPresetMap[state.currentJob];
+  if (!targetPresetId || !presets[targetPresetId]) {
+    targetPresetId = presetKeys[0]; // 回退到第一个默认预设
+  }
+
+  // 5. 读取对应的预设数据并全量同步 DOM
+  if (targetPresetId && presets[targetPresetId]) {
+    const targetPreset = presets[targetPresetId];
+
+    // A. 恢复 State（保持当前职业 key 不被覆盖）
+    const jobKey = state.currentJob;
+    Object.assign(state, JSON.parse(JSON.stringify(targetPreset.data)));
+    state.currentJob = jobKey;
+
+    // B. 下拉框选中对应的预设
+    const selectEl = document.getElementById('configLoadSelect');
+    if (selectEl) selectEl.value = targetPresetId;
+
+    // C. 记录当前选择的预设 ID 到本地存储
+    saveLastSelectedPreset(state.currentJob, targetPresetId);
+
+    // D. 清空输入框 value，把数值写入 placeholder，同步开关与单选框！
+    applyStateToDOM();
+  }
+
+  // 6. 运行纯计算引擎与 UI 渲染器 (直接触发刷新) 喵！
+  const calcResult = runCalculations();
+  renderUI(calcResult);
+  
+  // 🌟 返回 false 告诉 Dispatcher 不要重复处理啦！
+  return false; 
 }
 
 /**
@@ -1913,6 +2530,9 @@ function renderJobSkillsDOM() {
 /**
  * 🚀 应用初始化总入口
  */
+/**
+ * 🚀 应用初始化总入口 (全量状态恢复 + DOM 同步) 喵！
+ */
 function initApp() {
   // 1. 初始化主题
   const savedTheme = localStorage.getItem('theme');
@@ -1923,21 +2543,51 @@ function initApp() {
     if (themeBtn) themeBtn.textContent = '☀️ 浅色主题';
   }
 
-  // 2. 渲染初始职业 DOM
+  // 🌟 2. 恢复上次选择的职业（带有效性校验保底）喵！
+  const lastPresetMap = getLastSelectedPresets();
+  const savedJob = localStorage.getItem('dnf_last_selected_job');
+  if (savedJob && JOB_SKILLS_DATA[savedJob]) {
+    state.currentJob = savedJob;
+  }
+  
+  // 同步职业下拉框 DOM 选择
+  const jobSelect = document.getElementById('jobSelect');
+  if (jobSelect) jobSelect.value = state.currentJob;
+
+  // 3. 渲染初始职业专属 DOM (outMap) 与预设下拉框
   renderJobSkillsDOM();
-  const modeSwitch = document.getElementById('modeSwitch');
-  if (modeSwitch) {
-    onModeSwitchChange(modeSwitch);
+  renderConfigSelect();
+
+  // 🌟 4. 读取该职业上次记录的预设喵！
+  const presets = getJobPresets(state.currentJob);
+  const presetKeys = Object.keys(presets);
+  let targetPresetId = lastPresetMap[state.currentJob];
+  
+  if (!targetPresetId || !presets[targetPresetId]) {
+    targetPresetId = presetKeys[0]; // 回退到第一个默认预设
   }
 
-  // 3. 启动全局统一事件监听代理 (Dispatcher)
+  if (targetPresetId && presets[targetPresetId]) {
+    const jobKey = state.currentJob; // 备份当前职业 key
+    
+    // 全量恢复预设数据，并确保 currentJob 不被预设数据覆盖喵！
+    Object.assign(state, JSON.parse(JSON.stringify(presets[targetPresetId].data)));
+    state.currentJob = jobKey;
+
+    // 选中预设下拉框 DOM
+    const selectEl = document.getElementById('configLoadSelect');
+    if (selectEl) selectEl.value = targetPresetId;
+
+    // 全量同步 DOM (包含 placeholder、开关勾选状态与单选框)
+    applyStateToDOM();
+  }
+
+  // 5. 启动全局统一事件监听代理 (Dispatcher)
   initGlobalEventListeners();
 
-  // 4. 首次触发计算与视图渲染喵~！
+  // 6. 首次触发计算与视图渲染喵~！
   dispatchAndPipeline();
-}
-
-// 页面 DOM 加载完毕后启动应用！
+}// 页面 DOM 加载完毕后启动应用！
 document.addEventListener('DOMContentLoaded', initApp);
 </script>
 </body>
