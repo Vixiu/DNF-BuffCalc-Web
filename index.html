@@ -4,11 +4,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>DNF 辅助职业奶量计算器 - 主人专属喵~</title>
-  <style>
+  <title>DNF 辅助职业奶量计算器</title>
+ <style>
     /* ==========================================
-   ☀️ 1. 浅色 / 🌙 暗色 主题变量声明
-   ========================================== */
+    ☀️ 1. 浅色 / 🌙 暗色 主题变量声明
+    ========================================== */
     :root {
       --bg-color: #f0f2f5;
       --card-bg: #ffffff;
@@ -50,8 +50,8 @@
     }
 
     /* ==========================================
-   🛠️ 2. 全局重置与基础布局
-   ========================================== */
+    🛠️ 2. 全局重置与基础布局
+    ========================================== */
     * {
       box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
@@ -82,18 +82,14 @@
 
     .calculator-container {
       width: 90%;
-      /* 👈 从 96% 调到 90%，两侧留出更多呼吸空间喵~ */
       max-width: 1400px;
-      /* 👈 从 1700px 调到 1400px，电脑端两边边距更明显！ */
       background: var(--card-bg);
       border-radius: 16px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
       padding: 36px 48px;
-      /* 👈 上下 36px，左右 48px！内边距大幅增加喵！ */
       border: 1px solid var(--border-color);
       overflow: hidden;
       margin: 0 auto;
-      /* 居中对齐 */
     }
 
     .top-bar {
@@ -121,8 +117,8 @@
     }
 
     /* ==========================================
-   👔 3. 职业选择与配置栏
-   ========================================== */
+    👔 3. 职业选择与配置栏
+    ========================================== */
     .job-select-container {
       display: flex;
       align-items: center;
@@ -160,49 +156,118 @@
       cursor: pointer;
     }
 
+    /* 🔮 预设配置管理栏 (Preset Config Bar) 无边框纯净版 */
     .config-action-right {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
+      background: transparent !important;
+      padding: 0 !important;
+      border-radius: 0 !important;
+      border: none !important;
     }
 
+    /* 💾 保存按钮 */
     .btn-save-config {
-      background: rgba(37, 99, 235, 0.1);
-      border: 1px solid var(--accent-blue);
-      color: var(--accent-blue);
-      padding: 9px 16px;
-      border-radius: 8px;
-      font-size: 14px;
+      background: rgba(147, 51, 234, 0.12);
+      color: var(--accent-purple);
+      border: 1px solid var(--accent-purple);
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 13px;
       font-weight: bold;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.2s ease;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       white-space: nowrap;
     }
 
     .btn-save-config:hover {
-      background: var(--accent-blue);
+      background: var(--accent-purple);
       color: #ffffff;
+      box-shadow: 0 0 10px rgba(147, 51, 234, 0.35);
+      transform: translateY(-1px);
     }
 
-    .config-load-select {
+    .btn-save-config:active {
+      transform: translateY(1px) scale(0.97);
+    }
+
+    /* ➕ 新增按钮 & 🗑️ 删除按钮 */
+    .btn-add-config,
+    .btn-delete-config {
       background: var(--input-bg);
       border: 1px solid var(--border-color);
       color: var(--text-main);
-      padding: 9px 12px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: bold;
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      flex-shrink: 0;
+    }
+
+    .btn-add-config:hover {
+      background: rgba(22, 163, 74, 0.12);
+      border-color: var(--accent-green);
+      color: var(--accent-green);
+      box-shadow: 0 0 8px rgba(22, 163, 74, 0.25);
+      transform: translateY(-1px);
+    }
+
+    .btn-add-config:active {
+      transform: translateY(1px) scale(0.95);
+    }
+
+    .btn-delete-config:hover {
+      background: rgba(239, 68, 68, 0.12);
+      border-color: #ef4444;
+      color: #ef4444;
+      box-shadow: 0 0 8px rgba(239, 68, 68, 0.25);
+      transform: translateY(-1px);
+    }
+
+    .btn-delete-config:active {
+      transform: translateY(1px) scale(0.95);
+    }
+
+    /* 📁 下拉选择框 */
+    .config-load-select {
+      background-color: var(--input-bg) !important;
+      color: var(--text-main) !important;
+      border: 1px solid var(--border-color);
+      padding: 5px 8px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
       outline: none;
       cursor: pointer;
-      min-width: 160px;
+      min-width: 150px;
+      transition: all 0.2s ease;
+      height: 32px;
+    }
+
+    .config-load-select:hover {
+      border-color: var(--accent-purple);
+    }
+
+    .config-load-select:focus {
+      border-color: var(--accent-purple);
+      box-shadow: 0 0 0 2px rgba(147, 51, 234, 0.15);
+    }
+
+    .config-load-select option {
+      background-color: var(--card-bg) !important;
+      color: var(--text-main) !important;
+      padding: 8px;
     }
 
     /* ==========================================
-   📦 4. 面板与 Form 网格结构
-   ========================================== */
+    📦 4. 面板与 Form 网格结构
+    ========================================== */
     .inputs-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -249,7 +314,6 @@
       flex-direction: column;
       gap: 6px;
       min-width: 0;
-      /* ✨ 允许缩小自适应，防爆排版 */
     }
 
     .form-group label {
@@ -285,8 +349,8 @@
     }
 
     /* ==========================================
-   ✨ 5. 核心技能行 (1px 统一翡翠绿边框 #10b981)
-   ========================================== */
+    ✨ 5. 核心技能行 (1px 统一翡翠绿边框 #10b981)
+    ========================================== */
     .passive-input-row {
       display: flex;
       align-items: center;
@@ -354,8 +418,8 @@
     }
 
     /* ==========================================
-   ✨ 6. 胶囊单选组 (Segmented Control)
-   ========================================== */
+    ✨ 6. 胶囊单选组 (Segmented Control)
+    ========================================== */
     .segmented-control {
       display: flex;
       background: var(--input-bg);
@@ -412,9 +476,19 @@
       box-shadow: 0 2px 6px rgba(217, 119, 6, 0.3);
     }
 
+    /* 🚫 胶囊单选框禁用状态视觉反馈 */
+    .segmented-control input[type="radio"]:disabled + .segmented-btn {
+      background: var(--input-disabled-bg) !important;
+      color: var(--text-muted) !important;
+      opacity: 0.5 !important;
+      cursor: not-allowed !important;
+      pointer-events: none !important;
+      box-shadow: none !important;
+    }
+
     /* ==========================================
-   🌟 7. 分割线
-   ========================================== */
+    🌟 7. 分割线
+    ========================================== */
     .panel-divider-text {
       grid-column: span 2;
       display: flex;
@@ -452,8 +526,8 @@
     }
 
     /* ==========================================
-   🔮 8. 辟邪玉矩阵网格
-   ========================================== */
+    🔮 8. 辟邪玉矩阵网格
+    ========================================== */
     .jade-matrix-grid {
       display: grid;
       grid-template-columns: max-content 1fr;
@@ -491,7 +565,6 @@
       text-align: center;
       font-weight: bold;
       flex: 1;
-      /* ✨ 弹性铺满，不再固定 95px */
       min-width: 0;
       width: 100% !important;
       transition: border-color 0.2s ease, border-bottom-width 0.2s ease;
@@ -508,8 +581,8 @@
     }
 
     /* ==========================================
-   🧮 9. 开关与算式行
-   ========================================== */
+    🧮 9. 开关与算式行
+    ========================================== */
     .toggle-switch-container {
       display: flex;
       align-items: center;
@@ -620,8 +693,8 @@
     }
 
     /* ==========================================
-   📊 10. 结算表格
-   ========================================== */
+    📊 10. 结算表格
+    ========================================== */
     .output-box {
       background: var(--output-bg);
       border-radius: 12px;
@@ -713,8 +786,8 @@
     }
 
     /* ==========================================
-   📱 11. 手机端极致自适应 (@media)
-   ========================================== */
+    📱 11. 手机端极致自适应 (@media)
+    ========================================== */
     @media (max-width: 860px) {
       body {
         padding: 8px;
@@ -725,7 +798,6 @@
         padding: 14px;
       }
 
-      /* 切换为单列排版 */
       .inputs-grid {
         grid-template-columns: 1fr;
         gap: 16px;
@@ -733,12 +805,10 @@
 
       .form-grid {
         grid-template-columns: 1fr;
-        /* ✨ 手机端表单变单列，不会互相挤压 */
       }
 
       .panel-divider-text {
         grid-column: span 1;
-        /* 分割线在单列模式占 1 列 */
       }
 
       #jobCustomCategorySlots {
@@ -746,7 +816,6 @@
         grid-template-columns: 1fr !important;
       }
 
-      /* 辟邪玉网格改为上下垂直叠放 */
       .jade-matrix-grid {
         grid-template-columns: 1fr;
         gap: 12px;
@@ -771,16 +840,47 @@
         padding-left: 8px;
       }
     }
-    /* 🚫 胶囊单选框禁用状态视觉反馈 喵！ */
-.segmented-control input[type="radio"]:disabled + .segmented-btn {
-  background: var(--input-disabled-bg) !important;
-  color: var(--text-muted) !important;
-  opacity: 0.5 !important;
-  cursor: not-allowed !important;
-  pointer-events: none !important; /* 彻底禁止鼠标点击喵！ */
-  box-shadow: none !important;
+    /* 📌 “设为基准”按钮 - 增加立体发光与极佳的按压微缩反馈 喵！ */
+.btn-set-base {
+  background: var(--btn-base-bg);
+  border: 1px solid var(--btn-base-border);
+  color: var(--btn-base-text);
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  /* 🌟 加上平滑缩放与发光过渡 */
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
-  </style>
+
+/* 🖱️ 鼠标悬停：微微上浮 + 柔光外发光 */
+.btn-set-base:hover {
+  background: var(--btn-base-border);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.35); /* 琥珀橘色微光 */
+  transform: translateY(-1.5px);
+}
+
+/* 👆 按压/点击状态：按压微缩与下沉效果 */
+.btn-set-base:active {
+  transform: translateY(1px) scale(0.96) !important; /* 实打实的按压感！ */
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15) !important;
+  opacity: 0.9;
+}
+
+/* 🌟 已设为基准后的激活/高亮状态 (按需使用) */
+.btn-set-base.active-base {
+  background: var(--btn-base-border) !important;
+  color: #ffffff !important;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+</style>
 </head>
 
 
@@ -805,14 +905,22 @@
         </select>
       </div>
 
-      <div class="config-action-right">
-        <button class="btn-save-config" id="btnSaveConfig">💾 保存</button>
-        <select id="configLoadSelect" class="config-load-select">
-          <option value="" disabled selected>📁 读取</option>
-          <option value="config1">预设 1: 毕业打造方案</option>
-          <option value="config2">预设 2: 平民打造方案</option>
-        </select>
-      </div>
+
+   <div class="config-action-right">
+  <button class="btn-save-config" id="btnSaveConfig">💾 保存</button>
+  <button class="btn-add-config" id="btnAddConfig" title="新建预设方案">➕</button>
+  
+  <select id="configLoadSelect" class="config-load-select">
+    <option value="" disabled selected>📁 读取预设</option>
+    <option value="config1">预设 1: 毕业打造方案</option>
+    <option value="config2">预设 2: 平民打造方案</option>
+  </select>
+
+  <button class="btn-delete-config" id="btnDeleteConfig" title="删除当前选中的预设">🗑️</button>
+</div>
+
+
+
     </div>
 
     <div class="inputs-grid">
@@ -846,7 +954,7 @@
               <div class="passive-input-row">
                 <input type="number" id="skillLv15" value="10" placeholder="10" min="1" max="70" inputmode="numeric">
                 <span class="passive-stat-tip" id="skillLv15StatTip"></span>
-                <button type="button" class="btn-apply-passive" id="btnApplyPassive">✨ 设为基准</button>
+                <button type="button" class="btn-apply-passive" id="btnApplyPassive">✨ 同步等级</button>
               </div>
             </div>
 
@@ -982,13 +1090,13 @@
 
             <div class="buff-pct-item">
               <label>辟邪玉 %</label>
-              <input type="text" id="jadeBuffPctDisplay" value="0.0%" class="jade-disabled-input" disabled>
+              <input type="text" id="jadeBuffPct" value="0.0%" class="jade-disabled-input" disabled>
             </div>
 
             <span class="buff-pct-operator">=</span>
 
             <div class="buff-pct-item">
-              <label>总增益量增幅</label>
+              <label>总增益量增幅 %</label>
               <input type="number" id="totalBuffPct" value="150" inputmode="decimal">
             </div>
           </div>
@@ -996,7 +1104,7 @@
 
         <!-- 🔮 辟邪玉面板 -->
         <div class="panel">
-          <div class="panel-subtitle" style="color: var(--accent-purple);">🔮 辟邪玉属性加成</div>
+          <div class="panel-subtitle" style="color: var(--accent-purple);">🔮 辟邪玉</div>
 
           <div class="jade-matrix-grid">
             <div class="form-group">
@@ -1048,7 +1156,7 @@
 
         <!-- 📜 C模板 面板卡片 -->
         <div class="panel">
-          <div class="panel-subtitle" style="color: #ef4444;">📜 C模板 (影响倍率)</div>
+          <div class="panel-subtitle" style="color: #ef4444;">📜 C模板 (只影响倍率)</div>
           <div class="form-grid">
             <div class="form-group">
               <label>三攻</label>
@@ -1224,10 +1332,29 @@ const state = {
   buffInGame: 200000,          // 图内适用增益量
   sunLvApplicable: 40,         // 太阳适用等级
 
+  // 增益量模式与增幅 %
+  isJadeIncluded: true,       // true: 填总数, false: 填基础
+  baseBuffPct: 0,             // 基础增益量增幅 %
+  totalBuffPct: 0,            // 总增益量增幅 %
+  jadeBuffPct: 0,             // 辟邪玉折算得到的增益量增幅 %  ,实际计算会到3位 ,游戏内显示四舍五入到2位小数,不知道是否有影响, 先保留3位小数计算.
+
+  // 🔮 辟邪玉属性加成 
+  jadeBuffAtkFlat: 0,                                   // Buff 固定三攻
+  jadePctAtkArr: [0, 0, 0, 0],                         // Buff 百分比三攻 (4个框)
+  
+  jadeBuffStatFlat: 0,                                  // Buff 固定力智
+  jadePctBuffStatArr: [0, 0, 0, 0],                    // Buff 百分比力智 (4个框)
+  
+  jadeSunStatFlat: 0,                                   // 太阳 固定力智
+  jadePctSunStatArr: [0, 0, 0, 0],                     // 太阳 百分比力智 (4个框)
+
   // 5. C 模板
   cAtk: 3000,                  // C 模板三攻
   cStat: 5000                  // C 模板力智
 };
+
+
+
 // ==========================================
 // 🚀 2. 中央事件分发中心 (Dispatcher)
 // ==========================================
@@ -1305,7 +1432,21 @@ function dispatchAndPipeline(key, target, event) {
       shouldCalc = false;
     }
   } 
-  // 🌟 2. 通用回退：自动更新 state 喵！
+  // 🌟 2. 辟邪玉百分比 class 节点识别（4个框打包成数组）喵！
+  else if (target && target.classList && (
+    target.classList.contains('jade-pct-atk') ||
+    target.classList.contains('jade-pct-buff-stat') ||
+    target.classList.contains('jade-pct-sun-stat')
+  )) {
+    if (target.classList.contains('jade-pct-atk')) {
+      updateJadeArray('jade-pct-atk', 'jadePctAtkArr');
+    } else if (target.classList.contains('jade-pct-buff-stat')) {
+      updateJadeArray('jade-pct-buff-stat', 'jadePctBuffStatArr');
+    } else if (target.classList.contains('jade-pct-sun-stat')) {
+      updateJadeArray('jade-pct-sun-stat', 'jadePctSunStatArr');
+    }
+  }
+  // 🌟 3. 通用回退：自动更新 state 喵！
   else if (key) {
     // A. 如果是动态生成的 outMap 技能插槽 (例如 outMapSkill0)
     if (key.startsWith('outMapSkill')) {
@@ -1314,6 +1455,7 @@ function dispatchAndPipeline(key, target, event) {
         state.outMapSkills[idx] = getValidInputValue(target);
       }
     } 
+    
     // B. 如果是 State 中定义的普通属性
     else if (state.hasOwnProperty(key)) {
       if (target.type === 'checkbox') {
@@ -1325,17 +1467,33 @@ function dispatchAndPipeline(key, target, event) {
       }
     }
   }
-  // 3. 运行纯计算引擎 (根据 shouldCalc 判断)
+
+  // 4. 运行纯计算引擎 (根据 shouldCalc 判断)
   let calcResult = {};
   if (shouldCalc && typeof runCalculations === 'function') {
     calcResult = runCalculations();
   }
 
-  // 4. 运行 UI 渲染器
+  // 5. 运行 UI 渲染器
   if (typeof renderUI === 'function') {
     renderUI(calcResult);
   }
 }
+
+/**
+ * 🛠️ 辅助函数：将同一 class 的 4 个输入框数值打包收集到 state 数组中 喵！
+ */
+function updateJadeArray(className, stateArrayKey) {
+  const inputs = document.querySelectorAll(`.${className}`);
+  const arr = [0, 0, 0, 0];
+  inputs.forEach((input, index) => {
+    if (index < 4) {
+      arr[index] = getValidInputValue(input);
+    }
+  });
+  state[stateArrayKey] = arr;
+}
+
 /**
  * 全局统一监听入口：只在容器上绑定这 3 个代理事件！
  */
@@ -1474,6 +1632,49 @@ function runCalculations() {
     // 最终更新到 State 喵！
     state.buffStatApplicable = calcBuffStat;
   }
+  // 在 runCalculations() 内部加入：
+
+// ==========================================
+// 🔮 辟邪玉折算与增益量增幅 % 推算 喵！
+// ==========================================
+
+// 1. 数组求和辅助逻辑
+const sumArr = arr => (Array.isArray(arr) ? arr.reduce((acc, cur) => acc + (parseFloat(cur) || 0), 0) : 0);
+
+// 2. 读取固定值与数组累加和
+const flatAtkVal       = state.jadeBuffAtkFlat || 0;
+const pctAtkTotal      = sumArr(state.jadePctAtkArr);
+
+const flatBuffStatVal  = state.jadeBuffStatFlat || 0;
+const pctBuffStatTotal = sumArr(state.jadePctBuffStatArr);
+
+const flatSunStatVal   = state.jadeSunStatFlat || 0;
+const pctSunStatTotal  = sumArr(state.jadePctSunStatArr);
+
+// 根据换算公式计算辟邪玉折算出来的总增益量增幅 %
+// 折算公式：
+// - 1固定三攻 = 0.5%   | 0.1%三攻 = 0.5% (1%三攻 = 5%)
+// - 1固定力智 = 0.1%   | 0.1%力智 = 0.5% (1%力智 = 5%)
+// - 1固定太阳 = 0.025% | 0.1%太阳 = 0.5% (1%太阳 = 5%)
+state.jadeBuffPct = 
+  (flatAtkVal * 0.5) +
+  (pctAtkTotal * 5.0) +
+  (flatBuffStatVal * 0.1) +
+  (pctBuffStatTotal * 5.0) +
+  (flatSunStatVal * 0.025) +
+  (pctSunStatTotal * 5.0);
+
+// 保留 3 位小数，避免浮点数精度误差喵~
+state.jadeBuffPct = Math.round(state.jadeBuffPct * 1000) / 1000;
+
+// 4. 根据当前模式双向正推 / 反推
+if (state.isJadeIncluded) {
+  // 填总数模式：通过 [总数] 反推 [基础]
+  state.baseBuffPct = Math.round((state.totalBuffPct - state.jadeBuffPct) * 1000) / 1000;
+} else {
+  // 填基础模式：通过 [基础] 正推 [总数]
+  state.totalBuffPct = Math.round((state.baseBuffPct + state.jadeBuffPct) * 1000) / 1000;
+}
 
   // B. 计算 Lv15 核心技能等级差值提示 (纯 UI 反馈)
   let lv15Diff = 0;
@@ -1486,6 +1687,9 @@ function runCalculations() {
       lv15Diff = curVal - baseVal;
     }
   }
+  
+  
+  
   return {
     lv15Diff: lv15Diff
   };
@@ -1494,64 +1698,102 @@ function runCalculations() {
 // 🎨 4. 视图渲染器 (Render) - 只读取 State / CalcResult 渲染 HTML！
 // ==========================================
 function renderUI(calcResult = {}) {
-  // A. 渲染【图内适用修正】输入框 (同步 State 的值与禁用状态)
+  // ==========================================
+  // ⚡ 1. 自动推算相关控件与图内适用修正框渲染
+  // ==========================================
+
+  // A. 图内适用 Buff 等级
   const buffLvApplicableInput = document.getElementById('buffLvApplicable');
   if (buffLvApplicableInput) {
     buffLvApplicableInput.value = state.buffLvApplicable;
     buffLvApplicableInput.disabled = state.isAutoCalc;
   }
 
-  // 🌟 绘制图内适用增益量输入框 (同步自动推算出的数值) 喵！
+  // B. 图内适用增益量
   const buffInGameInput = document.getElementById('buffInGame');
   if (buffInGameInput) {
-
     buffInGameInput.value = state.buffInGame;
     buffInGameInput.disabled = state.isAutoCalc;
   }
-// 🌟 渲染 BUFF 适用四维输入框 (同步推算出的最新数值与禁用状态) 喵！
+
+  // C. BUFF 适用四维
   const buffStatApplicableInput = document.getElementById('buffStatApplicable');
   if (buffStatApplicableInput) {
     buffStatApplicableInput.value = state.buffStatApplicable;
     buffStatApplicableInput.disabled = state.isAutoCalc;
   }
-  // 🌟 渲染 太阳适用四维输入框 喵！
+
+  // D. 太阳适用四维
   const sunStatApplicableInput = document.getElementById('sunStatApplicable');
   if (sunStatApplicableInput) {
     sunStatApplicableInput.value = state.sunStatApplicable;
     sunStatApplicableInput.disabled = state.isAutoCalc;
   }
 
-  // 禁用/启用 其他图内适用输入框 喵~
-  const otherApplicableIds = ['buffStatApplicable', 'sunStatApplicable', 'buffInGame'];
-  otherApplicableIds.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.disabled = state.isAutoCalc;
-  });
-
-  // 渲染单选框组 (被动白金、训练教官、黄金乡) 的禁用状态
+  // E. 单选框组 (被动白金、训练教官、黄金乡)：开启自动推算时才启用 (false) 喵！
   ['passPlatinum15', 'trainerInstructor', 'goldenLand'].forEach(name => {
     const radios = document.querySelectorAll(`input[name="${name}"]`);
     radios.forEach(radio => radio.disabled = !state.isAutoCalc);
   });
 
-  // 渲染自动推算开关提示文本
+  // F. 动态技能插槽 (outMap)：开启自动推算时才启用 喵！
+  const slotsContainer = document.getElementById('jobCustomCategorySlots');
+  if (slotsContainer) {
+    const customInputs = slotsContainer.querySelectorAll('input');
+    customInputs.forEach(input => {
+      input.disabled = !state.isAutoCalc;
+    });
+  }
+
+  // G. 自动推算开关提示文本
   const autoStatusText = document.getElementById('autoCalcStatusText');
   if (autoStatusText) {
     autoStatusText.textContent = state.isAutoCalc ? '自动推算 (开启)' : '自动推算 (关闭)';
   }
 
-  const slotsContainer = document.getElementById('jobCustomCategorySlots');
-  if (slotsContainer) {
-    const customInputs = slotsContainer.querySelectorAll('input');
-    customInputs.forEach(input => {
-      // 开启自动推算时启用 (false)，关闭自动推算时禁用 (true) 喵！
-      input.disabled = !state.isAutoCalc;
-    });
+  // ==========================================
+  // 🔮 2. 辟邪玉折算% 与 增益量增幅% 渲染
+  // ==========================================
+
+  // A. 辟邪玉折算出的增益量增幅 % 文本/输入框显示
+  const jadeBuffPctEl = document.getElementById('jadeBuffPct');
+  if (jadeBuffPctEl) {
+    if (jadeBuffPctEl.tagName === 'INPUT') {
+      jadeBuffPctEl.value = state.jadeBuffPct;
+    } else {
+      jadeBuffPctEl.textContent = `${state.jadeBuffPct}%`;
+    }
   }
 
-  // 渲染 Lv15 差值提示
+  // B. 增益量增幅模式提示文本
+  const modeStatusText = document.getElementById('modeStatusText');
+  if (modeStatusText) {
+    modeStatusText.textContent = state.isJadeIncluded 
+      ? '输入包含辟邪玉 (填总数)' 
+      : '输入不含辟邪玉 (填基础)';
+  }
+
+  // C. 基础增益量增幅 % 输入框 (baseBuffPct)
+  const baseBuffPctInput = document.getElementById('baseBuffPct');
+  if (baseBuffPctInput) {
+    baseBuffPctInput.value = state.baseBuffPct;
+    // 当开关为“填总数”模式 (isJadeIncluded == true) 时，禁用基础输入框喵！
+    baseBuffPctInput.disabled = state.isJadeIncluded;
+  }
+
+  // D. 总增益量增幅 % 输入框 (totalBuffPct)
+  const totalBuffPctInput = document.getElementById('totalBuffPct');
+  if (totalBuffPctInput) {
+    totalBuffPctInput.value = state.totalBuffPct;
+    // 当开关为“填基础”模式 (isJadeIncluded == false) 时，禁用总数输入框喵！
+    totalBuffPctInput.disabled = !state.isJadeIncluded;
+  }
+
+  // ==========================================
+  // 📊 3. Lv15 差值提示渲染
+  // ==========================================
   const tipSpan = document.getElementById('skillLv15StatTip');
-  if (tipSpan) {
+  if (tipSpan && calcResult && calcResult.lv15Diff !== undefined && calcResult.lv15Diff !== null) {
     if (state.baselineLv15 === null || calcResult.lv15Diff === 0) {
       tipSpan.textContent = '';
       tipSpan.classList.remove('negative');
@@ -1563,8 +1805,7 @@ function renderUI(calcResult = {}) {
       tipSpan.classList.add('negative');
     }
   }
-} 
-
+}
 // ==========================================
 // 🎯 5. 专属 Handler 处理函数 (只负责修改 state 或处理 UI 动画喵！)
 // ==========================================
@@ -1617,21 +1858,10 @@ function handleThemeToggle(btn) {
 /**
  * 切换“增益量模式” (包含/不包含辟邪玉) 时的 Handler
  */
+
 function onModeSwitchChange(target) {
   state.isJadeIncluded = target.checked;
-  const modeStatusText = document.getElementById('modeStatusText');
-  const baseBuffPct = document.getElementById('baseBuffPct');
-  const totalBuffPct = document.getElementById('totalBuffPct');
-
-  if (state.isJadeIncluded) {
-    if (modeStatusText) modeStatusText.textContent = '输入包含辟邪玉 (填总数)';
-    if (totalBuffPct) totalBuffPct.disabled = false;
-    if (baseBuffPct) baseBuffPct.disabled = true;
-  } else {
-    if (modeStatusText) modeStatusText.textContent = '输入不含辟邪玉 (填基础)';
-    if (baseBuffPct) baseBuffPct.disabled = false;
-    if (totalBuffPct) totalBuffPct.disabled = true;
-  }
+  return false; 
 }
 
 
