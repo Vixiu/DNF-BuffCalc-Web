@@ -768,14 +768,15 @@
     }
 
     .result-table td.skill-name {
-      font-weight: bold;
+      font-weight: 850;
       text-align: center;
       padding-left: 24px;
+      font-size: 17px;
     }
 
 
     .result-table td.val-highlight {
-      font-weight: 800;
+      font-weight: 750;
       font-size: 18px;
       color: #555657f1;
     }
@@ -895,42 +896,54 @@
 
     /* 📊 结算表格内的差值提示文本样式 - 绝对垂直居中版 喵！ */
  /* ==========================================
-    📊 表格精致美化重构 (清爽统一版) 喵！
+    📊 7 列原生表格美化样式 (第一列增加右侧间距版) 喵！
     ========================================== */
+    .result-table {
+      table-layout: auto;
+    }
+
     .result-table th,
     .result-table td {
-      padding: 14px 20px;
+      padding: 12px 6px;
       font-size: 15px;
       border-bottom: 1px solid var(--border-color);
       color: var(--text-main);
       font-weight: 500;
-      white-space: nowrap; /* 防止换行挤压 */
-      text-align: left !important; /* 🌟 统一所有列左对齐 喵！ */
+      white-space: nowrap;
+      text-align: left !important;
     }
 
-    /* 技能列与数值列 padding 调整 */
+    /* 🌟 第一列：技能名称列（加宽右侧 padding-right 喵！） */
     .result-table th:first-child,
     .result-table td.skill-name {
-      padding-left: 24px !important;
-      font-weight: bold;
+      padding-left: 20px !important;
+      padding-right: 48px !important; /* 👈 这里增加了右侧间距喵！ */
+      width: 220px;
     }
 
+    /* 数值列：宽度强制收缩至刚好包裹数字 */
     .result-table td.val-highlight,
     .result-table td.rate-highlight {
-      padding-left: 20px !important;
+      width: 1%; 
+      padding-right: 2px !important;
+      padding-left: 12px !important;
     }
 
-    /* 🏷️ 差值标签精致胶囊化 (Diff Tag Badge) */
+    /* 差值列：微调左侧间距 6px，右侧留出拉开下一组属性的间距 */
+    .result-table td.diff-col {
+      padding-left: 6px !important;
+      padding-right: 32px !important;
+    }
+
+    /* 🏷️ 差值标签精致胶囊 */
     .diff-tag {
       display: inline-flex;
       align-items: center;
       font-size: 12px;
       font-weight: 700;
-      margin-left: 8px;
       padding: 2px 6px;
       border-radius: 4px;
       line-height: 1.2;
-      vertical-align: middle;
     }
 
     /* 正差值：翡翠绿微光胶囊 */
@@ -950,7 +963,6 @@
 
   </style>
 </head>
-
 
 
 <body>
@@ -1249,27 +1261,26 @@
 
     <!-- 下层：最终奶量结算输出 -->
     <div class="output-box">
-      <div class="output-header">
-        <h3>📊 最终奶量</h3>
-        <button id="baseBtn" class="btn-set-base">📌 将结果设为基准</button>
-      </div>
+  <div class="output-header">
+    <h3>📊 最终奶量</h3>
+    <button id="baseBtn" class="btn-set-base">📌 将结果设为基准</button>
+  </div>
 
-      <div class="result-table-wrapper">
-        <table class="result-table">
-          <thead>
-            <tr>
-              <th>技能</th>
-              <th>三攻</th>
-              <th>力智</th>
-              <th>倍率</th>
-            </tr>
-          </thead>
-          <!-- 🌟 只需要加上 id="finalBuffTbody"，把动态行交给 JS 渲染喵！ -->
-          <tbody id="finalBuffTbody">
-          </tbody>
-        </table>
-      </div>
-    </div>
+  <div class="result-table-wrapper">
+    <table class="result-table">
+      <thead>
+        <tr>
+          <th>技能</th>
+          <th colspan="2">三攻</th>
+          <th colspan="2">力智</th>
+          <th colspan="2">倍率</th>
+        </tr>
+      </thead>
+      <tbody id="finalBuffTbody">
+      </tbody>
+    </table>
+  </div>
+</div>
 
   </div>
 
@@ -1429,20 +1440,19 @@
     const LAST_PRESET_KEY = 'dnf_buff_calc_last_presets_v1';
     const SYSTEM_DEFAULT_PRESETS = {
       'ma': [
-        { id: 'sys_ma_1', name: '🔒 红12毕业打造(缺少数据)', isSystem: true, data: { buffStat: 10000, buffBuff: 200000, buffLv: 50, skillLv15: 10, totalBuffPct: 150 } }
+        { id: 'sys_ma_1', name: '🔒 红12毕业打造(占位)', isSystem: true, data: { buffStat: 10000, buffBuff: 200000, buffLv: 50, skillLv15: 10, totalBuffPct: 150 } }
       ],
       'ba': [
-        { id: 'sys_ba_1', name: '🔒 红12毕业打造(缺少数据)', isSystem: true, data: { buffStat: 10500, buffBuff: 210000, buffLv: 50, skillLv15: 10, totalBuffPct: 150 } },
-        { id: 'sys_ba_2', name: '🔒 红12毕业打造(缺少数据)', isSystem: true, data: { buffStat: 11000, buffBuff: 220000, buffLv: 50, skillLv15: 10, totalBuffPct: 160 } }
+        { id: 'sys_ba_1', name: '🔒 红12毕业打造(占位)', isSystem: true, data: { buffStat: 10500, buffBuff: 210000, buffLv: 50, skillLv15: 10, totalBuffPct: 150 } },
       ],
       'luo': [
-        { id: 'sys_luo_1', name: '🔒 红12毕业打造(缺少数据)', isSystem: true, data: { buffStat: 10000, buffBuff: 200000, buffLv: 50, skillLv15: 10, totalBuffPct: 150 } }
+        { id: 'sys_luo_1', name: '🔒 红12毕业打造(占位)', isSystem: true, data: { buffStat: 10000, buffBuff: 200000, buffLv: 50, skillLv15: 10, totalBuffPct: 150 } }
       ],
       'gong': [
-        { id: 'sys_gong_1', name: '🔒 红12毕业打造(缺少数据)', isSystem: true, data: { buffStat: 10200, buffBuff: 205000, buffLv: 50, skillLv15: 10, totalBuffPct: 150 } }
+        { id: 'sys_gong_1', name: '🔒 红12毕业打造(占位)', isSystem: true, data: { buffStat: 10200, buffBuff: 205000, buffLv: 50, skillLv15: 10, totalBuffPct: 150 } }
       ],
       'qiang': [
-        { id: 'sys_qiang_1', name: '🔒 红12毕业打造(缺少数据)', isSystem: true, data: { buffStat: 10000, buffBuff: 200000, buffLv: 50, skillLv15: 10, totalBuffPct: 150 } }
+        { id: 'sys_qiang_1', name: '🔒 红12毕业打造(占位)', isSystem: true, data: { buffStat: 10000, buffBuff: 200000, buffLv: 50, skillLv15: 10, totalBuffPct: 150 } }
       ]
     };
 
@@ -1602,7 +1612,7 @@
       // 3. 核心算一觉(太阳)与 Buff 基础数值 (站街 vs 图内) 喵！
       const awk1 = calcAwaken(state.sunStatApplicable, state.firstAwaken, inMapTotalBuff);
 
-      const awk3 = awk1 * (1.08 + state.thirdAwaken * 0.01);
+      const awk3 = Math.floor(awk1 * (1.08 + state.thirdAwaken * 0.01));
 
       const outMapBuff = calcBuff(state.buffLv, state.buffStat, outMapTotalBuff, config.coeff);
       const inMapBuff = calcBuff(state.buffLvApplicable, state.buffStatApplicable, inMapTotalBuff, config.coeff);
@@ -2075,78 +2085,77 @@
     }
 
 
+/**
+ * 🌟 格式化当前纯数值 (用于基础列)
+ */
+function formatValOnly(val, isRate = false) {
+  if (typeof val !== 'number' || isNaN(val)) {
+    return `<span style="color: var(--text-muted);">-</span>`;
+  }
+  return isRate ? `${val.toFixed(2)}%` : val.toLocaleString();
+}
 
+/**
+ * 🌟 计算并格式化差值胶囊 (单独用于差值列)
+ */
+function formatDiffOnly(currentVal, baseVal, isRate = false) {
+  if (typeof currentVal !== 'number' || typeof baseVal !== 'number' || isNaN(currentVal) || isNaN(baseVal)) {
+    return '';
+  }
 
-    /**
-   * 🌟 纯数字/'-' 结构专用的 formatValWithDiff 喵！
-   * @param {number|string} currentVal 当前数值 (数字 或 '-')
-   * @param {number|string|null|undefined} baseVal 基准数值 (数字 或 '-' 或 null)
-   * @param {boolean} isRate 是否为倍率列
-   */
-    function formatValWithDiff(currentVal, baseVal, isRate = false) {
-      // 1. 如果当前值不是数字（即属于 '-' 或无效值），直接返回 '-' 喵！
-      if (typeof currentVal !== 'number') {
-        return `<span style="color: var(--text-muted);">-</span>`;
-      }
+  const diff = currentVal - baseVal;
+  if (diff === 0) return ''; // 差值为 0 不显示胶囊喵
 
-      // 2. 格式化当前数值（加千分位或百分比喵）
-      const formattedCur = isRate ? `${currentVal.toFixed(2)}%` : currentVal.toLocaleString();
+  const diffFormatted = isRate ? Math.abs(diff).toFixed(2) + '%' : Math.abs(diff).toLocaleString();
+  const diffSign = diff > 0 ? `+${diffFormatted}` : `-${diffFormatted}`;
+  const diffClass = diff > 0 ? 'positive' : 'negative';
 
-      // 3. 如果没有基准值、或者基准值也是 '-'，只显示当前数值喵！
-      if (typeof baseVal !== 'number') {
-        return formattedCur;
-      }
+  return `<span class="diff-tag ${diffClass}">${diffSign}</span>`;
+}
 
-      // 4. 计算差值 (当前 - 基准)
-      const diff = currentVal - baseVal;
+/**
+ * 🎨 7 列模式下渲染表格主体 喵！
+ */
+function renderFinalBuffTable(finalBuffList) {
+  const tbody = document.getElementById('finalBuffTbody');
+  if (!tbody || !Array.isArray(finalBuffList)) return;
 
-      // 差值为 0，不显示标签喵！
-      if (diff === 0) {
-        return formattedCur;
-      }
+  tbody.innerHTML = '';
 
-      // 5. 格式化差值文本与增减样式 喵！
-      const diffFormatted = isRate ? Math.abs(diff).toFixed(2) + '%' : Math.abs(diff).toLocaleString();
-      const diffSign = diff > 0 ? `+${diffFormatted}` : `-${diffFormatted}`;
-      const diffClass = diff > 0 ? 'positive' : 'negative';
+  finalBuffList.forEach(item => {
+    const tr = document.createElement('tr');
+    const itemKey = item.key;
+    const baseItem = baselineResults ? baselineResults[itemKey] : null;
 
-      return `${formattedCur} <span class="diff-tag ${diffClass}">${diffSign}</span>`;
-    }
+    // 1. 三攻列与差值列
+    const atkValHTML  = formatValOnly(item.atk, false);
+    const atkDiffHTML = formatDiffOnly(item.atk, baseItem ? baseItem.atk : null, false);
 
+    // 2. 力智列与差值列
+    const statValHTML  = formatValOnly(item.stat, false);
+    const statDiffHTML = formatDiffOnly(item.stat, baseItem ? baseItem.stat : null, false);
 
-    /**
-    * 🎨 动态渲染最终奶量表格 (完全保留原本 4 个 td 的 Class 样式) 喵！
-    */
+    // 3. 倍率列与差值列
+    const rateValHTML  = formatValOnly(item.rate, true);
+    const rateDiffHTML = formatDiffOnly(item.rate, baseItem ? baseItem.rate : null, true);
 
-    function renderFinalBuffTable(finalBuffList) {
-      const tbody = document.getElementById('finalBuffTbody');
-      if (!tbody || !Array.isArray(finalBuffList)) return;
-
-      tbody.innerHTML = '';
-
-      finalBuffList.forEach(item => {
-        const tr = document.createElement('tr');
-        const itemKey = item.key;
-
-
-        // 取对应的基准数据对象 喵！
-        const baseItem = baselineResults ? baselineResults[itemKey] : null;
-
-        // 直接传入当前值和基准值（自动处理 '-' 和数字 comparison）
-        const atkHTML = formatValWithDiff(item.atk, baseItem ? baseItem.atk : null, false);
-        const statHTML = formatValWithDiff(item.stat, baseItem ? baseItem.stat : null, false);
-        const rateHTML = formatValWithDiff(item.rate, baseItem ? baseItem.rate : null, true);
-
-        tr.innerHTML = `
-      <td class="skill-name" ${itemKey === 'total' ? 'style="color: var(--accent-blue);"' : ''}>${item.name}</td>
-      <td class="val-highlight">${atkHTML}</td>
-      <td class="val-highlight">${statHTML}</td>
-      <td class="rate-highlight" ${itemKey === 'total' ? 'style="font-size: 18px;"' : ''}>${rateHTML}</td>
+    tr.innerHTML = `
+      <td class="skill-name">${item.name}</td>
+      <td class="val-highlight">${atkValHTML}</td>
+      <td class="diff-col">${atkDiffHTML}</td>
+      <td class="val-highlight">${statValHTML}</td>
+      <td class="diff-col">${statDiffHTML}</td>
+      <td class="rate-highlight">${rateValHTML}</td>
+      <td class="diff-col">${rateDiffHTML}</td>
     `;
 
-        tbody.appendChild(tr);
-      });
-    }
+    tbody.appendChild(tr);
+  });
+}
+
+    
+
+
     /**
      * 🛠️ 通用工具：校验输入框并获取合法数值
      * @param {HTMLInputElement} input - 当前触发事件的输入框 DOM 节点
@@ -2826,7 +2835,6 @@
     document.addEventListener('DOMContentLoaded', initApp);
   </script>
 </body>
-
 
 
 </html>
