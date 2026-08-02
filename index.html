@@ -895,7 +895,7 @@
 
 
     /* 📊 结算表格内的差值提示文本样式 - 绝对垂直居中版 喵！ */
- /* ==========================================
+    /* ==========================================
     📊 7 列原生表格美化样式 (第一列增加右侧间距版) 喵！
     ========================================== */
     .result-table {
@@ -917,14 +917,15 @@
     .result-table th:first-child,
     .result-table td.skill-name {
       padding-left: 20px !important;
-      padding-right: 48px !important; /* 👈 这里增加了右侧间距喵！ */
+      padding-right: 48px !important;
+      /* 👈 这里增加了右侧间距喵！ */
       width: 220px;
     }
 
     /* 数值列：宽度强制收缩至刚好包裹数字 */
     .result-table td.val-highlight,
     .result-table td.rate-highlight {
-      width: 1%; 
+      width: 1%;
       padding-right: 2px !important;
       padding-left: 12px !important;
     }
@@ -959,8 +960,6 @@
       background: rgba(239, 68, 68, 0.12);
       border: 1px solid rgba(239, 68, 68, 0.25);
     }
-
-
   </style>
 </head>
 
@@ -1015,7 +1014,7 @@
           <div class="form-grid">
             <div class="form-group">
               <label>站街四维</label>
-              <input type="number" id="buffStat" value="10000" inputmode="numeric" placeholder="10000">
+              <input type="text" id="buffStat" value="10000" inputmode="numeric" placeholder="10000">
             </div>
 
             <div class="form-group">
@@ -1261,26 +1260,26 @@
 
     <!-- 下层：最终奶量结算输出 -->
     <div class="output-box">
-  <div class="output-header">
-    <h3>📊 最终奶量</h3>
-    <button id="baseBtn" class="btn-set-base">📌 将结果设为基准</button>
-  </div>
+      <div class="output-header">
+        <h3>📊 最终奶量</h3>
+        <button id="baseBtn" class="btn-set-base">📌 将结果设为基准</button>
+      </div>
 
-  <div class="result-table-wrapper">
-    <table class="result-table">
-      <thead>
-        <tr>
-          <th>技能</th>
-          <th colspan="2">三攻</th>
-          <th colspan="2">力智</th>
-          <th colspan="2">倍率</th>
-        </tr>
-      </thead>
-      <tbody id="finalBuffTbody">
-      </tbody>
-    </table>
-  </div>
-</div>
+      <div class="result-table-wrapper">
+        <table class="result-table">
+          <thead>
+            <tr>
+              <th>技能</th>
+              <th colspan="2">三攻</th>
+              <th colspan="2">力智</th>
+              <th colspan="2">倍率</th>
+            </tr>
+          </thead>
+          <tbody id="finalBuffTbody">
+          </tbody>
+        </table>
+      </div>
+    </div>
 
   </div>
 
@@ -1376,9 +1375,7 @@
       },
 
     }
-    /**
- * 🌟 极致精简版 JOB_CONFIG (单字段控制参与计算+动态命名喵！)
- */
+
 
     // 专门负责奶量数值计算公式 / 职业乘区系数 / 最终表格输出结构。
     const JOB_CONFIG = {
@@ -1393,7 +1390,7 @@
         ]
       },
       'luo': {
-        coeff: 1.07127,
+        coeff: 0.97652,
         dmgInc: 1.141,
         buffName: '禁忌诅咒',
         awk1Name: '开幕！人偶剧场',
@@ -1414,7 +1411,7 @@
         ]
       },
       'ba': {
-        coeff: 1.01603,
+        coeff: 1.01881,
         dmgInc: 1.141,
         buffName: '荣誉祝福',
         awk1Name: '天启之珠',
@@ -1545,13 +1542,13 @@
      * @returns {{ lizhi: number, sangong: number }} 包含【BUFF力智】与【BUFF三攻】的对象
      */
     function calcBuff(L, S, B, a = 1.01603) {
-      // 计算通用乘区倍率（通分项：2993 * 4800 = 14,366,400）
+      // 通用乘区倍率（通分项：2993 * 4800 = 14,366,400）
       const K = a * (S + 2993) * (B + 9600) / 14366400;
 
       return {
         // 利用按位或运算符 0 | val 实现快速向下取整 (Floor)
-        stat: 0 | (11 * L + 150) * K,     // 计算 BUFF 力智
-        atk: 0 | (1.8 * L + 36) * K   // 计算 BUFF 三攻
+        stat: 0 | (150 + 11 * L) * K,  // BUFF 力智
+        atk: 0 | (36 + 1.8 * L) * K    // BUFF 三攻
       };
     }
 
@@ -1605,9 +1602,9 @@
       const config = JOB_CONFIG[currentJob] || JOB_CONFIG['ma'];
 
       // 2. 算百分比参数与总增益量 喵！
-      const totalBuffPctDec = (state.totalBuffPct || 0) / 100;
-      const outMapTotalBuff = Math.floor((state.buffBuff || 0) * (1 + totalBuffPctDec));
-      const inMapTotalBuff = Math.floor((state.buffInGame || 0) * (1 + totalBuffPctDec));
+      const rate = 1 + (state.totalBuffPct || 0) / 100;
+      const outMapTotalBuff = Math.floor((state.buffBuff || 0) * rate);
+      const inMapTotalBuff = Math.floor((state.buffInGame || 0) * rate);
 
       // 3. 核心算一觉(太阳)与 Buff 基础数值 (站街 vs 图内) 喵！
       const awk1 = calcAwaken(state.sunStatApplicable, state.firstAwaken, inMapTotalBuff);
@@ -1872,7 +1869,69 @@
         }
       });
     }
+    /**
+ * 🌟 智能算术解析函数（支持直接输入算式 123456+567 或相对增量 +567）
+ * @param {string} str - 输入框原始字符串
+ * @param {number} baseVal - 输入框的 Placeholder/当前基准值
+ * @returns {number} 结算后的纯数字
+ */
+  /**
+ * 🌟 智能算术解析函数（支持直接输入算式 123456+567 或相对增量 +567）
+ */
+function parseSmartInput(str, baseVal = 0) {
+  let valStr = String(str).trim();
+  if (!valStr) return baseVal;
 
+  // 1. 如果以运算符开头 (例如 "+567" 或 "-200")，自动补上 Placeholder 的基准值
+  if (/^[+\-*/]/.test(valStr)) {
+    valStr = `${baseVal}${valStr}`;
+  }
+
+  // 2. 安全字符校验：只允许数字、运算符、括号与小数点
+  if (!/^[0-9+\-*/().\s]+$/.test(valStr)) {
+    return isNaN(parseFloat(valStr)) ? baseVal : parseFloat(valStr);
+  }
+
+  // 3. 计算算式结果
+  try {
+    const result = new Function(`return ${valStr}`)();
+    return isNaN(result) ? baseVal : result;
+  } catch (e) {
+    return isNaN(parseFloat(valStr)) ? baseVal : parseFloat(valStr);
+  }
+}
+
+/**
+ * 🛠️ 通用工具：校验输入框并获取合法数值 (支持算式解析)
+ */
+function getValidInputValue(input) {
+  if (!input) return 0;
+
+  // 优先读取 value，如果为空且有 placeholder，则读取 placeholder
+  let valStr = input.value.trim();
+  let placeholderVal = parseFloat(input.placeholder) || 0;
+
+  // 🌟 解析算式
+  let num = parseSmartInput(valStr, placeholderVal);
+
+  // 1. 超过最大值
+  if (input.hasAttribute('max')) {
+    const max = parseFloat(input.max);
+    if (!isNaN(max) && num > max) {
+      num = max;
+    }
+  }
+
+  // 2. 小于最小值
+  if (input.hasAttribute('min') && valStr !== '') {
+    const min = parseFloat(input.min);
+    if (!isNaN(min) && num < min) {
+      num = min;
+    }
+  }
+
+  return num;
+}
     // ==========================================
     // 🚀 预设管理核心 Handler 动作函数 喵！
     // ==========================================
@@ -2085,61 +2144,61 @@
     }
 
 
-/**
- * 🌟 格式化当前纯数值 (用于基础列)
- */
-function formatValOnly(val, isRate = false) {
-  if (typeof val !== 'number' || isNaN(val)) {
-    return `<span style="color: var(--text-muted);">-</span>`;
-  }
-  return isRate ? `${val.toFixed(2)}%` : val.toLocaleString();
-}
+    /**
+     * 🌟 格式化当前纯数值 (用于基础列)
+     */
+    function formatValOnly(val, isRate = false) {
+      if (typeof val !== 'number' || isNaN(val)) {
+        return `<span style="color: var(--text-muted);">-</span>`;
+      }
+      return isRate ? `${val.toFixed(2)}%` : val.toLocaleString();
+    }
 
-/**
- * 🌟 计算并格式化差值胶囊 (单独用于差值列)
- */
-function formatDiffOnly(currentVal, baseVal, isRate = false) {
-  if (typeof currentVal !== 'number' || typeof baseVal !== 'number' || isNaN(currentVal) || isNaN(baseVal)) {
-    return '';
-  }
+    /**
+     * 🌟 计算并格式化差值胶囊 (单独用于差值列)
+     */
+    function formatDiffOnly(currentVal, baseVal, isRate = false) {
+      if (typeof currentVal !== 'number' || typeof baseVal !== 'number' || isNaN(currentVal) || isNaN(baseVal)) {
+        return '';
+      }
 
-  const diff = currentVal - baseVal;
-  if (diff === 0) return ''; // 差值为 0 不显示胶囊喵
+      const diff = currentVal - baseVal;
+      if (diff === 0) return ''; // 差值为 0 不显示胶囊喵
 
-  const diffFormatted = isRate ? Math.abs(diff).toFixed(2) + '%' : Math.abs(diff).toLocaleString();
-  const diffSign = diff > 0 ? `+${diffFormatted}` : `-${diffFormatted}`;
-  const diffClass = diff > 0 ? 'positive' : 'negative';
+      const diffFormatted = isRate ? Math.abs(diff).toFixed(2) + '%' : Math.abs(diff).toLocaleString();
+      const diffSign = diff > 0 ? `+${diffFormatted}` : `-${diffFormatted}`;
+      const diffClass = diff > 0 ? 'positive' : 'negative';
 
-  return `<span class="diff-tag ${diffClass}">${diffSign}</span>`;
-}
+      return `<span class="diff-tag ${diffClass}">${diffSign}</span>`;
+    }
 
-/**
- * 🎨 7 列模式下渲染表格主体 喵！
- */
-function renderFinalBuffTable(finalBuffList) {
-  const tbody = document.getElementById('finalBuffTbody');
-  if (!tbody || !Array.isArray(finalBuffList)) return;
+    /**
+     * 🎨 7 列模式下渲染表格主体 喵！
+     */
+    function renderFinalBuffTable(finalBuffList) {
+      const tbody = document.getElementById('finalBuffTbody');
+      if (!tbody || !Array.isArray(finalBuffList)) return;
 
-  tbody.innerHTML = '';
+      tbody.innerHTML = '';
 
-  finalBuffList.forEach(item => {
-    const tr = document.createElement('tr');
-    const itemKey = item.key;
-    const baseItem = baselineResults ? baselineResults[itemKey] : null;
+      finalBuffList.forEach(item => {
+        const tr = document.createElement('tr');
+        const itemKey = item.key;
+        const baseItem = baselineResults ? baselineResults[itemKey] : null;
 
-    // 1. 三攻列与差值列
-    const atkValHTML  = formatValOnly(item.atk, false);
-    const atkDiffHTML = formatDiffOnly(item.atk, baseItem ? baseItem.atk : null, false);
+        // 1. 三攻列与差值列
+        const atkValHTML = formatValOnly(item.atk, false);
+        const atkDiffHTML = formatDiffOnly(item.atk, baseItem ? baseItem.atk : null, false);
 
-    // 2. 力智列与差值列
-    const statValHTML  = formatValOnly(item.stat, false);
-    const statDiffHTML = formatDiffOnly(item.stat, baseItem ? baseItem.stat : null, false);
+        // 2. 力智列与差值列
+        const statValHTML = formatValOnly(item.stat, false);
+        const statDiffHTML = formatDiffOnly(item.stat, baseItem ? baseItem.stat : null, false);
 
-    // 3. 倍率列与差值列
-    const rateValHTML  = formatValOnly(item.rate, true);
-    const rateDiffHTML = formatDiffOnly(item.rate, baseItem ? baseItem.rate : null, true);
+        // 3. 倍率列与差值列
+        const rateValHTML = formatValOnly(item.rate, true);
+        const rateDiffHTML = formatDiffOnly(item.rate, baseItem ? baseItem.rate : null, true);
 
-    tr.innerHTML = `
+        tr.innerHTML = `
       <td class="skill-name">${item.name}</td>
       <td class="val-highlight">${atkValHTML}</td>
       <td class="diff-col">${atkDiffHTML}</td>
@@ -2149,11 +2208,11 @@ function renderFinalBuffTable(finalBuffList) {
       <td class="diff-col">${rateDiffHTML}</td>
     `;
 
-    tbody.appendChild(tr);
-  });
-}
+        tbody.appendChild(tr);
+      });
+    }
 
-    
+
 
 
     /**
@@ -2161,34 +2220,36 @@ function renderFinalBuffTable(finalBuffList) {
      * @param {HTMLInputElement} input - 当前触发事件的输入框 DOM 节点
      * @returns {number} 校验后的合法数值
      */
+    /**
+     * 🛠️ 通用工具：校验输入框并获取合法数值 (含智能算术解析)
+     */
     function getValidInputValue(input) {
       if (!input) return 0;
 
       let valStr = input.value.trim();
 
-      // 🌟 3. 用户清空输入框时：不补齐输入框 UI，但计算时隐式读取 placeholder 的默认值！
-      if (valStr === '' && input.placeholder) {
-        valStr = input.placeholder;
+      // 获取 placeholder 作为缺省/相对计算基准
+      let placeholderVal = 0;
+      if (input.placeholder) {
+        placeholderVal = parseFloat(input.placeholder) || 0;
       }
 
-      let num = parseFloat(valStr);
-      if (isNaN(num)) num = 0;
+      // 🌟 调用智能算术解析器，处理 123456+567 或 +567 算式 喵！
+      let num = parseSmartInput(valStr, placeholderVal);
 
       // 🌟 1. 超过最大值：强制设为 max
       if (input.hasAttribute('max')) {
         const max = parseFloat(input.max);
         if (!isNaN(max) && num > max) {
           num = max;
-          input.value = max; // 强制修正 UI 显示
         }
       }
 
-      // 🌟 2. 小于最小值：强制设为 min（仅在有有效输入时截断，避免影响清空状态）
-      if (input.hasAttribute('min') && input.value.trim() !== '') {
+      // 🌟 2. 小于最小值：强制设为 min
+      if (input.hasAttribute('min') && valStr !== '') {
         const min = parseFloat(input.min);
         if (!isNaN(min) && num < min) {
           num = min;
-          input.value = min; // 强制修正 UI 显示
         }
       }
 
@@ -2304,45 +2365,30 @@ function renderFinalBuffTable(finalBuffList) {
           dispatchAndPipeline(btn.id, btn, e);
         }
       });
-      // 🌟 D. 监听失焦 (focusout 事件)：对 min / max 进行强制修正，清空时不做补齐 喵！
-      container.addEventListener('focusout', (e) => {
-        const target = e.target;
-        if (target.tagName === 'INPUT' && target.type === 'number') {
-          const valStr = target.value.trim();
 
-          // 如果输入框不为空，才进行 min / max 的强制修正喵~
-          if (valStr !== '') {
-            let val = parseFloat(valStr);
 
-            if (!isNaN(val)) {
-              let corrected = false;
 
-              // 1. 超过最大值 -> 强制设置为最大值
-              if (target.hasAttribute('max')) {
-                const max = parseFloat(target.max);
-                if (!isNaN(max) && val > max) {
-                  target.value = max;
-                  corrected = true;
-                }
-              }
+      // 🌟 D. 监听失焦 (focusout 事件)：自动解析算式并回写纯数字 UI 喵！
+container.addEventListener('focusout', (e) => {
+  const target = e.target;
+  if (target.tagName === 'INPUT') {
+    const rawStr = target.value.trim();
 
-              // 2. 小于最小值 -> 强制设置为最小值
-              if (target.hasAttribute('min')) {
-                const min = parseFloat(target.min);
-                if (!isNaN(min) && val < min) {
-                  target.value = min;
-                  corrected = true;
-                }
-              }
+    if (rawStr !== '') {
+      // 算出结算数值
+      const finalVal = getValidInputValue(target);
+      
+      // 自动把输入框里的 "123456+567" 或 "+567" 替换成结算后的纯数字 "124023" 喵！
+      target.value = finalVal;
+      
+      // 触发全局 pipeline 重新计算奶量与表格渲染
+      dispatchAndPipeline(target.id, target, e);
+    }
+  }
+});
 
-              // 如果发生过修正，同步触发一次 pipeline 更新 state 喵！
-              if (corrected) {
-                dispatchAndPipeline(target.id, target, e);
-              }
-            }
-          }
-        }
-      });
+
+
     }
     // ==========================================
     // 🧮 3. 纯计算引擎 (Calculator) - 只算数据，不碰 DOM！
