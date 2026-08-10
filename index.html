@@ -1019,7 +1019,7 @@
 
             <div class="form-group">
               <label>增益量</label>
-              <input type="number" id="buffBuff" value="200000" inputmode="numeric" placeholder="1000000">
+              <input type="text" id="buffBuff" value="200000" inputmode="numeric" placeholder="1000000">
             </div>
 
             <div class="form-group">
@@ -1118,7 +1118,7 @@
           <div class="form-grid">
             <div class="form-group">
               <label>BUFF 适用四维</label>
-              <input type="number" id="buffStatApplicable" value="10000" inputmode="numeric" placeholder="Buff 适用四维">
+              <input type="text" id="buffStatApplicable" value="10000" inputmode="numeric" placeholder="Buff 适用四维">
             </div>
             <div class="form-group">
               <label>Buff 适用等级</label>
@@ -1127,11 +1127,11 @@
 
             <div class="form-group">
               <label>太阳 适用四维</label>
-              <input type="number" id="sunStatApplicable" value="10000" inputmode="numeric" placeholder="太阳适用四维">
+              <input type="text" id="sunStatApplicable" value="10000" inputmode="numeric" placeholder="太阳适用四维">
             </div>
             <div class="form-group">
               <label>增益量</label>
-              <input type="number" id="buffInGame" value="200000" inputmode="numeric" placeholder="图内适用增益量">
+              <input type="text" id="buffInGame" value="200000" inputmode="numeric" placeholder="图内适用增益量">
             </div>
 
             <div class="form-group">
@@ -1431,29 +1431,7 @@
         ]
       }
     };
-
-
-    const PRESET_STORAGE_KEY = 'dnf_buff_calc_presets_v2';
-    const LAST_PRESET_KEY = 'dnf_buff_calc_last_presets_v1';
-    const SYSTEM_DEFAULT_PRESETS = {
-      'ma': [
-        { id: 'sys_ma_1', name: '🔒 红12毕业打造(占位)', isSystem: true, data: { buffStat: 10000, buffBuff: 200000, buffLv: 50, skillLv15: 10, totalBuffPct: 150 } }
-      ],
-      'ba': [
-        { id: 'sys_ba_1', name: '🔒 红12毕业打造(占位)', isSystem: true, data: { buffStat: 10500, buffBuff: 210000, buffLv: 50, skillLv15: 10, totalBuffPct: 150 } },
-      ],
-      'luo': [
-        { id: 'sys_luo_1', name: '🔒 红12毕业打造(占位)', isSystem: true, data: { buffStat: 10000, buffBuff: 200000, buffLv: 50, skillLv15: 10, totalBuffPct: 150 } }
-      ],
-      'gong': [
-        { id: 'sys_gong_1', name: '🔒 红12毕业打造(占位)', isSystem: true, data: { buffStat: 10200, buffBuff: 205000, buffLv: 50, skillLv15: 10, totalBuffPct: 150 } }
-      ],
-      'qiang': [
-        { id: 'sys_qiang_1', name: '🔒 红12毕业打造(占位)', isSystem: true, data: { buffStat: 10000, buffBuff: 200000, buffLv: 50, skillLv15: 10, totalBuffPct: 150 } }
-      ]
-    };
-
-    // ==========================================
+     // ==========================================
     // 📦 1. 全局状态源 (State) - 唯一的真相数据源喵！
     // ==========================================
     const state = {
@@ -1465,7 +1443,7 @@
       // 2. 基础数据 (图外)
       buffStat: 10000,             // 站街四维
       buffBuff: 200000,            // 站街增益量
-      buffLv: 50,                  // Buff 等级
+      buffLv: 37,                  // Buff 等级
       skillLv15: 10,               // Lv15 核心技能等级
       baselineLv15: null,          // Lv15 核心技能基准等级 (null 代表未设置)
 
@@ -1477,7 +1455,7 @@
 
       // 4. 图内适用修正 (由自动推算算出，或手动填写)
       buffStatApplicable: 10000,   // BUFF 适用四维
-      buffLvApplicable: 50,        // Buff 适用等级
+      buffLvApplicable: 37,        // Buff 适用等级
       sunStatApplicable: 10000,    // 太阳适用四维
       buffInGame: 200000,          // 图内适用增益量
       firstAwaken: 40,            // 一觉等级
@@ -1504,6 +1482,28 @@
       cStat: 5000                  // C 模板力智
     };
 
+
+    const PRESET_STORAGE_KEY = 'dnf_buff_calc_presets_v2';
+    const LAST_PRESET_KEY = 'dnf_buff_calc_last_presets_v1';
+    const SYSTEM_DEFAULT_PRESETS = {
+      'ma': [
+        { id: 'sys_ma_1', name: '🔒 默认预设(占位)', isSystem: true, data: structuredClone(state) }
+      ],
+      'ba': [
+        { id: 'sys_ba_1', name: '🔒 默认预设(占位)', isSystem: true, data: structuredClone(state) }
+      ],
+      'luo': [
+        { id: 'sys_luo_1', name: '🔒 默认预设(占位)', isSystem: true, data: structuredClone(state) }
+      ],
+      'gong': [
+        { id: 'sys_gong_1', name: '🔒 默认预设(占位)', isSystem: true, data: structuredClone(state) }
+      ],
+      'qiang': [
+        { id: 'sys_qiang_1', name: '🔒 默认预设(占位)', isSystem: true, data: structuredClone(state) }
+      ]
+    };
+
+   
 
 
     // ==========================================
@@ -1875,63 +1875,63 @@
  * @param {number} baseVal - 输入框的 Placeholder/当前基准值
  * @returns {number} 结算后的纯数字
  */
-  /**
- * 🌟 智能算术解析函数（支持直接输入算式 123456+567 或相对增量 +567）
- */
-function parseSmartInput(str, baseVal = 0) {
-  let valStr = String(str).trim();
-  if (!valStr) return baseVal;
+    /**
+   * 🌟 智能算术解析函数（支持直接输入算式 123456+567 或相对增量 +567）
+   */
+    function parseSmartInput(str, baseVal = 0) {
+      let valStr = String(str).trim();
+      if (!valStr) return baseVal;
 
-  // 1. 如果以运算符开头 (例如 "+567" 或 "-200")，自动补上 Placeholder 的基准值
-  if (/^[+\-*/]/.test(valStr)) {
-    valStr = `${baseVal}${valStr}`;
-  }
+      // 1. 如果以运算符开头 (例如 "+567" 或 "-200")，自动补上 Placeholder 的基准值
+      if (/^[+\-*/]/.test(valStr)) {
+        valStr = `${baseVal}${valStr}`;
+      }
 
-  // 2. 安全字符校验：只允许数字、运算符、括号与小数点
-  if (!/^[0-9+\-*/().\s]+$/.test(valStr)) {
-    return isNaN(parseFloat(valStr)) ? baseVal : parseFloat(valStr);
-  }
+      // 2. 安全字符校验：只允许数字、运算符、括号与小数点
+      if (!/^[0-9+\-*/().\s]+$/.test(valStr)) {
+        return isNaN(parseFloat(valStr)) ? baseVal : parseFloat(valStr);
+      }
 
-  // 3. 计算算式结果
-  try {
-    const result = new Function(`return ${valStr}`)();
-    return isNaN(result) ? baseVal : result;
-  } catch (e) {
-    return isNaN(parseFloat(valStr)) ? baseVal : parseFloat(valStr);
-  }
-}
-
-/**
- * 🛠️ 通用工具：校验输入框并获取合法数值 (支持算式解析)
- */
-function getValidInputValue(input) {
-  if (!input) return 0;
-
-  // 优先读取 value，如果为空且有 placeholder，则读取 placeholder
-  let valStr = input.value.trim();
-  let placeholderVal = parseFloat(input.placeholder) || 0;
-
-  // 🌟 解析算式
-  let num = parseSmartInput(valStr, placeholderVal);
-
-  // 1. 超过最大值
-  if (input.hasAttribute('max')) {
-    const max = parseFloat(input.max);
-    if (!isNaN(max) && num > max) {
-      num = max;
+      // 3. 计算算式结果
+      try {
+        const result = new Function(`return ${valStr}`)();
+        return isNaN(result) ? baseVal : result;
+      } catch (e) {
+        return isNaN(parseFloat(valStr)) ? baseVal : parseFloat(valStr);
+      }
     }
-  }
 
-  // 2. 小于最小值
-  if (input.hasAttribute('min') && valStr !== '') {
-    const min = parseFloat(input.min);
-    if (!isNaN(min) && num < min) {
-      num = min;
+    /**
+     * 🛠️ 通用工具：校验输入框并获取合法数值 (支持算式解析)
+     */
+    function getValidInputValue(input) {
+      if (!input) return 0;
+
+      // 优先读取 value，如果为空且有 placeholder，则读取 placeholder
+      let valStr = input.value.trim();
+      let placeholderVal = parseFloat(input.placeholder) || 0;
+
+      // 🌟 解析算式
+      let num = parseSmartInput(valStr, placeholderVal);
+
+      // 1. 超过最大值
+      if (input.hasAttribute('max')) {
+        const max = parseFloat(input.max);
+        if (!isNaN(max) && num > max) {
+          num = max;
+        }
+      }
+
+      // 2. 小于最小值
+      if (input.hasAttribute('min') && valStr !== '') {
+        const min = parseFloat(input.min);
+        if (!isNaN(min) && num < min) {
+          num = min;
+        }
+      }
+
+      return num;
     }
-  }
-
-  return num;
-}
     // ==========================================
     // 🚀 预设管理核心 Handler 动作函数 喵！
     // ==========================================
@@ -1960,6 +1960,9 @@ function getValidInputValue(input) {
 
         // D. 触发全局流水线重新计算与渲染
         dispatchAndPipeline();
+
+        // 🌟 自动将读取出来的预设设置为基准结果！
+        handleSetBaseResult();
 
         console.log(`成功读取预设【${configObj.name}】，值已更新至 Placeholder 喵！`);
       }
@@ -2366,26 +2369,30 @@ function getValidInputValue(input) {
         }
       });
 
-
+      container.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && e.target.tagName === 'INPUT') {
+          e.target.blur(); // 主动失焦，会自动触发下面的 focusout 结算逻辑！
+        }
+      });
 
       // 🌟 D. 监听失焦 (focusout 事件)：自动解析算式并回写纯数字 UI 喵！
-container.addEventListener('focusout', (e) => {
-  const target = e.target;
-  if (target.tagName === 'INPUT') {
-    const rawStr = target.value.trim();
+      container.addEventListener('focusout', (e) => {
+        const target = e.target;
+        if (target.tagName === 'INPUT') {
+          const rawStr = target.value.trim();
 
-    if (rawStr !== '') {
-      // 算出结算数值
-      const finalVal = getValidInputValue(target);
-      
-      // 自动把输入框里的 "123456+567" 或 "+567" 替换成结算后的纯数字 "124023" 喵！
-      target.value = finalVal;
-      
-      // 触发全局 pipeline 重新计算奶量与表格渲染
-      dispatchAndPipeline(target.id, target, e);
-    }
-  }
-});
+          if (rawStr !== '') {
+            // 算出结算数值
+            const finalVal = getValidInputValue(target);
+
+            // 自动把输入框里的 "123456+567" 或 "+567" 替换成结算后的纯数字 "124023" 喵！
+            target.value = finalVal;
+
+            // 触发全局 pipeline 重新计算奶量与表格渲染
+            dispatchAndPipeline(target.id, target, e);
+          }
+        }
+      });
 
 
 
@@ -2721,7 +2728,8 @@ container.addEventListener('focusout', (e) => {
       // 6. 运行纯计算引擎与 UI 渲染器 (直接触发刷新) 喵！
       const calcResult = runCalculations();
       renderUI(calcResult);
-
+      // 🌟 切换职业读取完预设后，自动设置为基准结果！
+      handleSetBaseResult();
       // 🌟 返回 false 告诉 Dispatcher 不要重复处理啦！
       return false;
     }
