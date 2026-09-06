@@ -5,6 +5,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>DNF 辅助职业奶量计算器</title>
+  <script>
+    // 立即执行：根据本地存储初始化主题，彻底杜绝白屏闪烁 (FOUC)
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'dark') {
+          document.documentElement.classList.add('dark-theme');
+        }
+      } catch (e) { }
+    })();
+  </script>
   <style>
     /* ==========================================
     ☀️ 1. 浅色 / 🌙 暗色 主题变量声明
@@ -29,6 +40,7 @@
       --btn-base-text: #d97706;
     }
 
+    html.dark-theme,
     body.dark-theme {
       --bg-color: #0f111a;
       --card-bg: #1a1d2e;
@@ -116,6 +128,240 @@
       cursor: pointer;
       font-size: 14px;
       font-weight: bold;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .top-bar-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .help-btn {
+      background: var(--btn-base-bg);
+      border: 1px solid var(--btn-base-border);
+      color: var(--btn-base-text);
+      padding: 7px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .help-btn:hover {
+      background: var(--primary);
+      color: #ffffff;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(217, 119, 6, 0.25);
+    }
+
+    .help-btn:active {
+      transform: translateY(1px) scale(0.97);
+    }
+
+    .theme-toggle-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      transform: translateY(-1px);
+    }
+
+    .theme-toggle-btn:active {
+      transform: translateY(1px) scale(0.97);
+    }
+
+    /* ❓ 帮助模态弹窗样式 */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 16px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.22s ease, visibility 0.22s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-container {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      width: 100%;
+      max-width: 660px;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+      transform: scale(0.95) translateY(12px);
+      transition: transform 0.24s cubic-bezier(0.34, 1.56, 0.64, 1);
+      overflow: hidden;
+    }
+
+    .modal-overlay.active .modal-container {
+      transform: scale(1) translateY(0);
+    }
+
+    .modal-header {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--card-inner);
+    }
+
+    .modal-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .modal-title-icon {
+      font-size: 20px;
+    }
+
+    .modal-title {
+      margin: 0;
+      font-size: 17px;
+      font-weight: bold;
+      color: var(--primary);
+    }
+
+    .modal-close-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 26px;
+      line-height: 1;
+      cursor: pointer;
+      padding: 2px 8px;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+
+    .modal-close-btn:hover {
+      color: var(--text-main);
+      background: rgba(0, 0, 0, 0.08);
+    }
+
+    body.dark-theme .modal-close-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .modal-body {
+      padding: 18px 22px;
+      overflow-y: auto;
+      font-size: 13.5px;
+      line-height: 1.65;
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .help-section {
+      background: var(--card-inner);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 12px 16px;
+    }
+
+    .help-section-title {
+      font-size: 14px;
+      font-weight: bold;
+      color: var(--primary);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .help-section p {
+      margin: 0;
+    }
+
+    .help-list {
+      margin: 0;
+      padding-left: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .help-list code {
+      background: var(--btn-base-bg);
+      color: var(--btn-base-text);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-family: monospace;
+      border: 1px solid var(--btn-base-border);
+    }
+
+    .help-tip-box {
+      margin-top: 6px;
+      padding: 8px 12px;
+      background: rgba(217, 119, 6, 0.08);
+      border-left: 3px solid var(--primary);
+      border-radius: 4px;
+      font-size: 12.5px;
+    }
+
+    body.dark-theme .help-tip-box {
+      background: rgba(255, 158, 59, 0.12);
+    }
+
+    .modal-footer {
+      padding: 12px 20px;
+      border-top: 1px solid var(--border-color);
+      background: var(--card-inner);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .modal-footer-tip {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .modal-confirm-btn {
+      background: var(--primary);
+      color: #ffffff;
+      border: none;
+      padding: 7px 22px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      white-space: nowrap;
+    }
+
+    .modal-confirm-btn:hover {
+      filter: brightness(1.1);
+      box-shadow: 0 2px 10px rgba(217, 119, 6, 0.35);
+      transform: translateY(-1px);
+    }
+
+    .modal-confirm-btn:active {
+      transform: translateY(1px);
     }
 
     /* 📁 左侧输入区顶部的职业与预设管理栏 (同一行整合) */
@@ -123,10 +369,9 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: var(--card-inner);
+      
       padding: 8px 14px;
-      border-radius: 8px;
-      border: 1px solid var(--border-color);
+ 
       margin-bottom: 12px;
       gap: 12px;
       flex-wrap: wrap;
@@ -273,9 +518,10 @@
     ========================================== */
     .dashboard-layout {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 650px;
-      gap: 20px;
+      grid-template-columns: 6fr 4fr;
+      gap: 30px;
       align-items: start;
+      margin-top: 20px;
     }
 
     .dashboard-left {
@@ -815,7 +1061,7 @@
 
     .result-table th,
     .result-table td {
-      padding: 11px 4px;
+      padding: 14px 4px;
       font-size: 14px;
       border-bottom: 1px solid var(--border-color);
       color: var(--text-main);
@@ -827,7 +1073,7 @@
       background: rgba(217, 119, 6, 0.08);
       color: var(--primary);
       font-weight: bold;
-      font-size: 14.5px;
+      font-size: 18px;
       padding: 10px 4px;
     }
 
@@ -838,7 +1084,7 @@
       padding-right: 6px !important;
       width: 140px;
       font-weight: 700;
-      font-size: 14.5px;
+      font-size: 17px;
       text-align: left !important;
     }
 
@@ -853,7 +1099,7 @@
       padding-right: 2px !important;
       padding-left: 4px !important;
       font-weight: 700;
-      font-size: 16px;
+      font-size: 18px;
       text-align: right !important;
       font-variant-numeric: tabular-nums;
     }
@@ -1021,6 +1267,25 @@
         width: 120px;
         font-size: 12px;
       }
+
+      .top-bar {
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .modal-container {
+        max-height: 90vh;
+        width: 95%;
+      }
+
+      .modal-footer {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .modal-confirm-btn {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -1031,7 +1296,10 @@
   <div class="calculator-container">
     <div class="top-bar">
       <h1 class="header-title">⚔️ DNF 奶量计算器</h1>
-      <button class="theme-toggle-btn" id="themeBtn">🌙 暗色主题</button>
+      <div class="top-bar-actions">
+        <button class="help-btn" id="helpBtn" title="查看使用帮助与操作指南">❓ 使用帮助</button>
+        <button class="theme-toggle-btn" id="themeBtn">🌙 暗色主题</button>
+      </div>
     </div>
 
     <!-- 🌟 全景双栏看板：左侧输入配置 + 右侧常驻最终奶量 -->
@@ -1325,7 +1593,7 @@
       <div class="dashboard-right">
         <div class="output-box sticky-output">
           <div class="output-header">
-            <h3>📊 最终奶量与单人提升率</h3>
+            <h3>📊 最终奶量</h3>
             <button id="baseBtn" class="btn-set-base">📌 将结果设为基准</button>
           </div>
 
@@ -1355,9 +1623,57 @@
 
   </div>
 
+  <!-- ❓ 使用帮助模态弹窗 -->
+  <div class="modal-overlay" id="helpModal" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="helpModalTitle">
+    <div class="modal-container">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="modal-title-icon">📖</span>
+          <h3 class="modal-title" id="helpModalTitle">DNF 辅助职业奶量计算器 - 使用帮助</h3>
+        </div>
+        <button class="modal-close-btn" id="closeHelpModalBtn" title="关闭">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="help-section">
+          <div class="help-section-title">✨ 核心功能概览</div>
+          <p>本计算器支持地下城与勇士（DNF）全五大辅助职业：<strong>奶妈（女圣骑）</strong>、<strong>奶爸（男圣骑）</strong>、<strong>奶萝（小魔女）</strong>、<strong>奶弓（缪斯）</strong>与<strong>奶枪（协战师）</strong>。严格还原国服公式，支持站街面板转图内、专属被动推算、辟邪玉加成、太阳与三觉爆发奶量精确核算。</p>
+        </div>
 
+        <div class="help-section">
+          <div class="help-section-title">📋 快速使用指南</div>
+          <ol class="help-list">
+            <li><strong>职业与方案预设</strong>：在左上方下拉选择职业；支持多套自定义预设方案，点击「➕ 新增」创建新方案，配置变更后点击「💾 保存」，所有数据均自动持久化保存在浏览器本地。</li>
+            <li><strong>面板数据录入</strong>：输入站街四维、站街增益量、BUFF技能等级等关键参数。
+              <div class="help-tip-box">
+                💡 <strong>算式快捷结算小技巧</strong>：所有数字输入框均支持快速加减运算！例如输入 <code>12000+300</code> 或 <code>+150</code>，按下 <code>Enter</code> 回车或点击空白处失焦即可自动求和并填入纯数字！
+              </div>
+            </li>
+            <li><strong>自动推算与基准同步</strong>：
+              勾选「自动推算」后，系统自动依据职业专属被动技能等级、被动白金数量、训练教官(+80四维)、黄金乡增幅等智能推算图内适用四维与增益量。点击「✨ 同步等级」可将当前等级设为提升基准。
+            </li>
+            <li><strong>辟邪玉矩阵配置</strong>：
+              可在右上角切换「包含辟邪玉」与「不含辟邪玉」增益量模式；展开辟邪玉矩阵可录入4条固定值与百分比词条，自动折算总增益量。
+            </li>
+            <li><strong>奶量看板与基准对比</strong>：
+              右侧实时看板直观显示荣誉/祝福BUFF、一觉太阳、三觉太阳及特化技能的力智与三攻奶量。点击「📌 设为基准」后，后续任意微调装备或技能，看板将以醒目颜色与 (+/- / %) 标注相对基准的提升幅度，配装选拔一目了然！
+            </li>
+          </ol>
+        </div>
 
-
+        <div class="help-section">
+          <div class="help-section-title">⚙️ 偏好设置与说明</div>
+          <ul class="help-list">
+            <li><strong>主题记忆</strong>：点击右上角「🌙 暗色主题 / ☀️ 浅色主题」按钮切换视觉风格，选择会自动持久化保存在浏览器本地，刷新或重新打开仍保持您的偏好。</li>
+            <li><strong>再次查看帮助</strong>：首次进入网站时本弹窗会自动弹出；平时可随时点击右上角「❓ 使用帮助」再次查阅。</li>
+          </ul>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <span class="modal-footer-tip">💡 随时点击右上角「❓ 使用帮助」即可再次打开</span>
+        <button class="modal-confirm-btn" id="confirmHelpModalBtn">我知道了</button>
+      </div>
+    </div>
+  </div>
 
   <script>
 
@@ -1458,7 +1774,7 @@
         awk1Name: '圣光天启',
         awk3Name: '祈愿·天使赞歌',
         extras: [
-          { key: 'sk1', name: '勇气祝福 (勇气圣歌)', mult: 1.12, totalName: '三觉下' }
+          { key: 'sk1', name: '勇气祝福+圣歌', mult: 1.12, totalName: '三觉下' }
         ]
       },
       'luo': {
@@ -1479,7 +1795,7 @@
         awk1Name: '梦想的舞台',
         awk3Name: '终曲:霓虹蝶梦',
         extras: [
-          { key: 'sk1', name: '可爱节拍 (燃情狂想曲)', mult: 1.10, totalName: '三觉下' },
+          { key: 'sk1', name: '可爱节拍+燃情狂想曲', mult: 1.10, totalName: '三觉下' },
         ]
       },
       'ba': {
@@ -1589,6 +1905,7 @@
       'autoCalcSwitch': onAutoCalcSwitchChange,
       'btnApplyPassive': handleSetBaseline,
       'themeBtn': handleThemeToggle,
+      'helpBtn': handleHelpToggle,
       'modeSwitch': onModeSwitchChange,
       'baseBtn': handleSetBaseResult,
       'btnSaveConfig': handleSaveConfig,
@@ -2025,10 +2342,12 @@
       const configObj = presets[selectedId];
 
       if (configObj && configObj.data) {
-        // A. 恢复 State（保持当前职业属性不变）
+        // A. 恢复 State（保持当前职业属性与主题设置不变）
         const jobKey = state.currentJob;
+        const currentTheme = state.isDarkTheme;
         Object.assign(state, JSON.parse(JSON.stringify(configObj.data)));
         state.currentJob = jobKey;
+        state.isDarkTheme = currentTheme;
 
         // B. 保存当前选中的预设 ID 到本地记忆喵！
         saveLastSelectedPreset(state.currentJob, selectedId);
@@ -2769,14 +3088,69 @@
     }
 
     /**
-     * 切换“暗色/浅色主题”时的 Handler
+     * ❓ 打开使用帮助模态弹窗
+     */
+    function openHelpModal() {
+      const modal = document.getElementById('helpModal');
+      if (modal) {
+        modal.style.display = 'flex';
+        void modal.offsetWidth; // 触发回流以实现平滑淡入动画
+        modal.classList.add('active');
+      }
+    }
+
+    /**
+     * ✕ 关闭使用帮助模态弹窗
+     */
+    function closeHelpModal() {
+      const modal = document.getElementById('helpModal');
+      if (modal) {
+        modal.classList.remove('active');
+        setTimeout(() => {
+          if (!modal.classList.contains('active')) {
+            modal.style.display = 'none';
+          }
+        }, 240);
+      }
+    }
+
+    /**
+     * 帮助按钮点击响应
+     */
+    function handleHelpToggle() {
+      openHelpModal();
+      return false; // 不需要重新触发计算
+    }
+
+    /**
+     * 统一应用主题模式 (Light / Dark) 并更新 DOM 与按钮显示
+     */
+    function applyTheme(isDark) {
+      state.isDarkTheme = Boolean(isDark);
+      if (state.isDarkTheme) {
+        document.documentElement.classList.add('dark-theme');
+        document.body.classList.add('dark-theme');
+      } else {
+        document.documentElement.classList.remove('dark-theme');
+        document.body.classList.remove('dark-theme');
+      }
+      const themeBtn = document.getElementById('themeBtn');
+      if (themeBtn) {
+        themeBtn.textContent = state.isDarkTheme ? '☀️ 浅色主题' : '🌙 暗色主题';
+      }
+    }
+
+    /**
+     * 切换“暗色/浅色主题”时的 Handler，并将配置存入浏览器 localStorage 本地
      */
     function handleThemeToggle(btn) {
-      state.isDarkTheme = document.body.classList.toggle('dark-theme');
-      if (btn) {
-        btn.textContent = state.isDarkTheme ? '☀️ 浅色主题' : '🌙 暗色主题';
+      const isDark = !document.body.classList.contains('dark-theme');
+      applyTheme(isDark);
+      try {
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      } catch (err) {
+        console.error('保存主题到本地存储失败:', err);
       }
-      localStorage.setItem('theme', state.isDarkTheme ? 'dark' : 'light');
       return false; // 🌟 切换主题不需要重新计算奶量，直接返回 false 喵！
     }
 
@@ -2837,20 +3211,55 @@
     }
 
     /**
-     * 🚀 应用初始化总入口
+     * 🛠️ 初始化使用帮助弹窗交互与首次访问自动弹出
      */
+    function initHelpModal() {
+      const modal = document.getElementById('helpModal');
+      const closeBtn = document.getElementById('closeHelpModalBtn');
+      const confirmBtn = document.getElementById('confirmHelpModalBtn');
+
+      if (closeBtn) {
+        closeBtn.addEventListener('click', closeHelpModal);
+      }
+      if (confirmBtn) {
+        confirmBtn.addEventListener('click', closeHelpModal);
+      }
+      if (modal) {
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) {
+            closeHelpModal();
+          }
+        });
+      }
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeHelpModal();
+        }
+      });
+
+      // 🌟 首次打开网页时自动弹出帮助
+      try {
+        const hasSeenHelp = localStorage.getItem('dnf_calc_has_seen_help');
+        if (!hasSeenHelp) {
+          openHelpModal();
+          localStorage.setItem('dnf_calc_has_seen_help', '1');
+        }
+      } catch (err) {
+        console.error('检查首次访问帮助提示失败:', err);
+      }
+    }
+
     /**
      * 🚀 应用初始化总入口 (全量状态恢复 + DOM 同步) 喵！
      */
     function initApp() {
-      // 1. 初始化主题
-      const savedTheme = localStorage.getItem('theme');
-      const themeBtn = document.getElementById('themeBtn');
-      if (savedTheme === 'dark') {
-        state.isDarkTheme = true;
-        document.body.classList.add('dark-theme');
-        if (themeBtn) themeBtn.textContent = '☀️ 浅色主题';
-      }
+      // 1. 初始化主题：读取浏览器本地持久化存储
+      let isDark = false;
+      try {
+        const savedTheme = localStorage.getItem('theme');
+        isDark = (savedTheme === 'dark');
+      } catch (e) { }
+      applyTheme(isDark);
 
       // 🌟 2. 恢复上次选择的职业（带有效性校验保底）喵！
       const lastPresetMap = getLastSelectedPresets();
@@ -2878,10 +3287,12 @@
 
       if (targetPresetId && presets[targetPresetId]) {
         const jobKey = state.currentJob; // 备份当前职业 key
+        const currentTheme = state.isDarkTheme; // 备份当前主题状态
 
-        // 全量恢复预设数据，并确保 currentJob 不被预设数据覆盖喵！
+        // 全量恢复预设数据，并确保 currentJob 与主题配置不被覆盖喵！
         Object.assign(state, JSON.parse(JSON.stringify(presets[targetPresetId].data)));
         state.currentJob = jobKey;
+        state.isDarkTheme = currentTheme;
 
         // 选中预设下拉框 DOM
         const selectEl = document.getElementById('configLoadSelect');
@@ -2894,7 +3305,10 @@
       // 5. 启动全局统一事件监听代理 (Dispatcher)
       initGlobalEventListeners();
 
-      // 6. 首次触发计算与视图渲染喵~！
+      // 6. 初始化使用帮助弹窗并进行首次打开自检
+      initHelpModal();
+
+      // 7. 首次触发计算与视图渲染喵~！
       dispatchAndPipeline();
     }// 页面 DOM 加载完毕后启动应用！
     document.addEventListener('DOMContentLoaded', initApp);
