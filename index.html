@@ -409,6 +409,7 @@
       transform: scale(0.95);
     }
 
+    .applied-success,
     .btn-apply-passive.applied-success {
       background-color: #059669 !important;
       border-color: #059669 !important;
@@ -991,8 +992,6 @@
 
         <select id="configLoadSelect" class="config-load-select">
           <option value="" disabled selected>📁 读取预设</option>
-          <option value="config1">预设 1: 毕业打造方案</option>
-          <option value="config2">预设 2: 平民打造方案</option>
         </select>
 
         <button class="btn-delete-config" id="btnDeleteConfig" title="删除当前选中的预设">🗑️</button>
@@ -1024,14 +1023,14 @@
 
             <div class="form-group">
               <label>Buff 等级</label>
-              <input type="number" id="buffLv" value="31" inputmode="numeric" min="1" max="70" placeholder="37">
+              <input type="text" id="buffLv" value="37" inputmode="numeric" min="1" max="70" placeholder="37">
             </div>
 
             <!-- ✨ 核心技能 -->
             <div class="form-group">
               <label id="skillLv15Label">Lv15 核心技能</label>
               <div class="passive-input-row">
-                <input type="number" id="skillLv15" value="10" placeholder="10" min="1" max="70" inputmode="numeric">
+                <input type="text" id="skillLv15" value="10" placeholder="10" min="1" max="70" inputmode="numeric">
                 <span class="passive-stat-tip" id="skillLv15StatTip"></span>
                 <button type="button" class="btn-apply-passive" id="btnApplyPassive">✨ 同步等级</button>
               </div>
@@ -1122,7 +1121,7 @@
             </div>
             <div class="form-group">
               <label>Buff 适用等级</label>
-              <input type="number" id="buffLvApplicable" value="50" inputmode="numeric" placeholder="Buff 适用等级">
+              <input type="text" id="buffLvApplicable" value="37" inputmode="numeric" placeholder="37">
             </div>
 
             <div class="form-group">
@@ -1136,12 +1135,12 @@
 
             <div class="form-group">
               <label>一觉等级</label>
-              <input type="number" id="firstAwaken" value="40" inputmode="numeric" placeholder="">
+              <input type="text" id="firstAwaken" value="40" inputmode="numeric" placeholder="40">
             </div>
 
             <div class="form-group">
               <label>三觉等级</label>
-              <input type="number" id="thirdAwaken" value="40" inputmode="numeric" placeholder="">
+              <input type="text" id="thirdAwaken" value="4" inputmode="numeric" placeholder="4">
             </div>
 
           </div>
@@ -1168,7 +1167,7 @@
           <div class="buff-pct-row">
             <div class="buff-pct-item">
               <label>基础 %</label>
-              <input type="number" id="baseBuffPct" value="150" inputmode="decimal">
+              <input type="text" id="baseBuffPct" value="150" inputmode="decimal">
             </div>
 
             <span class="buff-pct-operator">+</span>
@@ -1182,7 +1181,7 @@
 
             <div class="buff-pct-item">
               <label>总增益量增幅 %</label>
-              <input type="number" id="totalBuffPct" value="150" inputmode="decimal">
+              <input type="text" id="totalBuffPct" value="150" inputmode="decimal">
             </div>
           </div>
         </div>
@@ -1194,46 +1193,46 @@
           <div class="jade-matrix-grid">
             <div class="form-group">
               <label>Buff 固定三攻</label>
-              <input type="number" id="jadeBuffAtkFlat" class="compact-input" value="" inputmode="numeric">
+              <input type="text" id="jadeBuffAtkFlat" class="compact-input" value="" inputmode="numeric" placeholder="0">
             </div>
 
             <div class="form-group">
               <label>Buff 百分比三攻 (%)</label>
               <div class="inputs-container">
-                <input type="number" class="compact-input jade-pct-atk" value="" inputmode="decimal">
-                <input type="number" class="compact-input jade-pct-atk" value="" inputmode="decimal">
-                <input type="number" class="compact-input jade-pct-atk" value="" inputmode="decimal">
-                <input type="number" class="compact-input jade-pct-atk" value="" inputmode="decimal">
+                <input type="number" class="compact-input jade-pct-atk" value="" min="0" max="5" step="0.1" inputmode="decimal">
+                <input type="number" class="compact-input jade-pct-atk" value="" min="0" max="5" step="0.1" inputmode="decimal">
+                <input type="number" class="compact-input jade-pct-atk" value="" min="0" max="5" step="0.1" inputmode="decimal">
+                <input type="number" class="compact-input jade-pct-atk" value="" min="0" max="5" step="0.1" inputmode="decimal">
               </div>
             </div>
 
             <div class="form-group">
               <label>Buff 固定力智</label>
-              <input type="number" id="jadeBuffStatFlat" class="compact-input" value="" inputmode="numeric">
+              <input type="text" id="jadeBuffStatFlat" class="compact-input" value="" inputmode="numeric" placeholder="0">
             </div>
 
             <div class="form-group">
               <label>Buff 百分比力智 (%)</label>
               <div class="inputs-container">
-                <input type="number" class="compact-input jade-pct-buff-stat" value="" inputmode="decimal">
-                <input type="number" class="compact-input jade-pct-buff-stat" value="" inputmode="decimal">
-                <input type="number" class="compact-input jade-pct-buff-stat" value="" inputmode="decimal">
-                <input type="number" class="compact-input jade-pct-buff-stat" value="" inputmode="decimal">
+                <input type="number" class="compact-input jade-pct-buff-stat" value="" min="0" max="5" step="0.1" inputmode="decimal">
+                <input type="number" class="compact-input jade-pct-buff-stat" value="" min="0" max="5" step="0.1" inputmode="decimal">
+                <input type="number" class="compact-input jade-pct-buff-stat" value="" min="0" max="5" step="0.1" inputmode="decimal">
+                <input type="number" class="compact-input jade-pct-buff-stat" value="" min="0" max="5" step="0.1" inputmode="decimal">
               </div>
             </div>
 
             <div class="form-group">
               <label>太阳 固定力智</label>
-              <input type="number" id="jadeSunStatFlat" class="compact-input" value="" inputmode="numeric">
+              <input type="text" id="jadeSunStatFlat" class="compact-input" value="" inputmode="numeric" placeholder="0">
             </div>
 
             <div class="form-group">
               <label>太阳 百分比力智 (%)</label>
               <div class="inputs-container">
-                <input type="number" class="compact-input jade-pct-sun-stat" value="" inputmode="decimal">
-                <input type="number" class="compact-input jade-pct-sun-stat" value="" inputmode="decimal">
-                <input type="number" class="compact-input jade-pct-sun-stat" value="" inputmode="decimal">
-                <input type="number" class="compact-input jade-pct-sun-stat" value="" inputmode="decimal">
+                <input type="number" class="compact-input jade-pct-sun-stat" value="" min="0" max="5" step="0.1" inputmode="decimal">
+                <input type="number" class="compact-input jade-pct-sun-stat" value="" min="0" max="5" step="0.1" inputmode="decimal">
+                <input type="number" class="compact-input jade-pct-sun-stat" value="" min="0" max="5" step="0.1" inputmode="decimal">
+                <input type="number" class="compact-input jade-pct-sun-stat" value="" min="0" max="5" step="0.1" inputmode="decimal">
               </div>
             </div>
           </div>
@@ -1245,11 +1244,11 @@
           <div class="form-grid">
             <div class="form-group">
               <label>三攻</label>
-              <input type="number" id="cAtk" value="3000" inputmode="numeric">
+              <input type="text" id="cAtk" value="4000" inputmode="numeric" placeholder="4000">
             </div>
             <div class="form-group">
               <label>力智</label>
-              <input type="number" id="cStat" value="5000" inputmode="numeric">
+              <input type="text" id="cStat" value="7000" inputmode="numeric" placeholder="7000">
             </div>
           </div>
         </div>
@@ -1397,7 +1396,7 @@
         awk3Name: '终幕！人偶剧场',
         extras: [
           { key: 'sk1', name: '禁忌诅咒 (疯狂召唤)', mult: 1.25, totalName: '三觉下(非偏爱)' },
-          { key: 'sk2', name: '偏爱(禁忌诅咒+疯狂召唤))', mult: 1.4375, totalName: null }
+          { key: 'sk2', name: '偏爱(禁忌诅咒+疯狂召唤)', mult: 1.4375, totalName: '三觉下(偏爱)' }
         ]
       },
       'gong': {
@@ -1451,7 +1450,7 @@
       passPlatinum15: 0,           // 被动白金数量 (0, 1, 2)
       trainerInstructor: 0,        // 训练教官 (0: 未开启, 1: 已开启)
       goldenLand: 0,               // 黄金乡 (0: 红10及下, 11: 红11, 12: 红12+)
-      outMapSkills: {},            // 动态 outMap 技能等级 (例如 {0: 10, 1: 10},key对应JOB_SKILLS_DATA[currentJob].outMap 数组下标)
+      outMapSkills: { 0: 40 },     // 动态 outMap 技能等级 (默认一觉被动40级)
 
       // 4. 图内适用修正 (由自动推算算出，或手动填写)
       buffStatApplicable: 10000,   // BUFF 适用四维
@@ -1459,13 +1458,12 @@
       sunStatApplicable: 10000,    // 太阳适用四维
       buffInGame: 200000,          // 图内适用增益量
       firstAwaken: 40,            // 一觉等级
-      thirdAwaken: 40,            // 三觉等级
+      thirdAwaken: 4,             // 三觉等级
 
       // 增益量模式与增幅 %
-      isJadeIncluded: true,       // true: 填总数, false: 填基础
-      baseBuffPct: 0,             // 基础增益量增幅 %
-      totalBuffPct: 0,            // 总增益量增幅 %
-      jadeBuffPct: 0,             // 辟邪玉折算得到的增益量增幅 %  ,实际计算会到3位 ,游戏内显示四舍五入到2位小数,不知道是否有影响, 先保留3位小数计算.
+      baseBuffPct: 150,           // 基础增益量增幅 %
+      totalBuffPct: 150,          // 总增益量增幅 %
+      jadeBuffPct: 0,             // 辟邪玉折算得到的增益量增幅 %
 
       // 🔮 辟邪玉属性加成 
       jadeBuffAtkFlat: 0,                                   // Buff 固定三攻
@@ -1478,8 +1476,8 @@
       jadePctSunStatArr: [0, 0, 0, 0],                     // 太阳 百分比力智 (4个框)
 
       // 5. C 模板
-      cAtk: 3000,                  // C 模板三攻
-      cStat: 5000                  // C 模板力智
+      cAtk: 4000,                  // C 模板三攻
+      cStat: 7000                  // C 模板力智
     };
 
 
@@ -1487,19 +1485,19 @@
     const LAST_PRESET_KEY = 'dnf_buff_calc_last_presets_v1';
     const SYSTEM_DEFAULT_PRESETS = {
       'ma': [
-        { id: 'sys_ma_1', name: '🔒 默认预设(占位)', isSystem: true, data: structuredClone(state) }
+        { id: 'sys_ma_1', name: '🔒 系统默认基准', isSystem: true, data: { ...structuredClone(state), currentJob: 'ma', outMapSkills: { 0: 40 } } }
       ],
       'ba': [
-        { id: 'sys_ba_1', name: '🔒 默认预设(占位)', isSystem: true, data: structuredClone(state) }
+        { id: 'sys_ba_1', name: '🔒 系统默认基准', isSystem: true, data: { ...structuredClone(state), currentJob: 'ba', outMapSkills: { 0: 40, 1: 20 } } }
       ],
       'luo': [
-        { id: 'sys_luo_1', name: '🔒 默认预设(占位)', isSystem: true, data: structuredClone(state) }
+        { id: 'sys_luo_1', name: '🔒 系统默认基准', isSystem: true, data: { ...structuredClone(state), currentJob: 'luo', outMapSkills: { 0: 40 } } }
       ],
       'gong': [
-        { id: 'sys_gong_1', name: '🔒 默认预设(占位)', isSystem: true, data: structuredClone(state) }
+        { id: 'sys_gong_1', name: '🔒 系统默认基准', isSystem: true, data: { ...structuredClone(state), currentJob: 'gong', outMapSkills: { 0: 40, 1: 20 } } }
       ],
       'qiang': [
-        { id: 'sys_qiang_1', name: '🔒 默认预设(占位)', isSystem: true, data: structuredClone(state) }
+        { id: 'sys_qiang_1', name: '🔒 系统默认基准', isSystem: true, data: { ...structuredClone(state), currentJob: 'qiang', outMapSkills: { 0: 20, 1: 40 } } }
       ]
     };
 
@@ -1579,12 +1577,18 @@
      * @param {number} cAtk  - C 的基础三攻 (例如 3200)
      * @returns {Function} 
      */
-    function createRateCalculator(cAtk = 3200, cStat = 5500, dmgInc = 1.0) {
-      return function calcRate(buffAtk, buffStat) {
-        // todo: 不知道怎么算 
-        return ((buffAtk + buffStat) / (cAtk + cStat) * dmgInc);
-      };
-    }
+   function createRateCalculator(cAtk = 3200, cStat = 5500, dmgInc = 1.0) {
+  // 提前折叠预计算常量：
+  // 1. statTerm = 1 / (250 + cStat)
+  // 2. invAtk   = 1 / cAtk
+  const invStat = 1 / (250 + cStat);
+  const invAtk  = 1 / cAtk;
+  const factor  = dmgInc;
+
+  return function calcRate(buffAtk, buffStat) {
+    return (1 + buffStat * invStat) * (1 + buffAtk * invAtk) * factor;
+  };
+}
 
     /**
  * 🌟 1. 全职业配置表 (JOB_CONFIG)
@@ -1607,7 +1611,7 @@
       const inMapTotalBuff = Math.floor((state.buffInGame || 0) * rate);
 
       // 3. 核心算一觉(太阳)与 Buff 基础数值 (站街 vs 图内) 喵！
-      const awk1 = calcAwaken(state.sunStatApplicable, state.firstAwaken, inMapTotalBuff);
+      const awk1 = calcAwaken(state.firstAwaken, state.sunStatApplicable, inMapTotalBuff);
 
       const awk3 = Math.floor(awk1 * (1.08 + state.thirdAwaken * 0.01));
 
@@ -1895,9 +1899,10 @@
       // 3. 计算算式结果
       try {
         const result = new Function(`return ${valStr}`)();
-        return isNaN(result) ? baseVal : result;
+        return (typeof result === 'number' && Number.isFinite(result)) ? result : baseVal;
       } catch (e) {
-        return isNaN(parseFloat(valStr)) ? baseVal : parseFloat(valStr);
+        const fallback = parseFloat(valStr);
+        return Number.isFinite(fallback) ? fallback : baseVal;
       }
     }
 
@@ -1966,36 +1971,6 @@
 
         console.log(`成功读取预设【${configObj.name}】，值已更新至 Placeholder 喵！`);
       }
-    }
-    /**
-     * 💾 2. 保存当前预设 (防覆盖系统预设)
-     */
-    function handleSaveConfig() {
-      const selectEl = document.getElementById('configLoadSelect');
-      const selectedId = selectEl ? selectEl.value : '';
-      const presets = getJobPresets(state.currentJob);
-
-      // A. 如果未选中任何预设或当前选中了系统默认预设 -> 拦截并引导“新增”
-      if (!selectedId || (presets[selectedId] && presets[selectedId].isSystem)) {
-        alert('系统默认预设不可以被修改覆盖喵！请点击 “➕” 按钮保存为自定义预设喵~！(๑>◡<๑)');
-        return;
-      }
-
-      // B. 覆盖更新自定义预设
-      const allUserStore = getUserCustomPresets();
-      const currentJob = state.currentJob;
-
-      if (!allUserStore[currentJob]) {
-        allUserStore[currentJob] = {};
-      }
-
-      allUserStore[currentJob][selectedId].data = JSON.parse(JSON.stringify(state));
-      saveUserCustomPresets(allUserStore);
-
-      // C. 触发清空并转存 placeholder
-      applyStateToDOM();
-      dispatchAndPipeline();
-      saveLastSelectedPreset(state.currentJob, selectedId);
     }
     /**
    * 💾 2. 保存当前预设 (防覆盖系统预设 + 动态视觉反馈喵！)
@@ -2111,8 +2086,14 @@
           saveUserCustomPresets(allUserStore);
         }
 
-        // C. 刷新下拉框
+        // C. 刷新下拉框并自动回退到系统默认基准预设
         renderConfigSelect();
+        const updatedPresets = getJobPresets(currentJob);
+        const defaultId = Object.keys(updatedPresets)[0];
+        if (selectEl && defaultId) {
+          selectEl.value = defaultId;
+          handleSelectConfigChange(selectEl);
+        }
       }
     }
 
@@ -2151,24 +2132,24 @@
      * 🌟 格式化当前纯数值 (用于基础列)
      */
     function formatValOnly(val, isRate = false) {
-      if (typeof val !== 'number' || isNaN(val)) {
+      if (typeof val !== 'number' || !Number.isFinite(val)) {
         return `<span style="color: var(--text-muted);">-</span>`;
       }
-      return isRate ? `${val.toFixed(2)}%` : val.toLocaleString();
+      return isRate ? `${val.toFixed(2)}` : val.toLocaleString();
     }
 
     /**
      * 🌟 计算并格式化差值胶囊 (单独用于差值列)
      */
     function formatDiffOnly(currentVal, baseVal, isRate = false) {
-      if (typeof currentVal !== 'number' || typeof baseVal !== 'number' || isNaN(currentVal) || isNaN(baseVal)) {
+      if (typeof currentVal !== 'number' || typeof baseVal !== 'number' || !Number.isFinite(currentVal) || !Number.isFinite(baseVal)) {
         return '';
       }
 
       const diff = currentVal - baseVal;
-      if (diff === 0) return ''; // 差值为 0 不显示胶囊喵
+      if (Math.abs(diff) < 0.001) return ''; // 差值为 0 不显示胶囊喵
 
-      const diffFormatted = isRate ? Math.abs(diff).toFixed(2) + '%' : Math.abs(diff).toLocaleString();
+      const diffFormatted = isRate ? Math.abs(diff).toFixed(2) : Math.abs(diff).toLocaleString();
       const diffSign = diff > 0 ? `+${diffFormatted}` : `-${diffFormatted}`;
       const diffClass = diff > 0 ? 'positive' : 'negative';
 
@@ -2218,46 +2199,6 @@
 
 
 
-    /**
-     * 🛠️ 通用工具：校验输入框并获取合法数值
-     * @param {HTMLInputElement} input - 当前触发事件的输入框 DOM 节点
-     * @returns {number} 校验后的合法数值
-     */
-    /**
-     * 🛠️ 通用工具：校验输入框并获取合法数值 (含智能算术解析)
-     */
-    function getValidInputValue(input) {
-      if (!input) return 0;
-
-      let valStr = input.value.trim();
-
-      // 获取 placeholder 作为缺省/相对计算基准
-      let placeholderVal = 0;
-      if (input.placeholder) {
-        placeholderVal = parseFloat(input.placeholder) || 0;
-      }
-
-      // 🌟 调用智能算术解析器，处理 123456+567 或 +567 算式 喵！
-      let num = parseSmartInput(valStr, placeholderVal);
-
-      // 🌟 1. 超过最大值：强制设为 max
-      if (input.hasAttribute('max')) {
-        const max = parseFloat(input.max);
-        if (!isNaN(max) && num > max) {
-          num = max;
-        }
-      }
-
-      // 🌟 2. 小于最小值：强制设为 min
-      if (input.hasAttribute('min') && valStr !== '') {
-        const min = parseFloat(input.min);
-        if (!isNaN(min) && num < min) {
-          num = min;
-        }
-      }
-
-      return num;
-    }
 
 
     /**
@@ -2378,7 +2319,7 @@
       // 🌟 D. 监听失焦 (focusout 事件)：自动解析算式并回写纯数字 UI 喵！
       container.addEventListener('focusout', (e) => {
         const target = e.target;
-        if (target.tagName === 'INPUT') {
+        if (target.tagName === 'INPUT' && target.type !== 'radio' && target.type !== 'checkbox') {
           const rawStr = target.value.trim();
 
           if (rawStr !== '') {
@@ -2426,8 +2367,9 @@
         // ② 加上 jobCustomCategorySlots (outMap) 各技能在当前等级下的四维数值
         if (jobData.outMap && Array.isArray(jobData.outMap)) {
           jobData.outMap.forEach((skill, idx) => {
-            // 读取插槽里该技能填写的当前等级 (默认 10)
-            const lvl = state.outMapSkills[idx] !== undefined ? state.outMapSkills[idx] : 10;
+            // 读取插槽里该技能填写的当前等级 (默认 40 或技能上限)
+            const defaultLvl = skill.data.length >= 40 ? 40 : skill.data.length;
+            const lvl = state.outMapSkills[idx] !== undefined ? state.outMapSkills[idx] : defaultLvl;
             if (skill.data && skill.data.length > 0) {
               // 下标越界保护
               const valIndex = Math.min(Math.max(lvl - 1, 0), skill.data.length - 1);
@@ -2539,7 +2481,7 @@
       // ⚡ 1. 自动推算相关控件与图内适用修正框渲染
       // ==========================================
 
-      // 辅助更新输入框函数：如果被禁用(自动推算开启)，直接写 value；如果未禁用(手动输入)，清空 value 写入 placeholder 喵！
+      // 辅助更新输入框函数：如果被禁用(自动推算开启)，直接写 value；如果未禁用(手动输入)，更新 placeholder，不清除已输入的 value
       const updateCorrectInput = (id, val) => {
         const input = document.getElementById(id);
         if (!input) return;
@@ -2549,10 +2491,6 @@
           input.placeholder = val;
         } else {
           input.placeholder = val !== undefined && val !== null ? val : '0';
-          // 如果当前不是用户主动打字聚焦状态，清空 value 展现 placeholder 喵！
-          if (document.activeElement !== input && input.value.trim() === String(val)) {
-            input.value = '';
-          }
         }
       };
 
@@ -2568,17 +2506,15 @@
       // D. 太阳适用四维
       updateCorrectInput('sunStatApplicable', state.sunStatApplicable);
 
-      // E. 一觉与三觉等级 (始终保持 placeholder 机制喵)
+      // E. 一觉与三觉等级 (始终保持更新 placeholder，不清除已输入 value)
       const firstAwakenInput = document.getElementById('firstAwaken');
-      if (firstAwakenInput && document.activeElement !== firstAwakenInput) {
+      if (firstAwakenInput) {
         firstAwakenInput.placeholder = state.firstAwaken || '40';
-        if (firstAwakenInput.value.trim() === String(state.firstAwaken)) firstAwakenInput.value = '';
       }
 
       const thirdAwakenInput = document.getElementById('thirdAwaken');
-      if (thirdAwakenInput && document.activeElement !== thirdAwakenInput) {
+      if (thirdAwakenInput) {
         thirdAwakenInput.placeholder = state.thirdAwaken || '40';
-        if (thirdAwakenInput.value.trim() === String(state.thirdAwaken)) thirdAwakenInput.value = '';
       }
 
       // F. 单选框组 (被动白金、训练教官、黄金乡)：开启自动推算时才启用 喵！
@@ -2631,8 +2567,6 @@
         baseBuffPctInput.placeholder = state.baseBuffPct !== undefined ? state.baseBuffPct : '0';
         if (state.isJadeIncluded) {
           baseBuffPctInput.value = state.baseBuffPct;
-        } else if (document.activeElement !== baseBuffPctInput && baseBuffPctInput.value.trim() === String(state.baseBuffPct)) {
-          baseBuffPctInput.value = '';
         }
       }
 
@@ -2643,8 +2577,6 @@
         totalBuffPctInput.placeholder = state.totalBuffPct !== undefined ? state.totalBuffPct : '0';
         if (!state.isJadeIncluded) {
           totalBuffPctInput.value = state.totalBuffPct;
-        } else if (document.activeElement !== totalBuffPctInput && totalBuffPctInput.value.trim() === String(state.totalBuffPct)) {
-          totalBuffPctInput.value = '';
         }
       }
 
@@ -2739,7 +2671,6 @@
      */
     function onAutoCalcSwitchChange(target) {
       state.isAutoCalc = target.checked;
-      return false;
     }
 
     /**
@@ -2752,7 +2683,7 @@
         btn.textContent = '✓ 已设基准';
         btn.classList.add('applied-success');
         setTimeout(() => {
-          btn.textContent = '✨ 设为基准';
+          btn.textContent = '✨ 同步等级';
           btn.classList.remove('applied-success');
         }, 1500);
       }
@@ -2776,7 +2707,6 @@
 
     function onModeSwitchChange(target) {
       state.isJadeIncluded = target.checked;
-      return false;
     }
 
 
@@ -2807,14 +2737,16 @@
         slotsContainer.innerHTML = '';
         if (jobData.outMap && Array.isArray(jobData.outMap)) {
           jobData.outMap.forEach((skill, idx) => {
+            const defaultLvl = skill.data.length >= 40 ? 40 : skill.data.length;
+            const currentVal = (state.outMapSkills && state.outMapSkills[idx] !== undefined) ? state.outMapSkills[idx] : defaultLvl;
             const formGroup = document.createElement('div');
             formGroup.className = 'form-group';
             formGroup.innerHTML = `
           <label id="outMapSkill${idx}Label">${skill.name}</label>
-          <input type="number" 
+          <input type="text" 
                  id="outMapSkill${idx}" 
-                 value="10" 
-                 placeholder="10" 
+                 value="" 
+                 placeholder="${currentVal}" 
                  min="1" 
                  max="${skill.data.length}" 
                  inputmode="numeric">
