@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>DNF 辅助职业奶量计算器</title>
   <script>
-    // 立即执行：根据本地存储初始化主题，彻底杜绝白屏闪烁 (FOUC)
     (function () {
       try {
         var t = localStorage.getItem('theme');
@@ -21,6 +20,7 @@
     ☀️ 1. 浅色 / 🌙 暗色 主题变量声明
     ========================================== */
     :root {
+      color-scheme: light;
       --bg-color: #f0f2f5;
       --card-bg: #ffffff;
       --card-inner: #f8f9fa;
@@ -42,10 +42,11 @@
 
     html.dark-theme,
     body.dark-theme {
+      color-scheme: dark;
       --bg-color: #0f111a;
       --card-bg: #1a1d2e;
       --card-inner: #24283b;
-      --primary: #ff9e3b;
+      --primary: #e0af68;
       --text-main: #c0caf5;
       --text-muted: #7982a9;
       --border-color: #2f354f;
@@ -56,9 +57,9 @@
       --accent-pink: #bb9af7;
       --accent-green: #9ece6a;
       --accent-purple: #c084fc;
-      --btn-base-bg: rgba(255, 158, 59, 0.15);
-      --btn-base-border: #ff9e3b;
-      --btn-base-text: #ff9e3b;
+      --btn-base-bg: rgba(224, 175, 104, 0.12);
+      --btn-base-border: rgba(224, 175, 104, 0.38);
+      --btn-base-text: #e0af68;
     }
 
     /* ==========================================
@@ -68,6 +69,25 @@
       box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
       transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+    }
+
+    /* 🌟 全局滚动条暗色与浅色自适应美化 */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--card-inner);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-color);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
     }
 
     /* 🚫 隐藏所有数字输入框微调箭头 */
@@ -272,6 +292,26 @@
       display: flex;
       flex-direction: column;
       gap: 14px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border-color) var(--card-bg);
+    }
+
+    .modal-body::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .modal-body::-webkit-scrollbar-track {
+      background: var(--card-bg);
+      border-radius: 0 8px 8px 0;
+    }
+
+    .modal-body::-webkit-scrollbar-thumb {
+      background: var(--border-color);
+      border-radius: 4px;
+    }
+
+    .modal-body::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
     }
 
     .help-section {
@@ -313,18 +353,60 @@
       border: 1px solid var(--btn-base-border);
     }
 
-    .help-tip-box {
-      margin-top: 6px;
-      padding: 8px 12px;
-      background: rgba(217, 119, 6, 0.08);
-      border-left: 3px solid var(--primary);
-      border-radius: 4px;
-      font-size: 12.5px;
+    .help-list li > div {
+      margin-top: 4px;
     }
 
-    body.dark-theme .help-tip-box {
-      background: rgba(255, 158, 59, 0.12);
+    .help-title-danger {
+      color: #e74c3c !important;
     }
+
+    .help-hl-blue {
+      color: #2980b9;
+    }
+
+    .help-hl-red {
+      color: #e74c3c;
+    }
+
+    .help-hl-purple {
+      color: #8e44ad;
+    }
+
+    .help-hl-green {
+      color: #27ae60;
+    }
+
+    .help-hl-dark {
+      color: #2c3e50;
+    }
+
+    body.dark-theme .help-hl-dark {
+      color: #a5b4fc;
+    }
+
+    .help-hl-orange {
+      color: #e67e22;
+    }
+
+    .help-hl-teal {
+      color: #16a085;
+    }
+
+    .help-links-box {
+      margin-top: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 13.5px;
+    }
+
+    .help-link {
+      color: var(--accent-blue);
+      text-decoration: underline;
+      word-break: break-all;
+    }
+
 
     .modal-footer {
       padding: 12px 20px;
@@ -440,9 +522,10 @@
       transform: translateY(1px) scale(0.97);
     }
 
-    /* ➕ 新增按钮 & 🗑️ 删除按钮 */
+    /* ➕ 新增、🗑️ 删除、✏️ 重命名按钮 */
     .btn-add-config,
-    .btn-delete-config {
+    .btn-delete-config,
+    .btn-rename-config {
       background: var(--input-bg);
       border: 1px solid var(--border-color);
       color: var(--text-main);
@@ -467,6 +550,18 @@
     }
 
     .btn-add-config:active {
+      transform: translateY(1px) scale(0.95);
+    }
+
+    .btn-rename-config:hover {
+      background: rgba(37, 99, 235, 0.12);
+      border-color: var(--accent-blue);
+      color: var(--accent-blue);
+      box-shadow: 0 0 8px rgba(37, 99, 235, 0.25);
+      transform: translateY(-1px);
+    }
+
+    .btn-rename-config:active {
       transform: translateY(1px) scale(0.95);
     }
 
@@ -1160,21 +1255,75 @@
       flex-shrink: 0;
     }
 
-    .base-status-tag {
-      font-size: 12.5px;
-      font-weight: bold;
-      color: var(--text-muted);
-      background: var(--input-bg);
-      border: 1px solid var(--border-color);
-      padding: 2px 8px;
-      border-radius: 4px;
-      transition: all 0.2s ease;
+
+    /* ==========================================
+    🌙 暗色模式专属视觉优化 (舒适护眼暖金与按键微调)
+    ========================================== */
+    /* 🏷️ 胶囊单选按钮 (避免刺眼高亮，采用低饱和暖金质感) */
+    body.dark-theme .segmented-btn:hover {
+      color: var(--text-main);
+      background: rgba(224, 175, 104, 0.1);
     }
 
-    .base-status-tag.active {
+    body.dark-theme .segmented-control input[type="radio"]:checked+.segmented-btn {
+      background: #b87b28 !important;
+      color: #ffffff !important;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35) !important;
+    }
+
+    /* 🎚️ 开关组件选中底色 */
+    body.dark-theme input:checked+.slider {
+      background-color: #b87b28;
+    }
+
+    /* ❓ 帮助按钮悬停 */
+    body.dark-theme .help-btn:hover {
+      background: #b87b28;
+      border-color: #b87b28;
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+    }
+
+    /* 📌 基准锁定按钮悬停与激活 */
+    body.dark-theme .btn-set-base:hover {
+      background: #b87b28;
+      border-color: #b87b28;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    }
+
+    body.dark-theme .btn-set-base.active-base {
+      background: #b87b28 !important;
+      border-color: #b87b28 !important;
+      color: #ffffff !important;
+    }
+
+    /* 📖 帮助模态弹窗确认按钮 */
+    body.dark-theme .modal-confirm-btn {
+      background: #b87b28;
+      color: #ffffff;
+    }
+
+    body.dark-theme .modal-confirm-btn:hover {
+      background: #c5862b;
+      box-shadow: 0 2px 10px rgba(184, 123, 40, 0.35);
+    }
+
+    /* 📊 最终奶量表头微调 */
+    body.dark-theme .result-table th {
+      background: rgba(224, 175, 104, 0.08);
       color: var(--primary);
+    }
+
+    /* 📝 帮助文本高亮微调 */
+    body.dark-theme .help-hl-orange {
+      color: #e0af68;
+    }
+
+    /* 🎯 输入框聚焦光晕微调 */
+    body.dark-theme .form-group input:focus {
       border-color: var(--primary);
-      background: rgba(217, 119, 6, 0.12);
+      box-shadow: 0 0 0 2px rgba(224, 175, 104, 0.2);
     }
 
     /* ==========================================
@@ -1320,14 +1469,13 @@
           </div>
 
           <div class="config-action-right">
-            <button class="btn-save-config" id="btnSaveConfig">💾 保存</button>
+            <button class="btn-delete-config" id="btnDeleteConfig" title="删除当前选中的预设">🗑️</button>
+            <button class="btn-rename-config" id="btnRenameConfig" title="重命名当前选中的预设">✏️</button>
             <button class="btn-add-config" id="btnAddConfig" title="新建预设方案">➕</button>
-
             <select id="configLoadSelect" class="config-load-select">
               <option value="" disabled selected>📁 读取预设</option>
             </select>
-
-            <button class="btn-delete-config" id="btnDeleteConfig" title="删除当前选中的预设">🗑️</button>
+            <button class="btn-save-config" id="btnSaveConfig" title="保存修改到当前预设">💾 保存</button>
           </div>
         </div>
 
@@ -1362,7 +1510,7 @@
               <div class="passive-input-row">
                 <input type="text" id="skillLv15" value="10" placeholder="10" min="1" max="70" inputmode="numeric">
                 <span class="passive-stat-tip" id="skillLv15StatTip"></span>
-                <button type="button" class="btn-apply-passive" id="btnApplyPassive">✨ 同步等级</button>
+                <button type="button" class="btn-apply-passive" id="btnApplyPassive">✨同步等级</button>
               </div>
             </div>
 
@@ -1613,7 +1761,6 @@
           </div>
 
           <div class="output-footer-tips">
-            <span id="baseStatusBadge" class="base-status-tag">基准状态：未设置</span>
             <span class="tips-text">💡 绿色代表高于基准，红色低于基准；倍率基于 C 属性</span>
           </div>
         </div>
@@ -1624,57 +1771,68 @@
   </div>
 
   <!-- ❓ 使用帮助模态弹窗 -->
-  <div class="modal-overlay" id="helpModal" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="helpModalTitle">
-    <div class="modal-container">
-      <div class="modal-header">
-        <div class="modal-title-wrap">
-          <span class="modal-title-icon">📖</span>
-          <h3 class="modal-title" id="helpModalTitle">DNF 辅助职业奶量计算器 - 使用帮助</h3>
-        </div>
-        <button class="modal-close-btn" id="closeHelpModalBtn" title="关闭">&times;</button>
+<div class="modal-overlay" id="helpModal" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="helpModalTitle">
+  <div class="modal-container">
+    <div class="modal-header">
+      <div class="modal-title-wrap">
+        <span class="modal-title-icon">📖</span>
+        <h3 class="modal-title" id="helpModalTitle">DNF 辅助职业奶量计算器 - 使用帮助</h3>
       </div>
-      <div class="modal-body">
-        <div class="help-section">
-          <div class="help-section-title">✨ 核心功能概览</div>
-          <p>本计算器支持地下城与勇士（DNF）全五大辅助职业：<strong>奶妈（女圣骑）</strong>、<strong>奶爸（男圣骑）</strong>、<strong>奶萝（小魔女）</strong>、<strong>奶弓（缪斯）</strong>与<strong>奶枪（协战师）</strong>。严格还原国服公式，支持站街面板转图内、专属被动推算、辟邪玉加成、太阳与三觉爆发奶量精确核算。</p>
-        </div>
-
-        <div class="help-section">
-          <div class="help-section-title">📋 快速使用指南</div>
-          <ol class="help-list">
-            <li><strong>职业与方案预设</strong>：在左上方下拉选择职业；支持多套自定义预设方案，点击「➕ 新增」创建新方案，配置变更后点击「💾 保存」，所有数据均自动持久化保存在浏览器本地。</li>
-            <li><strong>面板数据录入</strong>：输入站街四维、站街增益量、BUFF技能等级等关键参数。
-              <div class="help-tip-box">
-                💡 <strong>算式快捷结算小技巧</strong>：所有数字输入框均支持快速加减运算！例如输入 <code>12000+300</code> 或 <code>+150</code>，按下 <code>Enter</code> 回车或点击空白处失焦即可自动求和并填入纯数字！
-              </div>
-            </li>
-            <li><strong>自动推算与基准同步</strong>：
-              勾选「自动推算」后，系统自动依据职业专属被动技能等级、被动白金数量、训练教官(+80四维)、黄金乡增幅等智能推算图内适用四维与增益量。点击「✨ 同步等级」可将当前等级设为提升基准。
-            </li>
-            <li><strong>辟邪玉矩阵配置</strong>：
-              可在右上角切换「包含辟邪玉」与「不含辟邪玉」增益量模式；展开辟邪玉矩阵可录入4条固定值与百分比词条，自动折算总增益量。
-            </li>
-            <li><strong>奶量看板与基准对比</strong>：
-              右侧实时看板直观显示荣誉/祝福BUFF、一觉太阳、三觉太阳及特化技能的力智与三攻奶量。点击「📌 设为基准」后，后续任意微调装备或技能，看板将以醒目颜色与 (+/- / %) 标注相对基准的提升幅度，配装选拔一目了然！
-            </li>
-          </ol>
-        </div>
-
-        <div class="help-section">
-          <div class="help-section-title">⚙️ 偏好设置与说明</div>
-          <ul class="help-list">
-            <li><strong>主题记忆</strong>：点击右上角「🌙 暗色主题 / ☀️ 浅色主题」按钮切换视觉风格，选择会自动持久化保存在浏览器本地，刷新或重新打开仍保持您的偏好。</li>
-            <li><strong>再次查看帮助</strong>：首次进入网站时本弹窗会自动弹出；平时可随时点击右上角「❓ 使用帮助」再次查阅。</li>
-          </ul>
-        </div>
+      <button class="modal-close-btn" id="closeHelpModalBtn" title="关闭">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="help-section">
+        <div class="help-section-title">📌 输入前注意</div>
+        <ol class="help-list">
+          <li>       
+            <div>请务必确认<strong class="help-hl-blue">「BUFF强化登记栏」</strong>与<strong class="help-hl-blue">「当前身上穿戴」</strong>的装备属性是否一致。</div>
+            <div><strong class="help-hl-red">特别是BUFF称号与太阳称号在增益量%、四维属性是否一致</strong></div>
+          </li>
+          <li>
+            <div>首次填完 <strong class="help-hl-purple">Lv15 核心技能</strong>后，建议点击一次 <strong class="help-hl-green">✨同步等级</strong>，为后续调整装备、白金徽章提供准确的基准差值参考。</div>
+          </li>
+        </ol>
       </div>
-      <div class="modal-footer">
-        <span class="modal-footer-tip">💡 随时点击右上角「❓ 使用帮助」即可再次打开</span>
-        <button class="modal-confirm-btn" id="confirmHelpModalBtn">我知道了</button>
+
+      <div class="help-section">
+        <div class="help-section-title">⚙️ 其他说明</div>
+        <ol class="help-list">
+          <li><strong class="help-hl-dark">增益量模式选择</strong>：
+            <div>• <strong class="help-hl-blue">包含辟邪玉（填总数）</strong>：直接填写当前面板的总增益量，系统将自动反推基础增益。</div>
+            <div>• <strong class="help-hl-purple">不含辟邪玉（填基础）</strong>：推荐在<strong class="help-hl-orange">对比不同辟邪玉</strong>时使用，系统将自动计算总增益量。</div>
+          </li>
+          <li>
+            <div>所有数字输入框均支持<strong class="help-hl-teal">直接进行加减运算</strong>！例如输入 <code>12000+300</code> 或直接输入增量 <code>+150</code>，按下 <code>Enter</code> 回车或点击空白处失焦，系统即可自动求和并填入纯数字。</div>
+          </li>
+        </ol>
+      </div>
+
+      <div class="help-section">
+        <div class="help-section-title help-title-danger">⚠️ 游戏内Bug</div>
+        <ol class="help-list">
+          <li>
+            <div>当前版本A套溢出积分带来的额外增益量，虽然在面板「详细信息」中被统计显示，但<strong class="help-hl-red">站街实际并未计算该部分增益量</strong>。若需核算准确的<strong class="help-hl-blue">纯站街奶量</strong>，需在站街增益量中<strong class="help-hl-red">手动减去溢出部分</strong>（图内实战则正常生效，不受影响）。</div>
+          </li>
+          <li>
+            <div>辟邪玉中的<strong class="help-hl-orange">固定三攻</strong>、<strong class="help-hl-orange">固定一觉（太阳）</strong>旧词条在当前版本中<strong class="help-hl-red">仅生效 10%</strong>。</div>
+          </li>
+        </ol>
+      </div>
+
+      <div class="help-section">
+        <div class="help-section-title">🔗 相关链接</div>
+        <div class="help-links-box">
+          <div><strong>开源地址</strong> : <a href="https://github.com/Vixiu/DNF-BuffCalc-Web" target="_blank" rel="noopener noreferrer" class="help-link">https://github.com/Vixiu/DNF-BuffCalc-Web</a></div>
+          <div><strong>奶量公式</strong> : <a href="https:xxxxxxxxx" target="_blank" rel="noopener noreferrer" class="help-link">https:xxxxxxxxx</a></div>
+        </div>
       </div>
     </div>
+    <div class="modal-footer">
+      <span class="modal-footer-tip">💡 随时点击右上角「❓ 使用帮助」即可再次打开</span>
+      <button class="modal-confirm-btn" id="confirmHelpModalBtn">我知道了</button>
+    </div>
   </div>
-
+</div>
   <script>
 
     // 📜 各职业技能数据库 专门负责技能树 UI / 图外技能等级选择 / 技能属性映射
@@ -1874,19 +2032,19 @@
     const LAST_PRESET_KEY = 'dnf_buff_calc_last_presets_v1';
     const SYSTEM_DEFAULT_PRESETS = {
       'ma': [
-        { id: 'sys_ma_1', name: '🔒 系统默认基准', isSystem: true, data: { ...structuredClone(state), currentJob: 'ma', outMapSkills: { 0: 40 } } }
+        { id: 'sys_ma_1', name: '🔒 默认配置(占位)', isSystem: true, data: { ...structuredClone(state), currentJob: 'ma', outMapSkills: { 0: 40 } } }
       ],
       'ba': [
-        { id: 'sys_ba_1', name: '🔒 系统默认基准', isSystem: true, data: { ...structuredClone(state), currentJob: 'ba', outMapSkills: { 0: 40, 1: 20 } } }
+        { id: 'sys_ba_1', name: '🔒 默认配置(占位)', isSystem: true, data: { ...structuredClone(state), currentJob: 'ba', outMapSkills: { 0: 40, 1: 20 } } }
       ],
       'luo': [
-        { id: 'sys_luo_1', name: '🔒 系统默认基准', isSystem: true, data: { ...structuredClone(state), currentJob: 'luo', outMapSkills: { 0: 40 } } }
+        { id: 'sys_luo_1', name: '🔒 默认配置(占位)', isSystem: true, data: { ...structuredClone(state), currentJob: 'luo', outMapSkills: { 0: 40 } } }
       ],
       'gong': [
-        { id: 'sys_gong_1', name: '🔒 系统默认基准', isSystem: true, data: { ...structuredClone(state), currentJob: 'gong', outMapSkills: { 0: 40, 1: 20 } } }
+        { id: 'sys_gong_1', name: '🔒 默认配置(占位)', isSystem: true, data: { ...structuredClone(state), currentJob: 'gong', outMapSkills: { 0: 40, 1: 20 } } }
       ],
       'qiang': [
-        { id: 'sys_qiang_1', name: '🔒 系统默认基准', isSystem: true, data: { ...structuredClone(state), currentJob: 'qiang', outMapSkills: { 0: 20, 1: 40 } } }
+        { id: 'sys_qiang_1', name: '🔒 默认配置(占位)', isSystem: true, data: { ...structuredClone(state), currentJob: 'qiang', outMapSkills: { 0: 20, 1: 40 } } }
       ]
     };
 
@@ -1909,6 +2067,7 @@
       'modeSwitch': onModeSwitchChange,
       'baseBtn': handleSetBaseResult,
       'btnSaveConfig': handleSaveConfig,
+      'btnRenameConfig': handleRenameConfig,
       'btnAddConfig': handleAddNewConfig,
       'btnDeleteConfig': handleDeleteConfig,
       'configLoadSelect': handleSelectConfigChange
@@ -2365,9 +2524,13 @@
       }
     }
     /**
-   * 💾 2. 保存当前预设 (防覆盖系统预设 + 动态视觉反馈喵！)
-   */
+     * 💾 2. 保存当前预设 (防覆盖系统预设 + 动态视觉反馈喵！)
+     */
     function handleSaveConfig(btn) {
+      if (document.activeElement && typeof document.activeElement.blur === 'function') {
+        document.activeElement.blur();
+      }
+
       const selectEl = document.getElementById('configLoadSelect');
       const selectedId = selectEl ? selectEl.value : '';
       const presets = getJobPresets(state.currentJob);
@@ -2375,7 +2538,7 @@
       // A. 如果未选中任何预设或当前选中了系统默认预设 -> 拦截并引导“新增”
       if (!selectedId || (presets[selectedId] && presets[selectedId].isSystem)) {
         alert('系统默认预设不可以被修改覆盖喵！请点击 “➕” 按钮保存为自定义预设喵~！(๑>◡<๑)');
-        return;
+        return false;
       }
 
       // B. 覆盖更新自定义预设
@@ -2396,7 +2559,7 @@
 
       if (btn) {
         const originalText = btn.textContent;
-        btn.textContent = '✓ 保存成功！';
+        btn.textContent = '已保存!';
         btn.classList.add('applied-success'); // 复用高亮效果
 
         setTimeout(() => {
@@ -2405,16 +2568,87 @@
         }, 1500);
       }
       dispatchAndPipeline();
+      return false;
+    }
+
+    /**
+     * ✏️ 3. 重命名当前选中的自定义预设 (防重命名系统预设)
+     */
+    function handleRenameConfig(btn) {
+      const selectEl = document.getElementById('configLoadSelect');
+      const selectedId = selectEl ? selectEl.value : '';
+
+      if (!selectedId) {
+        alert('请先在下拉框中选择要重命名的预设喵~！');
+        return false;
+      }
+
+      const presets = getJobPresets(state.currentJob);
+      const configObj = presets[selectedId];
+
+      // A. 拦截系统预设重命名
+      if (!configObj || configObj.isSystem) {
+        alert('系统默认预设不可以重命名喵！请先点击 “➕” 按钮创建自定义预设喵~！(๑>◡<๑)');
+        return false;
+      }
+
+      // B. 提示输入新名称
+      const oldName = configObj.name;
+      const newName = prompt('请输入该预设的新名称喵：', oldName);
+      if (newName === null) return false; // 用户取消
+
+      const trimmedName = newName.trim();
+      if (!trimmedName) {
+        alert('预设名称不能为空喵！');
+        return false;
+      }
+
+      if (trimmedName === oldName) {
+        return false; // 名称未变动
+      }
+
+      // C. 更新本地存储
+      const allUserStore = getUserCustomPresets();
+      const currentJob = state.currentJob;
+
+      if (!allUserStore[currentJob] || !allUserStore[currentJob][selectedId]) {
+        alert('未找到该预设数据喵！');
+        return false;
+      }
+
+      allUserStore[currentJob][selectedId].name = trimmedName;
+      saveUserCustomPresets(allUserStore);
+
+      // D. 重新渲染下拉框并恢复选中项
+      renderConfigSelect();
+      if (selectEl) selectEl.value = selectedId;
+
+      // E. 动态视觉反馈
+      if (btn) {
+        const originalText = btn.textContent;
+        btn.textContent = '✓';
+        btn.classList.add('applied-success');
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.classList.remove('applied-success');
+        }, 1200);
+      }
+
+      return false;
     }
 
 
 
     /**
-     * ➕ 3. 新建当前职业的自定义预设
+     * ➕ 4. 新建当前职业的自定义预设
      */
     function handleAddNewConfig() {
+      if (document.activeElement && typeof document.activeElement.blur === 'function') {
+        document.activeElement.blur();
+      }
+
       const name = prompt('请输入新预设的名称喵（例如：毕业红12打造）：', '自定义预设');
-      if (!name || !name.trim()) return;
+      if (!name || !name.trim()) return false;
 
       const currentJob = state.currentJob;
       const newId = 'preset_' + Date.now();
@@ -2444,11 +2678,11 @@
       dispatchAndPipeline();
       // 在新建成功并选中后加上这一句：
       saveLastSelectedPreset(currentJob, newId);
-
+      return false;
     }
 
     /**
-     * 🗑️ 4. 删除当前选中的自定义预设 (防删除系统预设)
+     * 🗑️ 5. 删除当前选中的自定义预设 (防删除系统预设)
      */
     function handleDeleteConfig() {
       const selectEl = document.getElementById('configLoadSelect');
@@ -2514,11 +2748,6 @@
         }, 1500);
       }
 
-      const badge = document.getElementById('baseStatusBadge');
-      if (badge) {
-        badge.textContent = '基准状态：已锁定当前方案';
-        badge.classList.add('active');
-      }
 
       // 4. 重新触发一次 UI 渲染，刷新基准差值显示喵！
       dispatchAndPipeline();
