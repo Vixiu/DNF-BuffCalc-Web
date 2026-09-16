@@ -906,7 +906,7 @@
     ========================================== */
     .jade-matrix-grid {
       display: grid;
-      grid-template-columns: max-content 1fr;
+      grid-template-columns: 1fr 1fr;
       column-gap: 12px;
       row-gap: 8px;
       align-items: center;
@@ -917,14 +917,6 @@
       font-weight: bold !important;
       color: var(--text-main) !important;
       white-space: nowrap;
-    }
-
-    .jade-matrix-grid .inputs-container {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-wrap: nowrap;
-      width: 100%;
     }
 
     .jade-matrix-grid input,
@@ -1559,7 +1551,7 @@
               <div class="segmented-control">
                 <label>
                   <input type="radio" name="goldenLand" value="0" checked>
-                  <span class="segmented-btn">红10及下</span>
+                  <span class="segmented-btn">红10以下</span>
                 </label>
                 <label>
                   <input type="radio" name="goldenLand" value="11">
@@ -1676,12 +1668,7 @@
 
             <div class="form-group">
               <label>Buff 百分比三攻 (%)</label>
-              <div class="inputs-container">
-                <input type="number" class="compact-input jade-pct-atk" value="" min="0" max="5" step="0.1" inputmode="decimal">
-                <input type="number" class="compact-input jade-pct-atk" value="" min="0" max="5" step="0.1" inputmode="decimal">
-                <input type="number" class="compact-input jade-pct-atk" value="" min="0" max="5" step="0.1" inputmode="decimal">
-                <input type="number" class="compact-input jade-pct-atk" value="" min="0" max="5" step="0.1" inputmode="decimal">
-              </div>
+              <input type="text" id="jadePctAtk" class="compact-input" value="" inputmode="decimal" placeholder="0">
             </div>
 
             <div class="form-group">
@@ -1691,12 +1678,7 @@
 
             <div class="form-group">
               <label>Buff 百分比力智 (%)</label>
-              <div class="inputs-container">
-                <input type="number" class="compact-input jade-pct-buff-stat" value="" min="0" max="5" step="0.1" inputmode="decimal">
-                <input type="number" class="compact-input jade-pct-buff-stat" value="" min="0" max="5" step="0.1" inputmode="decimal">
-                <input type="number" class="compact-input jade-pct-buff-stat" value="" min="0" max="5" step="0.1" inputmode="decimal">
-                <input type="number" class="compact-input jade-pct-buff-stat" value="" min="0" max="5" step="0.1" inputmode="decimal">
-              </div>
+              <input type="text" id="jadePctBuffStat" class="compact-input" value="" inputmode="decimal" placeholder="0">
             </div>
 
             <div class="form-group">
@@ -1706,12 +1688,7 @@
 
             <div class="form-group">
               <label>太阳 百分比力智 (%)</label>
-              <div class="inputs-container">
-                <input type="number" class="compact-input jade-pct-sun-stat" value="" min="0" max="5" step="0.1" inputmode="decimal">
-                <input type="number" class="compact-input jade-pct-sun-stat" value="" min="0" max="5" step="0.1" inputmode="decimal">
-                <input type="number" class="compact-input jade-pct-sun-stat" value="" min="0" max="5" step="0.1" inputmode="decimal">
-                <input type="number" class="compact-input jade-pct-sun-stat" value="" min="0" max="5" step="0.1" inputmode="decimal">
-              </div>
+              <input type="text" id="jadePctSunStat" class="compact-input" value="" inputmode="decimal" placeholder="0">
             </div>
           </div>
         </div>
@@ -1791,6 +1768,7 @@
           <li>
             <div>首次填完 <strong class="help-hl-purple">Lv15 核心技能</strong>后，建议点击一次 <strong class="help-hl-green">✨同步等级</strong>，为后续调整装备、白金徽章提供准确的基准差值参考。</div>
           </li>
+   
         </ol>
       </div>
 
@@ -1802,29 +1780,35 @@
             <div>• <strong class="help-hl-purple">不含辟邪玉（填基础）</strong>：推荐在<strong class="help-hl-orange">对比不同辟邪玉</strong>时使用，系统将自动计算总增益量。</div>
           </li>
           <li>
-            <div>所有数字输入框均支持<strong class="help-hl-teal">直接进行加减运算</strong>！例如输入 <code>12000+300</code> 或直接输入增量 <code>+150</code>，按下 <code>Enter</code> 回车或点击空白处失焦，系统即可自动求和并填入纯数字。</div>
+            <div>所有数字输入框均支持<strong class="help-hl-teal">直接进行加减乘除算式运算</strong>！例如输入 <code>12000+300</code> 或直接输入增量 <code>+150</code>，按下 <code>Enter</code> 回车或点击空白处失焦，系统即可自动计算并填入纯数字。</div>
           </li>
         </ol>
       </div>
 
       <div class="help-section">
-        <div class="help-section-title help-title-danger">⚠️ 游戏内Bug</div>
+        <div class="help-section-title help-title-danger">⚠️ 游戏内问题(必看) !</div>
         <ol class="help-list">
           <li>
-            <div>当前版本A套溢出积分带来的额外增益量，虽然在面板「详细信息」中被统计显示，但<strong class="help-hl-red">站街实际并未计算该部分增益量</strong>。若需核算准确的<strong class="help-hl-blue">纯站街奶量</strong>，需在站街增益量中<strong class="help-hl-red">手动减去溢出部分</strong>（图内实战则正常生效，不受影响）。</div>
+            <div>当前版本A套溢出积分带来的额外增益量，虽然在面板「详细信息」中被统计显示，但<strong class="help-hl-red">站街实际并未计算该部分增益量</strong>。若需计算准确的<strong class="help-hl-blue">站街奶量</strong>，需在站街增益量中<strong class="help-hl-red">手动减去此部分增益量</strong>（图内正常生效，不受影响）。</div>
           </li>
           <li>
-            <div>辟邪玉中的<strong class="help-hl-orange">固定三攻</strong>、<strong class="help-hl-orange">固定一觉（太阳）</strong>旧词条在当前版本中<strong class="help-hl-red">仅生效 10%</strong>。</div>
+  <div>因<strong class="help-hl-orange">防具精通</strong>可能会导致四维含有小数点，此小数点<strong class="help-hl-red">不会显示在面板上</strong>，但仍参与计算，会导致三攻/力智产生<strong class="help-hl-red">极小误差</strong>。可在四维后<strong class="help-hl-blue">手动增加小数位</strong>（如 <code>.1 ~ .9</code>）进行<strong class="help-hl-green">微调</strong>。</div>
+</li>
+        <!--  <li>
+            <div>辟邪玉中的<strong class="help-hl-orange">固定三攻</strong>、<strong class="help-hl-orange">固定一觉（太阳）</strong>旧词条在当前版本中<strong class="help-hl-red">仅生效 10%</strong>(计算器内以适配)</div>
           </li>
+          -->
         </ol>
       </div>
 
       <div class="help-section">
         <div class="help-section-title">🔗 相关链接</div>
         <div class="help-links-box">
-          <div><strong>开源地址</strong> : <a href="https://github.com/Vixiu/DNF-BuffCalc-Web" target="_blank" rel="noopener noreferrer" class="help-link">https://github.com/Vixiu/DNF-BuffCalc-Web</a></div>
-          <div><strong>奶量公式</strong> : <a href="https:xxxxxxxxx" target="_blank" rel="noopener noreferrer" class="help-link">https:xxxxxxxxx</a></div>
-        </div>
+<div><strong>Github</strong> : <a href="https://github.com/Vixiu/DNF-BuffCalc-Web" target="_blank" rel="noopener noreferrer" class="help-link">https://github.com/Vixiu/DNF-BuffCalc-Web</a></div>
+<div><strong>奶量公式参考</strong> : <a href="https://bbs.colg.cn/thread-9605355-1-1.html" target="_blank" rel="noopener noreferrer" class="help-link">[分享] 【攻略：千海天】千海天版本奶量相关数据</a></div>
+<div><strong>系统奶与属性参考</strong> : <a href="https://bbs.colg.cn/thread-9463452-1-1.html" target="_blank" rel="noopener noreferrer" class="help-link">全职业四维属性及系统奶研究</a></div>
+<!-- <div><strong>倍率公式参考</strong> : <a href="https://bbs.colg.cn/thread-9463452-1-1.html" target="_blank" rel="noopener noreferrer" class="help-link">全职业四维属性及系统奶研究</a></div> -->      
+</div>
       </div>
     </div>
     <div class="modal-footer">
@@ -1926,7 +1910,7 @@
     // 专门负责奶量数值计算公式 / 职业乘区系数 / 最终表格输出结构。
     const JOB_CONFIG = {
       'ma': {
-        coeff: 1.01603,
+        coeff: 1.016,
         dmgInc: 1.141,
         buffName: '勇气祝福',
         awk1Name: '圣光天启',
@@ -1936,7 +1920,7 @@
         ]
       },
       'luo': {
-        coeff: 0.97652,
+        coeff: 0.9765,
         dmgInc: 1.141,
         buffName: '禁忌诅咒',
         awk1Name: '开幕！人偶剧场',
@@ -1947,7 +1931,7 @@
         ]
       },
       'gong': {
-        coeff: 1.01776,
+        coeff: 1.0177,
         dmgInc: 1.174,
         buffName: '可爱节拍',
         awk1Name: '梦想的舞台',
@@ -1957,7 +1941,7 @@
         ]
       },
       'ba': {
-        coeff: 1.01881,
+        coeff: 1.0188,
         dmgInc: 1.141,
         buffName: '荣誉祝福',
         awk1Name: '天启之珠',
@@ -1967,7 +1951,7 @@
         ]
       },
       'qiang': {
-        coeff: 1.02502,
+        coeff: 1.025,
         dmgInc: 1.174,
         buffName: '军械强化',
         awk1Name: '强袭策略:区域肃清',
@@ -2004,23 +1988,23 @@
       buffLvApplicable: 37,        // Buff 适用等级
       sunStatApplicable: 10000,    // 太阳适用四维
       buffInGame: 200000,          // 图内适用增益量
-      firstAwaken: 40,            // 一觉等级
-      thirdAwaken: 4,             // 三觉等级
+      firstAwaken: 41,            // 一觉等级
+      thirdAwaken: 7,             // 三觉等级
 
       // 增益量模式与增幅 %
-      baseBuffPct: 150,           // 基础增益量增幅 %
-      totalBuffPct: 150,          // 总增益量增幅 %
+      baseBuffPct: 0,           // 基础增益量增幅 %
+      totalBuffPct: 0,          // 总增益量增幅 %
       jadeBuffPct: 0,             // 辟邪玉折算得到的增益量增幅 %
 
       // 🔮 辟邪玉属性加成 
       jadeBuffAtkFlat: 0,                                   // Buff 固定三攻
-      jadePctAtkArr: [0, 0, 0, 0],                         // Buff 百分比三攻 (4个框)
+      jadePctAtk: 0,                                        // Buff 百分比三攻 (%)
 
       jadeBuffStatFlat: 0,                                  // Buff 固定力智
-      jadePctBuffStatArr: [0, 0, 0, 0],                    // Buff 百分比力智 (4个框)
+      jadePctBuffStat: 0,                                   // Buff 百分比力智 (%)
 
       jadeSunStatFlat: 0,                                   // 太阳 固定力智
-      jadePctSunStatArr: [0, 0, 0, 0],                     // 太阳 百分比力智 (4个框)
+      jadePctSunStat: 0,                                    // 太阳 百分比力智 (%)
 
       // 5. C 模板
       cAtk: 4000,                  // C 模板三攻
@@ -2081,45 +2065,89 @@
 
 
     /**
-     * buff计算
-     * @param {number} L - BUFF 技能等级
-     * @param {number} S - BUFF 四维（智力/体力/精神）
-     * @param {number} B - 总增益量 (基础增益量 * (1 + 增幅%))
-     * @param {number} [a=1.01603] - 职业系数（高精度版：奶妈 1.01603, 奶枪 1.02502, 奶弓 1.01776, 奶萝 1.07127）
-     * @returns {{ lizhi: number, sangong: number }} 包含【BUFF力智】与【BUFF三攻】的对象
-     */
-    function calcBuff(L, S, B, a = 1.01603) {
-      // 通用乘区倍率（通分项：2993 * 4800 = 14,366,400）
-      const K = a * (S + 2993) * (B + 9600) / 14366400;
+ * BUFF 计算
+ *
+ * @param {Object} params - 配置参数对象
+ * @param {number} params.buffLevel             - BUFF 技能等级
+ * @param {number} params.applicableStat        - BUFF 适用四维（已计入被动与白金修正）
+ * @param {number} params.totalGain             - 进图总增益量（基础增益量 * (1 + 增幅%)）
+ * @param {number} [params.roleCoefficient=1.0] - 职业系数（如 0.991, 1.016, 1.0177 等）
+ * @param {number} [params.jadeBuffAtkFlat=0]   - 辟邪玉：Buff 固定三攻
+ * @param {number} [params.jadePctAtk=0]        - 辟邪玉：Buff 百分比三攻
+ * @param {number} [params.jadeBuffStatFlat=0]  - 辟邪玉：Buff 固定力智
+ * @param {number} [params.jadePctBuffStat=0]   - 辟邪玉：Buff 百分比力智
+ * @returns {{ stat: number, atk: number }}     - 最终生效的【BUFF力智】与【BUFF三攻】
+ */
+function calcBuff(
+  buffLevel,
+  applicableStat,
+  totalGain,
+  roleCoefficient = 1.0,
+  jadeBuffAtkFlat = 0,
+  jadePctAtk = 0,
+  jadeBuffStatFlat = 0,
+  jadePctBuffStat = 0,
+) {
+  // 1. 公共四维与增益乘区
+  const statFactor = 1 + applicableStat / 2993;
+  const gainFactor = 1 + totalGain / 4800;
 
-      return {
-        // 利用按位或运算符 0 | val 实现快速向下取整 (Floor)
-        stat: 0 | (150 + 11 * L) * K,  // BUFF 力智
-        atk: 0 | (36 + 1.8 * L) * K    // BUFF 三攻
-      };
-    }
+  // 2. 三攻计算部分
+  const baseAtk = 36 + 1.8 * buffLevel;
+  const oldBuffAtk = (baseAtk + jadeBuffAtkFlat * 0.1) * (1 + jadePctAtk / 100) * statFactor;
+  const newBuffAtk = baseAtk * statFactor * gainFactor;
+  const atk = roleCoefficient * (oldBuffAtk + newBuffAtk);
 
-    /**
-     * 一觉计算
-     * 
-     * @param {number} L - 一觉技能等级
-     * @param {number} S - 站街 BUFF 四维（智力/体力/精神）
-     * @param {number} B - 总增益量 (基础增益量 * (1 + 增幅%))
-     * @returns {number} 最终一觉（太阳）爆发力智加成
-     */
-    function calcAwaken(L, S, B) {
-      // 1. 合并计算一觉基础力智（前 30 级抛物线成长，30 级后线性成长）
-      const base = L <= 30 ? Math.round((L * L + 130 * L + 130) / 5) : 92 * L - 1774;
+  // 3. 力智计算部分
+  const baseStat = 150 + 11 * buffLevel;
+  const oldBuffStat = (baseStat + jadeBuffStatFlat) * (1 + jadePctBuffStat / 100) * statFactor;
+  const newBuffStat = baseStat * statFactor * gainFactor;
+  const stat = roleCoefficient * (oldBuffStat + newBuffStat);
 
-      // 2. 根据官方底层公式计算旧一觉与新一觉奶量
-      const statTerm = S / 7500;
-      const oldAwk = base * (1 + statTerm);
-      const newAwk = base * (2 + statTerm) * (9 + B / 8500);
+  // 4. 使用 Math.round 对最终结果进行标准四舍五入喵！
+  return {
+    atk: Math.round(atk),
+    stat: Math.round(stat),
+  };
+}
 
-      // 3. 按位或运算符 0 | val 实现快速向下取整 (Floor)
-      return 0 | (oldAwk + newAwk);
-    }
+ /**
+ * DNF 辅助职业一觉（太阳）力智加成计算函数
+ * 
+ * @param {Object} params - 配置参数对象
+ * @param {number} params.awakeLevel         - 一觉技能等级（原 L）
+ * @param {number} params.applicableStat     - 太阳适用四维（原 S，已计入相关被动与加成）
+ * @param {number} params.totalGain          - 进图总增益量（原 B，基础增益量 * (1 + 增幅%)）
+ * @param {number} [params.jadeSunStatFlat=0]- 辟邪玉：太阳固定力智（按机制生效 10%）
+ * @param {number} [params.jadePctSunStat=0] - 辟邪玉：太阳百分比力智（%）
+ * @returns {number} 最终一觉（太阳）爆发力智加成（四舍五入整数）
+ */
+function calcAwaken(
+  awakeLevel,
+  applicableStat,
+  totalGain,
+  jadeSunStatFlat = 0,
+  jadePctSunStat = 0,
+) {
+  // 1. 一觉原生技能基础力智（前 30 级抛物线成长，30 级后线性每级 +92）
+  const baseStat = awakeLevel <= 30
+    ? Math.round((awakeLevel * awakeLevel + 130 * awakeLevel + 130) / 5)
+    : 92 * awakeLevel - 1774;
 
+  // 2. 太阳专属四维乘区项（分母为 7500）
+  const statFactor = 1 + applicableStat / 7500
+
+  // 3. 旧一觉奶量（受辟邪玉固定太阳 10% 与百分比加成）
+  const oldAwaken = (baseStat + jadeSunStatFlat * 0.1) * (1 + jadePctSunStat / 100) * statFactor
+
+  // 4. 新一觉增益奶量：baseStat * (2 + S/7500) * (9 + B/8500)
+  const newAwaken = baseStat * (statFactor + 1) * (9 + totalGain / 8500)
+
+  // 5. 四舍五入返回最终整数结果
+  return Math.round(oldAwaken + newAwaken)
+}
+
+    
     /**
      * 🛠️ 闭包倍率计算器生成函数 喵！
      * @param {number} cStat - C 的基础力智 (例如 5500)
@@ -2160,15 +2188,26 @@
       const inMapTotalBuff = Math.floor((state.buffInGame || 0) * rate);
 
       // 3. 核心算一觉(太阳)与 Buff 基础数值 (站街 vs 图内) 喵！
-      const awk1 = calcAwaken(state.firstAwaken, state.sunStatApplicable, inMapTotalBuff);
+      const awk1 = calcAwaken(state.firstAwaken, state.sunStatApplicable, inMapTotalBuff,state.jadeSunStatFlat, state.jadePctSunStat);
 
       const awk3 = Math.floor(awk1 * (1.08 + state.thirdAwaken * 0.01));
 
-      const outMapBuff = calcBuff(state.buffLv, state.buffStat, outMapTotalBuff, config.coeff);
-      const inMapBuff = calcBuff(state.buffLvApplicable, state.buffStatApplicable, inMapTotalBuff, config.coeff);
+    
+      const outMapBuff = calcBuff(state.buffLv, state.buffStat, outMapTotalBuff, config.coeff,
+        state.jadeBuffAtkFlat, state.jadePctAtk,
+        state.jadeBuffStatFlat, state.jadePctBuffStat
+      );
+      const inMapBuff = calcBuff(state.buffLvApplicable, state.buffStatApplicable, inMapTotalBuff, config.coeff,
+        state.jadeBuffAtkFlat, state.jadePctAtk,
+        state.jadeBuffStatFlat, state.jadePctBuffStat
+      );
+  
 
-
-      const calcRate = createRateCalculator(state.cAtk, state.cStat, config.dmgInc);
+      // 倍率计算
+      // 物理职业系统奶公式：（无系统奶面板-人物基础属性-婚戒力量15点+防具精通小数点）*3.08+2886
+      // 魔法职业系统奶公式：（无系统奶面板-人物基础属性+防具精通小数点）*3.08+2886
+      // 辅助职业系统奶公式：（无系统奶面板-人物基础属性+吃系统奶的技能+防具精通小数点）*3.08+2886
+      const calcRate = createRateCalculator(state.cAtk, (state.cStat - 805 ) * 3.08 + 2886 +state.cStat, config.dmgInc);
 
       // 5. 构建结果数组 喵！
       const resultList = [
@@ -2391,12 +2430,7 @@
         }
       }
 
-      // 3. 处理辟邪玉 4 个百分比框 (class 数组)
-      updateClassPlaceholders('jade-pct-atk', state.jadePctAtkArr);
-      updateClassPlaceholders('jade-pct-buff-stat', state.jadePctBuffStatArr);
-      updateClassPlaceholders('jade-pct-sun-stat', state.jadePctSunStatArr);
-
-      // 4. 处理动态技能插槽 (outMap) 的 placeholder 和 value
+      // 3. 处理动态技能插槽 (outMap) 的 placeholder 和 value
       if (state.outMapSkills) {
         Object.keys(state.outMapSkills).forEach(idx => {
           const el = document.getElementById(`outMapSkill${idx}`);
@@ -2407,20 +2441,6 @@
           }
         });
       }
-    }
-    /**
-     * 🛠️ 辅助：批量为 class 类输入框设置 placeholder 并清空 value
-     */
-    function updateClassPlaceholders(className, arrData) {
-      if (!Array.isArray(arrData)) return;
-      const inputs = document.querySelectorAll(`.${className}`);
-      inputs.forEach((input, index) => {
-        if (index < inputs.length) {
-          const val = arrData[index];
-          input.placeholder = (val !== undefined && val !== null && val !== 0) ? val : '0';
-          input.value = ''; // 彻底清空 value！
-        }
-      });
     }
     /**
  * 🌟 智能算术解析函数（支持直接输入算式 123456+567 或相对增量 +567）
@@ -2504,7 +2524,18 @@
         // A. 恢复 State（保持当前职业属性与主题设置不变）
         const jobKey = state.currentJob;
         const currentTheme = state.isDarkTheme;
-        Object.assign(state, JSON.parse(JSON.stringify(configObj.data)));
+        const savedData = JSON.parse(JSON.stringify(configObj.data));
+        const sumArr = arr => (Array.isArray(arr) ? arr.reduce((acc, cur) => acc + (parseFloat(cur) || 0), 0) : 0);
+        if (savedData.jadePctAtk === undefined && savedData.jadePctAtkArr) {
+          savedData.jadePctAtk = sumArr(savedData.jadePctAtkArr);
+        }
+        if (savedData.jadePctBuffStat === undefined && savedData.jadePctBuffStatArr) {
+          savedData.jadePctBuffStat = sumArr(savedData.jadePctBuffStatArr);
+        }
+        if (savedData.jadePctSunStat === undefined && savedData.jadePctSunStatArr) {
+          savedData.jadePctSunStat = sumArr(savedData.jadePctSunStatArr);
+        }
+        Object.assign(state, savedData);
         state.currentJob = jobKey;
         state.isDarkTheme = currentTheme;
 
@@ -2845,21 +2876,7 @@
           shouldCalc = false;
         }
       }
-      // 🌟 2. 辟邪玉百分比 class 节点识别（4个框打包成数组）喵！
-      else if (target && target.classList && (
-        target.classList.contains('jade-pct-atk') ||
-        target.classList.contains('jade-pct-buff-stat') ||
-        target.classList.contains('jade-pct-sun-stat')
-      )) {
-        if (target.classList.contains('jade-pct-atk')) {
-          updateJadeArray('jade-pct-atk', 'jadePctAtkArr');
-        } else if (target.classList.contains('jade-pct-buff-stat')) {
-          updateJadeArray('jade-pct-buff-stat', 'jadePctBuffStatArr');
-        } else if (target.classList.contains('jade-pct-sun-stat')) {
-          updateJadeArray('jade-pct-sun-stat', 'jadePctSunStatArr');
-        }
-      }
-      // 🌟 3. 通用回退：自动更新 state 喵！
+      // 🌟 2. 通用回退：自动更新 state 喵！
       else if (key) {
         // A. 如果是动态生成的 outMap 技能插槽 (例如 outMapSkill0)
         if (key.startsWith('outMapSkill')) {
@@ -2891,20 +2908,6 @@
       if (typeof renderUI === 'function') {
         renderUI(calcResult);
       }
-    }
-
-    /**
-     * 🛠️ 辅助函数：将同一 class 的 4 个输入框数值打包收集到 state 数组中 喵！
-     */
-    function updateJadeArray(className, stateArrayKey) {
-      const inputs = document.querySelectorAll(`.${className}`);
-      const arr = [0, 0, 0, 0];
-      inputs.forEach((input, index) => {
-        if (index < 4) {
-          arr[index] = getValidInputValue(input);
-        }
-      });
-      state[stateArrayKey] = arr;
     }
 
     /**
@@ -3041,18 +3044,15 @@
       // 🔮 辟邪玉折算与增益量增幅 % 推算 喵！
       // ==========================================
 
-      // 1. 数组求和辅助逻辑
-      const sumArr = arr => (Array.isArray(arr) ? arr.reduce((acc, cur) => acc + (parseFloat(cur) || 0), 0) : 0);
+      // 1. 读取固定值与百分比数值
+      const flatAtkVal = parseFloat(state.jadeBuffAtkFlat) || 0;
+      const pctAtkTotal = parseFloat(state.jadePctAtk) || 0;
 
-      // 2. 读取固定值与数组累加和
-      const flatAtkVal = state.jadeBuffAtkFlat || 0;
-      const pctAtkTotal = sumArr(state.jadePctAtkArr);
+      const flatBuffStatVal = parseFloat(state.jadeBuffStatFlat) || 0;
+      const pctBuffStatTotal = parseFloat(state.jadePctBuffStat) || 0;
 
-      const flatBuffStatVal = state.jadeBuffStatFlat || 0;
-      const pctBuffStatTotal = sumArr(state.jadePctBuffStatArr);
-
-      const flatSunStatVal = state.jadeSunStatFlat || 0;
-      const pctSunStatTotal = sumArr(state.jadePctSunStatArr);
+      const flatSunStatVal = parseFloat(state.jadeSunStatFlat) || 0;
+      const pctSunStatTotal = parseFloat(state.jadePctSunStat) || 0;
 
       // 根据换算公式计算辟邪玉折算出来的总增益量增幅 %
       // 折算公式：
@@ -3061,11 +3061,11 @@
       // - 1固定太阳 = 0.025% | 0.1%太阳 = 0.5% (1%太阳 = 5%)
       state.jadeBuffPct =
         (flatAtkVal * 0.5) +
-        (pctAtkTotal * 5.0) +
+        (pctAtkTotal * 0.5) +
         (flatBuffStatVal * 0.1) +
-        (pctBuffStatTotal * 5.0) +
+        (pctBuffStatTotal * 0.5) +
         (flatSunStatVal * 0.025) +
-        (pctSunStatTotal * 5.0);
+        (pctSunStatTotal * 0.5);
 
       // 保留 3 位小数，避免浮点数精度误差喵~
       state.jadeBuffPct = Math.round(state.jadeBuffPct * 1000) / 1000;
