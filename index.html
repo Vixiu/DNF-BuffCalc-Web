@@ -318,14 +318,14 @@
       background: var(--card-inner);
       border: 1px solid var(--border-color);
       border-radius: 8px;
-      padding: 12px 16px;
+      padding: 14px 16px;
     }
 
     .help-section-title {
-      font-size: 14px;
-      font-weight: bold;
+      font-size: 14.5px;
+      font-weight: 700;
       color: var(--primary);
-      margin-bottom: 8px;
+      margin-bottom: 10px;
       display: flex;
       align-items: center;
       gap: 6px;
@@ -337,10 +337,10 @@
 
     .help-list {
       margin: 0;
-      padding-left: 18px;
+      padding-left: 20px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 12px;
     }
 
     .help-list code {
@@ -351,54 +351,81 @@
       font-size: 12px;
       font-family: monospace;
       border: 1px solid var(--btn-base-border);
+      font-weight: 600;
     }
 
-    .help-list li > div {
-      margin-top: 4px;
+    .help-list li>div {
+      line-height: 1.7;
     }
 
     .help-title-danger {
-      color: #e74c3c !important;
+      color: #ef4444 !important;
     }
 
+    body.dark-theme .help-title-danger {
+      color: #f87171 !important;
+    }
+
+    /* 🏷️ 严格分类的关键字高亮（同类关键字保持同一颜色，浅色 / 暗色自适应，避免眼花缭乱） */
+    /* 1. 蓝色系：系统装备、属性名词、面板界面 (属性/装备/系统名词) */
     .help-hl-blue {
-      color: #2980b9;
+      color: #1d4ed8;
+      font-weight: 700;
     }
 
+    body.dark-theme .help-hl-blue {
+      color: #7aa2f7;
+    }
+
+    /* 2. 红色系：警示、注意、问题、误差、必须避免或扣除项 (警告/关键限制) */
     .help-hl-red {
-      color: #e74c3c;
+      color: #dc2626;
+      font-weight: 700;
     }
 
+    body.dark-theme .help-hl-red {
+      color: #f87171;
+    }
+
+    /* 3. 紫色系：技能名称、被动精通、特定词条 (技能/被动专属) */
     .help-hl-purple {
-      color: #8e44ad;
+      color: #7c3aed;
+      font-weight: 700;
     }
 
+    body.dark-theme .help-hl-purple {
+      color: #bb9af7;
+    }
+
+    /* 4. 绿色系：用户操作指令、功能特性、自动计算 (按钮/正向操作) */
     .help-hl-green {
-      color: #27ae60;
+      color: #15803d;
+      font-weight: 700;
     }
 
-    .help-hl-dark {
-      color: #2c3e50;
-    }
-
-    body.dark-theme .help-hl-dark {
-      color: #a5b4fc;
-    }
-
-    .help-hl-orange {
-      color: #e67e22;
-    }
-
-    .help-hl-teal {
-      color: #16a085;
+    body.dark-theme .help-hl-green {
+      color: #9ece6a;
     }
 
     .help-links-box {
       margin-top: 4px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
       font-size: 13.5px;
+    }
+
+    .help-link-row {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      line-height: 1.5;
+    }
+
+    .help-link-name {
+      font-weight: 700;
+      color: var(--text-main);
+      white-space: nowrap;
     }
 
     .help-link {
@@ -446,14 +473,54 @@
       transform: translateY(1px);
     }
 
+    /* ➕ 新建预设选项卡片按钮 */
+    .preset-choice-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 5px;
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-secondary);
+      color: var(--text-color);
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      box-sizing: border-box;
+    }
+
+    .preset-choice-btn:hover {
+      border-color: var(--primary);
+      background: var(--card-bg);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .preset-choice-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-color);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .preset-choice-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
     /* 📁 左侧输入区顶部的职业与预设管理栏 (同一行整合) */
     .left-preset-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      
+
       padding: 8px 14px;
- 
+
       margin-bottom: 12px;
       gap: 12px;
       flex-wrap: wrap;
@@ -743,16 +810,42 @@
       box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
     }
 
+    .skill-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+    }
+
     .passive-stat-tip {
-      font-size: 13.5px;
-      font-weight: bold;
-      color: #10b981;
+      display: inline-flex;
+      align-items: center;
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 1px 7px;
+      border-radius: 10px;
+      line-height: 1.4;
       white-space: nowrap;
       user-select: none;
+      transition: all 0.2s ease;
+    }
+
+    .passive-stat-tip.positive {
+      color: #10b981;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
     }
 
     .passive-stat-tip.negative {
       color: #ef4444;
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .passive-stat-tip.neutral {
+      color: var(--text-muted);
+      background: rgba(150, 150, 150, 0.1);
+      border: 1px solid rgba(150, 150, 150, 0.25);
     }
 
     .btn-apply-passive {
@@ -1326,11 +1419,13 @@
         grid-template-columns: 1fr;
         gap: 16px;
       }
+
       .dashboard-right {
         position: static;
         height: auto;
         min-height: auto;
       }
+
       .output-box {
         height: auto;
         min-height: auto;
@@ -1360,10 +1455,6 @@
         grid-column: span 1;
       }
 
-      #jobCustomCategorySlots {
-        grid-column: span 1 !important;
-        grid-template-columns: 1fr !important;
-      }
 
       .jade-matrix-grid {
         grid-template-columns: 1fr;
@@ -1474,252 +1565,258 @@
         <div class="inputs-grid">
 
           <!-- ⬅️ 左侧栏：基础面板与适用修正 -->
-      <div class="column">
+          <div class="column">
 
-        <!-- 1. ⚙️ 角色基础 (图外) -->
-        <div class="panel">
-          <div class="panel-subtitle">⚙️ 角色基础 (图外)</div>
+            <!-- 1. ⚙️ 角色基础 (图外) -->
+            <div class="panel">
+              <div class="panel-subtitle">⚙️ 角色基础 (图外)</div>
 
-          <div class="form-grid">
-            <div class="form-group">
-              <label>站街四维</label>
-              <input type="text" id="buffStat" value="10000" inputmode="numeric" placeholder="10000">
-            </div>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label>站街四维</label>
+                  <input type="text" id="buffStat" value="10000" inputmode="numeric" placeholder="10000">
+                </div>
 
-            <div class="form-group">
-              <label>增益量</label>
-              <input type="text" id="buffBuff" value="200000" inputmode="numeric" placeholder="1000000">
-            </div>
+                <div class="form-group">
+                  <label>增益量</label>
+                  <input type="text" id="buffBuff" value="200000" inputmode="numeric" placeholder="1000000">
+                </div>
 
-            <div class="form-group">
-              <label>Buff 等级</label>
-              <input type="text" id="buffLv" value="37" inputmode="numeric" min="1" max="70" placeholder="37">
-            </div>
+                <div class="form-group">
+                  <label>Buff 等级</label>
+                  <input type="text" id="buffLv" value="37" inputmode="numeric" min="1" max="70" placeholder="37">
+                </div>
 
-            <!-- ✨ 核心技能 -->
-            <div class="form-group">
-              <label id="skillLv15Label">Lv15 核心技能</label>
-              <div class="passive-input-row">
-                <input type="text" id="skillLv15" value="10" placeholder="10" min="1" max="70" inputmode="numeric">
-                <span class="passive-stat-tip" id="skillLv15StatTip"></span>
-                <button type="button" class="btn-apply-passive" id="btnApplyPassive">✨同步等级</button>
+                <!-- ✨ 核心技能 -->
+                <div class="form-group">
+                  <div class="skill-label-row">
+                    <label id="skillLv15Label">Lv15 核心技能</label>
+                    <span class="passive-stat-tip" id="skillLv15StatTip" style="display: none;"></span>
+                  </div>
+                  <div class="passive-input-row">
+                    <input type="text" id="skillLv15" value="10" placeholder="10" min="1" max="70" inputmode="numeric">
+                    <button type="button" class="btn-apply-passive" id="btnApplyPassive">✨设为基准</button>
+                  </div>
+                </div>
+
+                <!-- 🌟 中间带文字的横向分割线 -->
+                <div class="panel-divider-text">
+                  <span>🧮 自动推算</span>
+                </div>
+
+                <!-- ✨ 白金徽章 -->
+                <div class="form-group">
+                  <label id="platinumLabel">Lv15 启示:颂歌 白金数量</label>
+                  <div class="segmented-control">
+                    <label>
+                      <input type="radio" name="passPlatinum15" value="0" checked="">
+                      <span class="segmented-btn">没有</span>
+                    </label>
+                    <label>
+                      <input type="radio" name="passPlatinum15" value="1">
+                      <span class="segmented-btn">1 个</span>
+                    </label>
+                    <label>
+                      <input type="radio" name="passPlatinum15" value="2">
+                      <span class="segmented-btn">2 个</span>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- ✨ 训练教官 -->
+                <div class="form-group">
+                  <label>训练教官</label>
+                  <div class="segmented-control">
+                    <label>
+                      <input type="radio" name="trainerInstructor" value="0" checked>
+                      <span class="segmented-btn">未开启</span>
+                    </label>
+                    <label>
+                      <input type="radio" name="trainerInstructor" value="1">
+                      <span class="segmented-btn">已开启</span>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- ✨ 新增固定推算项：黄金乡 -->
+                <div class="form-group">
+                  <label>黄金乡</label>
+                  <div class="segmented-control">
+                    <label>
+                      <input type="radio" name="goldenLand" value="0" checked>
+                      <span class="segmented-btn">红10以下</span>
+                    </label>
+                    <label>
+                      <input type="radio" name="goldenLand" value="11">
+                      <span class="segmented-btn">红11</span>
+                    </label>
+                    <label>
+                      <input type="radio" name="goldenLand" value="12">
+                      <span class="segmented-btn">红12+</span>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- 📌 职业专属技能插槽 (固定2个，无则隐藏) -->
+                <div class="form-group" id="outMapGroup0">
+                  <label id="outMapSkill0Label">Lv50 技能</label>
+                  <input type="text" id="outMapSkill0" value="40" placeholder="40" min="1" max="50" inputmode="numeric">
+                </div>
+                <div class="form-group" id="outMapGroup1" style="display: none;">
+                  <label id="outMapSkill1Label">Lv20/25 技能</label>
+                  <input type="text" id="outMapSkill1" value="20" placeholder="20" min="1" max="50" inputmode="numeric">
+                </div>
               </div>
             </div>
 
-            <!-- 🌟 中间带文字的横向分割线 -->
-            <div class="panel-divider-text">
-              <span>🧮 自动推算</span>
-            </div>
 
-            <!-- ✨ 白金数量 -->
-            <div class="form-group">
-              <label id="platinumLabel">Lv15 被动白金数量</label>
-              <div class="segmented-control">
-                <label>
-                  <input type="radio" name="passPlatinum15" value="0" checked>
-                  <span class="segmented-btn">没有</span>
+
+            <!-- 2. 🛡️ 图内适用修正 -->
+            <div class="panel">
+              <div class="panel-subtitle" style="color: var(--accent-blue);">
+                <span>🛡️ 图内适用修正</span>
+                <label class="toggle-switch-container">
+                  <span id="autoCalcStatusText">自动推算 (开启)</span>
+                  <div class="switch">
+                    <input type="checkbox" id="autoCalcSwitch" checked>
+                    <span class="slider"></span>
+                  </div>
                 </label>
-                <label>
-                  <input type="radio" name="passPlatinum15" value="1">
-                  <span class="segmented-btn">1 个</span>
-                </label>
-                <label>
-                  <input type="radio" name="passPlatinum15" value="2">
-                  <span class="segmented-btn">2 个</span>
-                </label>
+              </div>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label>BUFF 适用四维</label>
+                  <input type="text" id="buffStatApplicable" value="10000" inputmode="numeric" placeholder="Buff 适用四维">
+                </div>
+                <div class="form-group">
+                  <label>Buff 适用等级</label>
+                  <input type="text" id="buffLvApplicable" value="37" inputmode="numeric" placeholder="37">
+                </div>
+
+                <div class="form-group">
+                  <label>太阳 适用四维</label>
+                  <input type="text" id="sunStatApplicable" value="10000" inputmode="numeric" placeholder="太阳适用四维">
+                </div>
+                <div class="form-group">
+                  <label>增益量</label>
+                  <input type="text" id="buffInGame" value="200000" inputmode="numeric" placeholder="图内适用增益量">
+                </div>
+
+                <div class="form-group">
+                  <label>一觉等级</label>
+                  <input type="text" id="firstAwaken" value="40" inputmode="numeric" placeholder="40">
+                </div>
+
+                <div class="form-group">
+                  <label>三觉等级</label>
+                  <input type="text" id="thirdAwaken" value="4" inputmode="numeric" placeholder="4">
+                </div>
+
               </div>
             </div>
 
-            <!-- ✨ 训练教官 -->
-            <div class="form-group">
-              <label>训练教官</label>
-              <div class="segmented-control">
-                <label>
-                  <input type="radio" name="trainerInstructor" value="0" checked>
-                  <span class="segmented-btn">未开启</span>
-                </label>
-                <label>
-                  <input type="radio" name="trainerInstructor" value="1">
-                  <span class="segmented-btn">已开启</span>
-                </label>
-              </div>
-            </div>
-
-            <!-- ✨ 新增固定推算项：黄金乡 -->
-            <div class="form-group">
-              <label>黄金乡</label>
-              <div class="segmented-control">
-                <label>
-                  <input type="radio" name="goldenLand" value="0" checked>
-                  <span class="segmented-btn">红10以下</span>
-                </label>
-                <label>
-                  <input type="radio" name="goldenLand" value="11">
-                  <span class="segmented-btn">红11</span>
-                </label>
-                <label>
-                  <input type="radio" name="goldenLand" value="12">
-                  <span class="segmented-btn">红12+</span>
-                </label>
-              </div>
-            </div>
-
-            <!-- 📌 动态预留插槽 -->
-            <!-- 📌 动态预留插槽：去掉了 grid-column: span 2，允许与上方元素同行接续排版喵！ -->
-            <div id="jobCustomCategorySlots" style="display: contents;"></div>
           </div>
-        </div>
 
+          <!-- ➡️ 右侧栏：算式 + 辟邪玉 + C模板 -->
+          <div class="column">
 
-
-        <!-- 2. 🛡️ 图内适用修正 -->
-        <div class="panel">
-          <div class="panel-subtitle" style="color: var(--accent-blue);">
-            <span>🛡️ 图内适用修正</span>
-            <label class="toggle-switch-container">
-              <span id="autoCalcStatusText">自动推算 (开启)</span>
-              <div class="switch">
-                <input type="checkbox" id="autoCalcSwitch" checked>
-                <span class="slider"></span>
+            <!-- 🧮 增益量算式面板 -->
+            <div class="panel">
+              <div class="panel-subtitle">
+                <span>🧮 增益量增幅</span>
               </div>
-            </label>
+
+              <div class="buff-pct-row">
+                <div class="buff-pct-item">
+                  <label>基础 %</label>
+                  <input type="text" id="baseBuffPct" value="0" inputmode="decimal">
+                </div>
+
+                <span class="buff-pct-operator">+</span>
+
+                <div class="buff-pct-item">
+                  <label>辟邪玉 %</label>
+                  <input type="text" id="jadeBuffPct" value="0.0%" class="jade-disabled-input" disabled>
+                </div>
+
+                <span class="buff-pct-operator">=</span>
+
+                <div class="buff-pct-item">
+                  <label>总增益量增幅 %</label>
+                  <input type="text" id="totalBuffPct" value="0" inputmode="decimal" disabled>
+                </div>
+              </div>
+            </div>
+
+            <!-- 🔮 辟邪玉面板 -->
+            <div class="panel">
+              <div class="panel-subtitle" style="color: var(--accent-purple);">🔮 辟邪玉</div>
+
+              <div class="jade-matrix-grid">
+                <div class="form-group">
+                  <label>Buff 固定三攻</label>
+                  <input type="text" id="jadeBuffAtkFlat" class="compact-input" value="" inputmode="numeric"
+                    placeholder="0">
+                </div>
+
+                <div class="form-group">
+                  <label>Buff 百分比三攻 (%)</label>
+                  <input type="text" id="jadePctAtk" class="compact-input" value="" inputmode="decimal" placeholder="0">
+                </div>
+
+                <div class="form-group">
+                  <label>Buff 固定力智</label>
+                  <input type="text" id="jadeBuffStatFlat" class="compact-input" value="" inputmode="numeric"
+                    placeholder="0">
+                </div>
+
+                <div class="form-group">
+                  <label>Buff 百分比力智 (%)</label>
+                  <input type="text" id="jadePctBuffStat" class="compact-input" value="" inputmode="decimal"
+                    placeholder="0">
+                </div>
+
+                <div class="form-group">
+                  <label>太阳 固定力智</label>
+                  <input type="text" id="jadeSunStatFlat" class="compact-input" value="" inputmode="numeric"
+                    placeholder="0">
+                </div>
+
+                <div class="form-group">
+                  <label>太阳 百分比力智 (%)</label>
+                  <input type="text" id="jadePctSunStat" class="compact-input" value="" inputmode="decimal"
+                    placeholder="0">
+                </div>
+              </div>
+            </div>
+
+            <!-- 📜 C模板 面板卡片 -->
+            <div class="panel">
+              <div class="panel-subtitle" style="color: #ef4444;">📜 C模板 (只影响倍率)</div>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label>三攻</label>
+                  <input type="text" id="cAtk" value="4000" inputmode="numeric" placeholder="4000">
+                </div>
+                <div class="form-group">
+                  <label>力智</label>
+                  <input type="text" id="cStat" value="7000" inputmode="numeric" placeholder="7000">
+                </div>
+              </div>
+            </div>
+
           </div>
-          <div class="form-grid">
-            <div class="form-group">
-              <label>BUFF 适用四维</label>
-              <input type="text" id="buffStatApplicable" value="10000" inputmode="numeric" placeholder="Buff 适用四维">
-            </div>
-            <div class="form-group">
-              <label>Buff 适用等级</label>
-              <input type="text" id="buffLvApplicable" value="37" inputmode="numeric" placeholder="37">
-            </div>
 
-            <div class="form-group">
-              <label>太阳 适用四维</label>
-              <input type="text" id="sunStatApplicable" value="10000" inputmode="numeric" placeholder="太阳适用四维">
-            </div>
-            <div class="form-group">
-              <label>增益量</label>
-              <input type="text" id="buffInGame" value="200000" inputmode="numeric" placeholder="图内适用增益量">
-            </div>
-
-            <div class="form-group">
-              <label>一觉等级</label>
-              <input type="text" id="firstAwaken" value="40" inputmode="numeric" placeholder="40">
-            </div>
-
-            <div class="form-group">
-              <label>三觉等级</label>
-              <input type="text" id="thirdAwaken" value="4" inputmode="numeric" placeholder="4">
-            </div>
-
-          </div>
         </div>
 
       </div>
-
-      <!-- ➡️ 右侧栏：算式 + 辟邪玉 + C模板 -->
-      <div class="column">
-
-        <!-- 🧮 增益量算式面板 -->
-        <div class="panel">
-          <div class="panel-subtitle">
-            <span>🧮 增益量增幅</span>
-            <label class="toggle-switch-container">
-              <span id="modeStatusText">输入包含辟邪玉 (填总数)</span>
-              <div class="switch">
-                <input type="checkbox" id="modeSwitch" checked>
-                <span class="slider"></span>
-              </div>
-            </label>
-          </div>
-
-          <div class="buff-pct-row">
-            <div class="buff-pct-item">
-              <label>基础 %</label>
-              <input type="text" id="baseBuffPct" value="150" inputmode="decimal">
-            </div>
-
-            <span class="buff-pct-operator">+</span>
-
-            <div class="buff-pct-item">
-              <label>辟邪玉 %</label>
-              <input type="text" id="jadeBuffPct" value="0.0%" class="jade-disabled-input" disabled>
-            </div>
-
-            <span class="buff-pct-operator">=</span>
-
-            <div class="buff-pct-item">
-              <label>总增益量增幅 %</label>
-              <input type="text" id="totalBuffPct" value="150" inputmode="decimal">
-            </div>
-          </div>
-        </div>
-
-        <!-- 🔮 辟邪玉面板 -->
-        <div class="panel">
-          <div class="panel-subtitle" style="color: var(--accent-purple);">🔮 辟邪玉</div>
-
-          <div class="jade-matrix-grid">
-            <div class="form-group">
-              <label>Buff 固定三攻</label>
-              <input type="text" id="jadeBuffAtkFlat" class="compact-input" value="" inputmode="numeric" placeholder="0">
-            </div>
-
-            <div class="form-group">
-              <label>Buff 百分比三攻 (%)</label>
-              <input type="text" id="jadePctAtk" class="compact-input" value="" inputmode="decimal" placeholder="0">
-            </div>
-
-            <div class="form-group">
-              <label>Buff 固定力智</label>
-              <input type="text" id="jadeBuffStatFlat" class="compact-input" value="" inputmode="numeric" placeholder="0">
-            </div>
-
-            <div class="form-group">
-              <label>Buff 百分比力智 (%)</label>
-              <input type="text" id="jadePctBuffStat" class="compact-input" value="" inputmode="decimal" placeholder="0">
-            </div>
-
-            <div class="form-group">
-              <label>太阳 固定力智</label>
-              <input type="text" id="jadeSunStatFlat" class="compact-input" value="" inputmode="numeric" placeholder="0">
-            </div>
-
-            <div class="form-group">
-              <label>太阳 百分比力智 (%)</label>
-              <input type="text" id="jadePctSunStat" class="compact-input" value="" inputmode="decimal" placeholder="0">
-            </div>
-          </div>
-        </div>
-
-        <!-- 📜 C模板 面板卡片 -->
-        <div class="panel">
-          <div class="panel-subtitle" style="color: #ef4444;">📜 C模板 (只影响倍率)</div>
-          <div class="form-grid">
-            <div class="form-group">
-              <label>三攻</label>
-              <input type="text" id="cAtk" value="4000" inputmode="numeric" placeholder="4000">
-            </div>
-            <div class="form-group">
-              <label>力智</label>
-              <input type="text" id="cStat" value="7000" inputmode="numeric" placeholder="7000">
-            </div>
-          </div>
-        </div>
-
-        </div>
-
-      </div>
-
-    </div>
 
       <!-- ➡️ 右侧栏：最终奶量展示区 (整屏占满看板) -->
       <div class="dashboard-right">
         <div class="output-box sticky-output">
           <div class="output-header">
             <h3>📊 最终奶量</h3>
-            <button id="baseBtn" class="btn-set-base">📌 将结果设为基准</button>
+            <button id="baseBtn" class="btn-set-base">📌 更新基准结果</button>
           </div>
 
           <div class="result-table-wrapper">
@@ -1748,7 +1845,7 @@
   </div>
 
   <!-- ❓ 使用帮助模态弹窗 -->
-<div class="modal-overlay" id="helpModal" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="helpModalTitle">
+ <div class="modal-overlay" id="helpModal" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="helpModalTitle">
   <div class="modal-container">
     <div class="modal-header">
       <div class="modal-title-wrap">
@@ -1761,26 +1858,20 @@
       <div class="help-section">
         <div class="help-section-title">📌 输入前注意</div>
         <ol class="help-list">
-          <li>       
-            <div>请务必确认<strong class="help-hl-blue">「BUFF强化登记栏」</strong>与<strong class="help-hl-blue">「当前身上穿戴」</strong>的装备属性是否一致。</div>
-            <div><strong class="help-hl-red">特别是BUFF称号与太阳称号在增益量%、四维属性是否一致</strong></div>
-          </li>
           <li>
-            <div>首次填完 <strong class="help-hl-purple">Lv15 核心技能</strong>后，建议点击一次 <strong class="help-hl-green">✨同步等级</strong>，为后续调整装备、白金徽章提供准确的基准差值参考。</div>
+            <div>填写<strong class="help-hl-purple">角色基础 (图外)</strong>时，请务必确认<strong class="help-hl-blue">「BUFF强化登记栏」</strong>与<strong class="help-hl-blue">「当前身上穿戴」</strong>的装备属性是否一致。
+              <strong class="help-hl-red">特别是BUFF称号与太阳称号在增益量%、四维属性是否一致。</strong>
+            </div>
           </li>
-   
-        </ol>
-      </div>
 
-      <div class="help-section">
-        <div class="help-section-title">⚙️ 其他说明</div>
-        <ol class="help-list">
-          <li><strong class="help-hl-dark">增益量模式选择</strong>：
-            <div>• <strong class="help-hl-blue">包含辟邪玉（填总数）</strong>：直接填写当前面板的总增益量，系统将自动反推基础增益。</div>
-            <div>• <strong class="help-hl-purple">不含辟邪玉（填基础）</strong>：推荐在<strong class="help-hl-orange">对比不同辟邪玉</strong>时使用，系统将自动计算总增益量。</div>
-          </li>
           <li>
-            <div>所有数字输入框均支持<strong class="help-hl-teal">直接进行加减乘除算式运算</strong>！例如输入 <code>12000+300</code> 或直接输入增量 <code>+150</code>，按下 <code>Enter</code> 回车或点击空白处失焦，系统即可自动计算并填入纯数字。</div>
+            <div>
+              填写<strong class="help-hl-purple">Lv15级技能</strong>时，若佩戴了对应<strong class="help-hl-blue">白金徽章</strong>，因其会影响站街属性与技能等级，<strong class="help-hl-red">所以必须摘掉填写！</strong>
+            </div>
+          </li>
+
+          <li>
+            <div><strong class="help-hl-purple">基础%</strong>是<strong class="help-hl-blue">除了辟邪玉外所有的增益量增幅%</strong>，所以要<strong class="help-hl-red">摘掉辟邪玉填写！</strong></div>
           </li>
         </ol>
       </div>
@@ -1789,26 +1880,30 @@
         <div class="help-section-title help-title-danger">⚠️ 游戏内问题(必看) !</div>
         <ol class="help-list">
           <li>
-            <div>当前版本A套溢出积分带来的额外增益量，虽然在面板「详细信息」中被统计显示，但<strong class="help-hl-red">站街实际并未计算该部分增益量</strong>。若需计算准确的<strong class="help-hl-blue">站街奶量</strong>，需在站街增益量中<strong class="help-hl-red">手动减去此部分增益量</strong>（图内正常生效，不受影响）。</div>
+            <div>当前版本<strong class="help-hl-purple">A套</strong>溢出积分带来的额外增益量，虽然在面板<strong class="help-hl-blue">「详细信息」</strong>中被统计显示，但<strong class="help-hl-red">站街实际并未计算该部分增益量</strong>。若需计算准确的<strong class="help-hl-blue">站街奶量</strong>，需在站街增益量中<strong class="help-hl-red">手动减去此部分增益量</strong>（图内正常生效，不受影响）。</div>
           </li>
           <li>
-  <div>因<strong class="help-hl-orange">防具精通</strong>可能会导致四维含有小数点，此小数点<strong class="help-hl-red">不会显示在面板上</strong>，但仍参与计算，会导致三攻/力智产生<strong class="help-hl-red">极小误差</strong>。可在四维后<strong class="help-hl-blue">手动增加小数位</strong>（如 <code>.1 ~ .9</code>）进行<strong class="help-hl-green">微调</strong>。</div>
-</li>
-        <!--  <li>
-            <div>辟邪玉中的<strong class="help-hl-orange">固定三攻</strong>、<strong class="help-hl-orange">固定一觉（太阳）</strong>旧词条在当前版本中<strong class="help-hl-red">仅生效 10%</strong>(计算器内以适配)</div>
+            <div>因<strong class="help-hl-purple">防具精通</strong>可能会导致四维含有小数点，此小数点<strong class="help-hl-red">不会显示在面板上</strong>，但仍参与计算，会导致三攻/力智产生<strong class="help-hl-red">极小误差</strong>。可在四维后<strong class="help-hl-green">手动增加小数位</strong>（如 <code>.1 ~ .9</code>）进行<strong class="help-hl-green">微调</strong>。</div>
           </li>
-          -->
+        </ol>
+      </div>
+
+      <div class="help-section">
+        <div class="help-section-title">⚙️ 其他说明</div>
+        <ol class="help-list">
+          <li>
+            <div>所有<strong class="help-hl-purple">输入框</strong>均可以直接进行<strong class="help-hl-blue">算式运算</strong>！例如输入 <code>12000+300</code> 或直接输入增量 <code>+150</code>，按下 <code>Enter</code> 回车或点击空白处失焦，系统即可自动计算并填入纯数字。</div>
+          </li>
         </ol>
       </div>
 
       <div class="help-section">
         <div class="help-section-title">🔗 相关链接</div>
         <div class="help-links-box">
-<div><strong>Github</strong> : <a href="https://github.com/Vixiu/DNF-BuffCalc-Web" target="_blank" rel="noopener noreferrer" class="help-link">https://github.com/Vixiu/DNF-BuffCalc-Web</a></div>
-<div><strong>奶量公式参考</strong> : <a href="https://bbs.colg.cn/thread-9605355-1-1.html" target="_blank" rel="noopener noreferrer" class="help-link">[分享] 【攻略：千海天】千海天版本奶量相关数据</a></div>
-<div><strong>系统奶与属性参考</strong> : <a href="https://bbs.colg.cn/thread-9463452-1-1.html" target="_blank" rel="noopener noreferrer" class="help-link">全职业四维属性及系统奶研究</a></div>
-<!-- <div><strong>倍率公式参考</strong> : <a href="https://bbs.colg.cn/thread-9463452-1-1.html" target="_blank" rel="noopener noreferrer" class="help-link">全职业四维属性及系统奶研究</a></div> -->      
-</div>
+          <div class="help-link-row"><span class="help-link-name">Github :</span> <a href="https://github.com/Vixiu/DNF-BuffCalc-Web" target="_blank" rel="noopener noreferrer" class="help-link">https://github.com/Vixiu/DNF-BuffCalc-Web</a></div>
+          <div class="help-link-row"><span class="help-link-name">奶量公式参考 :</span> <a href="https://bbs.colg.cn/thread-9605355-1-1.html" target="_blank" rel="noopener noreferrer" class="help-link">[分享] 【攻略：千海天】千海天版本奶量相关数据</a></div>
+          <div class="help-link-row"><span class="help-link-name">系统奶与属性参考 :</span> <a href="https://bbs.colg.cn/thread-9463452-1-1.html" target="_blank" rel="noopener noreferrer" class="help-link">全职业四维属性及系统奶研究</a></div>
+        </div>
       </div>
     </div>
     <div class="modal-footer">
@@ -1817,97 +1912,35 @@
     </div>
   </div>
 </div>
+  <!-- ➕ 新建预设方式选择弹窗 -->
+  <div class="modal-overlay" id="addConfigModal" style="display: none;" role="dialog" aria-modal="true"
+    aria-labelledby="addConfigModalTitle">
+    <div class="modal-container" style="max-width: 440px;">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="modal-title-icon">➕</span>
+          <h3 class="modal-title" id="addConfigModalTitle">新建预设方案</h3>
+        </div>
+        <button class="modal-close-btn" id="closeAddConfigModalBtn" title="关闭">&times;</button>
+      </div>
+      <div class="modal-body" style="padding: 18px 20px;">
+        <div style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">请选择新预设的创建模式：</div>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <button type="button" class="preset-choice-btn" id="btnChoiceSaveCurrent">
+            <div class="preset-choice-title">💾 另存为当前配置</div>
+            <div class="preset-choice-desc">直接复制当前界面的全部打造数值与技能等级参数。</div>
+          </button>
+          <button type="button" class="preset-choice-btn" id="btnChoiceNewDefault">
+            <div class="preset-choice-title">✨ 增加全新默认配置</div>
+            <div class="preset-choice-desc">重置为标准模板，并自动套用当前职业技能库的默认推荐等级。</div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
   <script>
 
-    // 📜 各职业技能数据库 专门负责技能树 UI / 图外技能等级选择 / 技能属性映射
-    const JOB_SKILLS_DATA = {
-      'ma': {
-        'lv15': {
-          name: 'Lv15 启示:颂歌',
-          data: [136, 140, 144, 148, 152, 157, 162, 167, 173, 179, 185, 191, 197, 204, 211, 219, 227, 235, 243, 251, 260, 269, 279, 288, 298, 308, 319, 329, 340, 351, 363, 375, 387, 399, 411, 425, 438, 451, 465, 479, 493, 507, 523, 537, 553, 569, 585, 601, 617, 634, 648, 664, 680, 696, 712, 727, 743, 759, 775, 791, 806, 822, 838, 854, 870, 885, 901, 917, 933, 949]
-        },
-        'outMap': [
-          {
-            name: 'Lv50 虔诚信念',
-            data: [14, 37, 59, 82, 104, 127, 149, 172, 194, 217, 239, 262, 284, 307, 329, 352, 374, 397, 419, 442, 464, 487, 509, 532, 554, 577, 599, 622, 644, 667, 689, 712, 734, 757, 779, 802, 824, 847, 869, 892, 914, 937, 959, 982, 1004, 1027, 1049, 1072, 1094, 1117]
-          },
-        ]
-
-      },
-      'ba': {
-        'lv15': {
-          name: 'Lv15 守护恩赐',
-          data: [220, 224, 228, 232, 236, 241, 246, 251, 257, 263, 269, 275, 281, 288, 295, 303, 311, 319, 327, 335, 344, 353, 363, 372, 382, 392, 403, 413, 424, 435, 447, 459, 471, 483, 495, 509, 522, 535, 549, 563, 577, 591, 607, 621, 637, 653, 669, 685, 701, 718, 732, 748, 764, 780, 796, 811, 827, 843, 859, 875, 890, 906, 922, 937, 953, 969, 985, 1001, 1016, 1032]
-
-        },
-        'outMap': [
-          {
-            name: 'Lv50 信念光环',
-            data: [10, 29, 48, 67, 86, 105, 124, 143, 162, 181, 200, 219, 238, 257, 276, 295, 314, 333, 352, 371, 390, 409, 428, 447, 466, 489, 511, 534, 556, 579, 601, 624, 646, 669, 691, 714, 736, 759, 781, 804, 826, 849, 871, 894, 916, 939, 961, 984, 1006, 1029]
-          },
-
-          {
-            name: 'Lv25 守护徽章',
-            data: [94, 98, 102, 107, 112, 116, 122, 127, 131, 137, 141, 147, 153, 158, 163, 169, 175, 181, 187, 192]
-          },
-        ]
-      },
-      'luo': {
-        'lv15': {
-          name: 'Lv15 人偶操纵者',
-
-          data: [69, 73, 77, 81, 85, 90, 95, 100, 106, 112, 118, 124, 130, 137, 144, 152, 160, 168, 176, 184, 193, 202, 212, 221, 231, 241, 252, 262, 273, 284, 296, 308, 320, 332, 344, 358, 371, 384, 398, 412, 426, 440, 456, 470, 486, 502, 518, 534, 550, 567, 581, 597, 613, 629, 645, 660, 676, 692, 708, 724, 739, 755, 771, 787, 803, 818, 834, 850, 866, 882]
-
-        },
-        'outMap': [
-          {
-            name: 'Lv50 少女的爱',
-            data: [14, 37, 59, 82, 104, 127, 149, 172, 194, 217, 239, 262, 284, 307, 329, 352, 374, 397, 419, 442, 464, 487, 509, 532, 554, 577, 599, 622, 644, 667, 689, 712, 734, 757, 779, 802, 824, 847, 869, 892, 914, 937, 959, 982, 1004, 1027, 1049, 1072, 1094, 1117]
-          },
-        ]
-      },
-      'qiang': {
-        'lv15': {
-          name: 'Lv15 系统·战场信息',
-          data: [266, 270, 274, 278, 282, 287, 292, 297, 303, 309, 315, 321, 327, 334, 341, 349, 357, 365, 373, 381, 390, 399, 409, 418, 428, 438, 449, 459, 470, 481, 493, 505, 517, 529, 541, 555, 568, 581, 595, 609, 623, 637, 653, 667, 683, 699, 715, 731, 747, 764, 778, 794, 810, 826, 842, 857, 873, 889, 905, 921, 936, 952, 968, 983, 999, 1015, 1031, 1047, 1062, 1078]
-
-        },
-        'outMap': [
-          {
-            name: 'Lv25 装甲强化',
-
-            data: [94, 98, 102, 107, 112, 116, 122, 127, 131, 137, 141, 147, 153, 158, 163, 169, 175, 181, 187, 192]
-          },
-          {
-            name: 'Lv50 系统·作战应对',
-
-            data: [10, 29, 48, 67, 86, 105, 124, 143, 162, 181, 200, 219, 238, 257, 276, 295, 314, 333, 352, 371, 390, 409, 428, 447, 466, 489, 511, 534, 556, 579, 601, 624, 646, 669, 691, 714, 736, 759, 781, 804, 826, 849, 871, 894, 916, 939, 961, 984, 1006, 1029]
-          },
-        ]
-      },
-      'gong': {
-        'lv15': {
-          name: 'Lv15 多彩感性',
-          data: [276, 280, 284, 288, 292, 297, 302, 307, 313, 319, 325, 331, 337, 344, 351, 359, 367, 375, 383, 391, 400, 409, 419, 428, 438, 448, 459, 469, 480, 491, 503, 515, 527, 539, 551, 565, 578, 591, 605, 619, 633, 647, 663, 677, 693, 709, 725, 741, 757, 774, 788, 804, 820, 836, 852, 867, 883, 899, 915, 931, 946, 962, 978, 994, 1010, 1025, 1041, 1057, 1073, 1089]
-
-        },
-        'outMap': [
-          {
-            name: 'Lv50 明星气场',
-            data: [6, 25, 44, 63, 82, 101, 120, 139, 158, 177, 196, 215, 234, 253, 272, 291, 310, 329, 348, 367, 386, 405, 424, 443, 462, 485, 507, 530, 552, 575, 597, 620, 642, 665, 687, 710, 732, 755, 777, 800, 822, 845, 867, 890, 912, 935, 957, 980, 1002, 1025]
-          },
-          {
-            name: 'Lv20 主角登场',
-            data: [94, 98, 102, 107, 112, 116, 122, 127, 131, 137, 141, 147, 153, 158, 163, 169, 175, 181, 187, 192]
-          },
-
-        ]
-      },
-
-    }
-
-
-    // 专门负责奶量数值计算公式 / 职业乘区系数 / 最终表格输出结构。
+    // 📜 各职业完整配置数据库：整合奶量公式系数、职业名称与技能等级四维映射表
     const JOB_CONFIG = {
       'ma': {
         coeff: 1.016,
@@ -1916,8 +1949,30 @@
         awk1Name: '圣光天启',
         awk3Name: '祈愿·天使赞歌',
         extras: [
-          { key: 'sk1', name: '勇气祝福+圣歌', mult: 1.12, totalName: '三觉下' }
-        ]
+          {
+            key: 'sk1',
+            name: '勇气祝福+圣歌',
+            mult: 1.12,
+            totals: {
+              awk1: '总(圣光天启)',
+              awk3: '总(祈愿·天使赞歌)'
+            }
+          }
+        ],
+        skillData: {
+          lv15: {
+            name: 'Lv15 启示:颂歌',
+            defaultVal: 10,
+            data: [136, 140, 144, 148, 152, 157, 162, 167, 173, 179, 185, 191, 197, 204, 211, 219, 227, 235, 243, 251, 260, 269, 279, 288, 298, 308, 319, 329, 340, 351, 363, 375, 387, 399, 411, 425, 438, 451, 465, 479, 493, 507, 523, 537, 553, 569, 585, 601, 617, 634, 648, 664, 680, 696, 712, 727, 743, 759, 775, 791, 806, 822, 838, 854, 870, 885, 901, 917, 933, 949]
+          },
+          outMap: [
+            {
+              name: 'Lv50 虔诚信念',
+              defaultVal: 40,
+              data: [14, 37, 59, 82, 104, 127, 149, 172, 194, 217, 239, 262, 284, 307, 329, 352, 374, 397, 419, 442, 464, 487, 509, 532, 554, 577, 599, 622, 644, 667, 689, 712, 734, 757, 779, 802, 824, 847, 869, 892, 914, 937, 959, 982, 1004, 1027, 1049, 1072, 1094, 1117]
+            }
+          ]
+        }
       },
       'luo': {
         coeff: 0.9765,
@@ -1926,9 +1981,39 @@
         awk1Name: '开幕！人偶剧场',
         awk3Name: '终幕！人偶剧场',
         extras: [
-          { key: 'sk1', name: '禁忌诅咒 (疯狂召唤)', mult: 1.25, totalName: '三觉下(非偏爱)' },
-          { key: 'sk2', name: '偏爱(禁忌诅咒+疯狂召唤)', mult: 1.4375, totalName: '三觉下(偏爱)' }
-        ]
+          {
+            key: 'sk1',
+            name: '禁忌诅咒(疯狂召唤)',
+            mult: 1.25,
+            totals: {
+              awk1: '总(开幕！人偶剧场)',
+              awk3: '总(终幕！人偶剧场)'
+            }
+          },
+          {
+            key: 'sk2',
+            name: '禁忌诅咒+疯狂召唤(偏爱)',
+            mult: 1.4375,
+            totals: {
+              awk1: '总(开幕！人偶剧场)(偏爱)',
+              awk3: '总(终幕！人偶剧场)(偏爱)'
+            }
+          }
+        ],
+        skillData: {
+          lv15: {
+            name: 'Lv15 人偶操纵者',
+            defaultVal: 10,
+            data: [119, 123, 127, 131, 135, 140, 145, 150, 156, 162, 168, 174, 180, 187, 194, 202, 210, 218, 226, 234, 243, 252, 262, 271, 281, 291, 302, 312, 323, 334, 346, 358, 370, 382, 394, 408, 421, 434, 448, 462, 476, 490, 506, 520, 536, 552, 568, 584, 600, 617, 631, 647, 663, 679, 695, 710, 726, 742, 758, 774, 789, 805, 821, 837, 853, 868, 884, 900, 916, 932]
+          },
+          outMap: [
+            {
+              name: 'Lv50 少女的爱',
+              defaultVal: 40,
+              data: [14, 37, 59, 82, 104, 127, 149, 172, 194, 217, 239, 262, 284, 307, 329, 352, 374, 397, 419, 442, 464, 487, 509, 532, 554, 577, 599, 622, 644, 667, 689, 712, 734, 757, 779, 802, 824, 847, 869, 892, 914, 937, 959, 982, 1004, 1027, 1049, 1072, 1094, 1117]
+            }
+          ]
+        }
       },
       'gong': {
         coeff: 1.0177,
@@ -1937,8 +2022,35 @@
         awk1Name: '梦想的舞台',
         awk3Name: '终曲:霓虹蝶梦',
         extras: [
-          { key: 'sk1', name: '可爱节拍+燃情狂想曲', mult: 1.10, totalName: '三觉下' },
-        ]
+          {
+            key: 'sk1',
+            name: '可爱节拍+燃情狂想曲',
+            mult: 1.10,
+            totals: {
+              awk1: '总(梦想的舞台)',
+              awk3: '总(终曲:霓虹蝶梦)'
+            }
+          }
+        ],
+        skillData: {
+          lv15: {
+            name: 'Lv15 多彩感性',
+            defaultVal: 10,
+            data: [276, 280, 284, 288, 292, 297, 302, 307, 313, 319, 325, 331, 337, 344, 351, 359, 367, 375, 383, 391, 400, 409, 419, 428, 438, 448, 459, 469, 480, 491, 503, 515, 527, 539, 551, 565, 578, 591, 605, 619, 633, 647, 663, 677, 693, 709, 725, 741, 757, 774, 788, 804, 820, 836, 852, 867, 883, 899, 915, 931, 946, 962, 978, 994, 1010, 1025, 1041, 1057, 1073, 1089]
+          },
+          outMap: [
+            {
+              name: 'Lv50 明星气场',
+              defaultVal: 40,
+              data: [6, 25, 44, 63, 82, 101, 120, 139, 158, 177, 196, 215, 234, 253, 272, 291, 310, 329, 348, 367, 386, 405, 424, 443, 462, 485, 507, 530, 552, 575, 597, 620, 642, 665, 687, 710, 732, 755, 777, 800, 822, 845, 867, 890, 912, 935, 957, 980, 1002, 1025]
+            },
+            {
+              name: 'Lv20 主角登场',
+              defaultVal: 20,
+              data: [94, 98, 102, 107, 112, 116, 122, 127, 131, 137, 141, 147, 153, 158, 163, 169, 175, 181, 187, 192]
+            }
+          ]
+        }
       },
       'ba': {
         coeff: 1.0188,
@@ -1947,8 +2059,35 @@
         awk1Name: '天启之珠',
         awk3Name: '生命礼赞:神威',
         extras: [
-          { key: 'sk1', name: '荣誉祝福(24层)', mult: 1.12, totalName: '三觉下' }
-        ]
+          {
+            key: 'sk1',
+            name: '荣誉祝福(24层)',
+            mult: 1.12,
+            totals: {
+              awk1: '总(天启之珠)',
+              awk3: '总(生命礼赞:神威)'
+            }
+          }
+        ],
+        skillData: {
+          lv15: {
+            name: 'Lv15 守护恩赐',
+            defaultVal: 10,
+            data: [220, 224, 228, 232, 236, 241, 246, 251, 257, 263, 269, 275, 281, 288, 295, 303, 311, 319, 327, 335, 344, 353, 363, 372, 382, 392, 403, 413, 424, 435, 447, 459, 471, 483, 495, 509, 522, 535, 549, 563, 577, 591, 607, 621, 637, 653, 669, 685, 701, 718, 732, 748, 764, 780, 796, 811, 827, 843, 859, 875, 890, 906, 922, 937, 953, 969, 985, 1001, 1016, 1032]
+          },
+          outMap: [
+            {
+              name: 'Lv50 信念光环',
+              defaultVal: 40,
+              data: [10, 29, 48, 67, 86, 105, 124, 143, 162, 181, 200, 219, 238, 257, 276, 295, 314, 333, 352, 371, 390, 409, 428, 447, 466, 489, 511, 534, 556, 579, 601, 624, 646, 669, 691, 714, 736, 759, 781, 804, 826, 849, 871, 894, 916, 939, 961, 984, 1006, 1029]
+            },
+            {
+              name: 'Lv25 守护徽章',
+              defaultVal: 20,
+              data: [94, 98, 102, 107, 112, 116, 122, 127, 131, 137, 141, 147, 153, 158, 163, 169, 175, 181, 187, 192]
+            }
+          ]
+        }
       },
       'qiang': {
         coeff: 1.025,
@@ -1957,54 +2096,82 @@
         awk1Name: '强袭策略:区域肃清',
         awk3Name: '空袭策略:神兵天降',
         extras: [
-          { key: 'sk1', name: '军械强化(进阶)', mult: 1.12, totalName: '三觉下' }
-        ]
+          {
+            key: 'sk1',
+            name: '军械强化(进阶)',
+            mult: 1.12,
+            totals: {
+              awk1: '总(强袭策略:区域肃清)',
+              awk3: '总(空袭策略:神兵天降)'
+            }
+          }
+        ],
+        skillData: {
+          lv15: {
+            name: 'Lv15 系统·战场信息',
+            defaultVal: 10,
+            data: [266, 270, 274, 278, 282, 287, 292, 297, 303, 309, 315, 321, 327, 334, 341, 349, 357, 365, 373, 381, 390, 399, 409, 418, 428, 438, 449, 459, 470, 481, 493, 505, 517, 529, 541, 555, 568, 581, 595, 609, 623, 637, 653, 667, 683, 699, 715, 731, 747, 764, 778, 794, 810, 826, 842, 857, 873, 889, 905, 921, 936, 952, 968, 983, 999, 1015, 1031, 1047, 1062, 1078]
+          },
+          outMap: [
+            {
+              name: 'Lv25 装甲强化',
+              defaultVal: 20,
+              data: [94, 98, 102, 107, 112, 116, 122, 127, 131, 137, 141, 147, 153, 158, 163, 169, 175, 181, 187, 192]
+            },
+            {
+              name: 'Lv50 系统·作战应对',
+              defaultVal: 40,
+              data: [10, 29, 48, 67, 86, 105, 124, 143, 162, 181, 200, 219, 238, 257, 276, 295, 314, 333, 352, 371, 390, 409, 428, 447, 466, 489, 511, 534, 556, 579, 601, 624, 646, 669, 691, 714, 736, 759, 781, 804, 826, 849, 871, 894, 916, 939, 961, 984, 1006, 1029]
+            }
+          ]
+        }
       }
     };
-     // ==========================================
+    // ==========================================
     // 📦 1. 全局状态源 (State) - 唯一的真相数据源喵！
     // ==========================================
     const state = {
-      // 1. 职业与全局设置
-      currentJob: 'ma',            // 当前选中职业 ('ma', 'ba', 'luo', 'qiang', 'gong')
-      isAutoCalc: true,            // 自动推算开关 (true: 开启, false: 手动)
-      isJadeIncluded: true,        // 增益量模式 (true: 包含辟邪玉, false: 不含)
+      // 职业与全局设置
+      currentJob: 'ma',             // 当前选中职业 ('ma', 'ba', 'luo', 'qiang', 'gong')
+      isAutoCalc: true,             // 自动推算开关 (true: 开启, false: 手动)
 
-      // 2. 基础数据 (图外)
-      buffStat: 10000,             // 站街四维
-      buffBuff: 200000,            // 站街增益量
-      buffLv: 37,                  // Buff 等级
-      skillLv15: 10,               // Lv15 核心技能等级
-      baselineLv15: null,          // Lv15 核心技能基准等级 (null 代表未设置)
+      //  基础数据 (图外)
+      buffStat: 10000,              // 站街四维
+      buffBuff: 200000,             // 站街增益量
+      buffLv: 37,                   // Buff 等级
+      skillLv15: 10,                // Lv15 核心技能等级
+      baselineLv15: 1,              // Lv15 核心技能基准等级 (默认为 1 级)
+      skillLv15Stat: 0,             // Lv15 增加的四维
 
-      // 3. 自动推算参数
-      passPlatinum15: 0,           // 被动白金数量 (0, 1, 2)
-      trainerInstructor: 0,        // 训练教官 (0: 未开启, 1: 已开启)
-      goldenLand: 0,               // 黄金乡 (0: 红10及下, 11: 红11, 12: 红12+)
-      outMapSkills: { 0: 40 },     // 动态 outMap 技能等级 (默认一觉被动40级)
+      // 自动推算参数
+      passPlatinum15: 0,            // Lv15 核心被动白金数量 (0: 没有, 1: 1个, 2: 2个)
+      trainerInstructor: 0,         // 训练教官 (0: 未开启, 1: 已开启)
+      goldenLand: 0,                // 黄金乡 (0: 红10及下, 11: 红11, 12: 红12+)
+      outMapSkill0: 40,             // 职业专属技能插槽1 等级 (如一觉被动等)
+      outMapSkill1: 20,             // 职业专属技能插槽2 等级 (如守护徽章/主角登场等)
 
       // 4. 图内适用修正 (由自动推算算出，或手动填写)
-      buffStatApplicable: 10000,   // BUFF 适用四维
-      buffLvApplicable: 37,        // Buff 适用等级
-      sunStatApplicable: 10000,    // 太阳适用四维
-      buffInGame: 200000,          // 图内适用增益量
-      firstAwaken: 41,            // 一觉等级
-      thirdAwaken: 7,             // 三觉等级
+      buffStatApplicable: 10000,    // BUFF 适用四维
+      buffLvApplicable: 37,         // Buff 适用等级
+      sunStatApplicable: 10000,     // 太阳适用四维
+      buffInGame: 200000,           // 图内适用增益量
+      firstAwaken: 41,              // 一觉等级
+      thirdAwaken: 7,               // 三觉等级
 
-      // 增益量模式与增幅 %
-      baseBuffPct: 0,           // 基础增益量增幅 %
-      totalBuffPct: 0,          // 总增益量增幅 %
-      jadeBuffPct: 0,             // 辟邪玉折算得到的增益量增幅 %
+      // 增益量增幅 %
+      baseBuffPct: 0,                 // 基础增益量增幅 %
+      totalBuffPct: 0,                // 总增益量增幅 %
+      jadeBuffPct: 0,               // 辟邪玉折算得到的增益量增幅 %
 
       // 🔮 辟邪玉属性加成 
-      jadeBuffAtkFlat: 0,                                   // Buff 固定三攻
-      jadePctAtk: 0,                                        // Buff 百分比三攻 (%)
+      jadeBuffAtkFlat: 0,           // Buff 固定三攻
+      jadePctAtk: 0,                // Buff 百分比三攻 (%)
 
-      jadeBuffStatFlat: 0,                                  // Buff 固定力智
-      jadePctBuffStat: 0,                                   // Buff 百分比力智 (%)
+      jadeBuffStatFlat: 0,          // Buff 固定力智
+      jadePctBuffStat: 0,           // Buff 百分比力智 (%)
 
-      jadeSunStatFlat: 0,                                   // 太阳 固定力智
-      jadePctSunStat: 0,                                    // 太阳 百分比力智 (%)
+      jadeSunStatFlat: 0,           // 太阳 固定力智
+      jadePctSunStat: 0,            // 太阳 百分比力智 (%)
 
       // 5. C 模板
       cAtk: 4000,                  // C 模板三攻
@@ -2012,27 +2179,67 @@
     };
 
 
+    // 🌟 全局默认配置模板（深拷贝自初始 state，用作新建全新默认配置时的纯净基准）
+    const DEFAULT_CONFIG_TEMPLATE = JSON.parse(JSON.stringify(state));
+
+    /**
+     * 🛠️ 根据目标职业与 JOB_CONFIG.skillData 中的 defaultVal 生成该职业的全新默认配置数据
+     * @param {string} jobKey - 职业代码 ('ma', 'ba', 'luo', 'gong', 'qiang')
+     * @returns {Object} 带有该职业技能默认值的预设数据
+     */
+    function createJobDefaultConfigData(jobKey) {
+      const targetJob = jobKey || state.currentJob || 'ma';
+      const config = JSON.parse(JSON.stringify(DEFAULT_CONFIG_TEMPLATE));
+      config.currentJob = targetJob;
+
+      const jobConf = JOB_CONFIG[targetJob] || JOB_CONFIG['ma'];
+      const skillData = jobConf.skillData || {};
+
+      // 1. 将 lv15 的 defaultVal 赋值给 baselineLv15 与 skillLv15 (差值归零)
+      if (skillData.lv15 && skillData.lv15.defaultVal !== undefined) {
+        config.baselineLv15 = skillData.lv15.defaultVal;
+        config.skillLv15 = skillData.lv15.defaultVal;
+        config.skillLv15Stat = 0;
+      }
+
+      // 2. 将 outMap 技能的 defaultVal 依次赋值给 outMapSkill0 与 outMapSkill1
+      const outMapList = skillData.outMap || [];
+      if (outMapList[0] && outMapList[0].defaultVal !== undefined) {
+        config.outMapSkill0 = outMapList[0].defaultVal;
+      } else {
+        config.outMapSkill0 = 40;
+      }
+
+      if (outMapList[1] && outMapList[1].defaultVal !== undefined) {
+        config.outMapSkill1 = outMapList[1].defaultVal;
+      } else {
+        config.outMapSkill1 = 20;
+      }
+
+      return config;
+    }
+
     const PRESET_STORAGE_KEY = 'dnf_buff_calc_presets_v2';
     const LAST_PRESET_KEY = 'dnf_buff_calc_last_presets_v1';
     const SYSTEM_DEFAULT_PRESETS = {
       'ma': [
-        { id: 'sys_ma_1', name: '🔒 默认配置(占位)', isSystem: true, data: { ...structuredClone(state), currentJob: 'ma', outMapSkills: { 0: 40 } } }
+        { id: 'sys_ma_1', name: '🔒 默认配置(占位)', isSystem: true, data: createJobDefaultConfigData('ma') }
       ],
       'ba': [
-        { id: 'sys_ba_1', name: '🔒 默认配置(占位)', isSystem: true, data: { ...structuredClone(state), currentJob: 'ba', outMapSkills: { 0: 40, 1: 20 } } }
+        { id: 'sys_ba_1', name: '🔒 默认配置(占位)', isSystem: true, data: createJobDefaultConfigData('ba') }
       ],
       'luo': [
-        { id: 'sys_luo_1', name: '🔒 默认配置(占位)', isSystem: true, data: { ...structuredClone(state), currentJob: 'luo', outMapSkills: { 0: 40 } } }
+        { id: 'sys_luo_1', name: '🔒 默认配置(占位)', isSystem: true, data: createJobDefaultConfigData('luo') }
       ],
       'gong': [
-        { id: 'sys_gong_1', name: '🔒 默认配置(占位)', isSystem: true, data: { ...structuredClone(state), currentJob: 'gong', outMapSkills: { 0: 40, 1: 20 } } }
+        { id: 'sys_gong_1', name: '🔒 默认配置(占位)', isSystem: true, data: createJobDefaultConfigData('gong') }
       ],
       'qiang': [
-        { id: 'sys_qiang_1', name: '🔒 默认配置(占位)', isSystem: true, data: { ...structuredClone(state), currentJob: 'qiang', outMapSkills: { 0: 20, 1: 40 } } }
+        { id: 'sys_qiang_1', name: '🔒 默认配置(占位)', isSystem: true, data: createJobDefaultConfigData('qiang') }
       ]
     };
 
-   
+
 
 
     // ==========================================
@@ -2048,7 +2255,6 @@
       'btnApplyPassive': handleSetBaseline,
       'themeBtn': handleThemeToggle,
       'helpBtn': handleHelpToggle,
-      'modeSwitch': onModeSwitchChange,
       'baseBtn': handleSetBaseResult,
       'btnSaveConfig': handleSaveConfig,
       'btnRenameConfig': handleRenameConfig,
@@ -2078,101 +2284,101 @@
  * @param {number} [params.jadePctBuffStat=0]   - 辟邪玉：Buff 百分比力智
  * @returns {{ stat: number, atk: number }}     - 最终生效的【BUFF力智】与【BUFF三攻】
  */
-function calcBuff(
-  buffLevel,
-  applicableStat,
-  totalGain,
-  roleCoefficient = 1.0,
-  jadeBuffAtkFlat = 0,
-  jadePctAtk = 0,
-  jadeBuffStatFlat = 0,
-  jadePctBuffStat = 0,
-) {
-  // 1. 公共四维与增益乘区
-  const statFactor = 1 + applicableStat / 2993;
-  const gainFactor = 1 + totalGain / 4800;
+    function calcBuff(
+      buffLevel,
+      applicableStat,
+      totalGain,
+      roleCoefficient = 1.0,
+      jadeBuffAtkFlat = 0,
+      jadePctAtk = 0,
+      jadeBuffStatFlat = 0,
+      jadePctBuffStat = 0,
+    ) {
+      // 1. 公共四维与增益乘区
+      const statFactor = 1 + applicableStat / 2993;
+      const gainFactor = 1 + totalGain / 4800;
 
-  // 2. 三攻计算部分
-  const baseAtk = 36 + 1.8 * buffLevel;
-  const oldBuffAtk = (baseAtk + jadeBuffAtkFlat * 0.1) * (1 + jadePctAtk / 100) * statFactor;
-  const newBuffAtk = baseAtk * statFactor * gainFactor;
-  const atk = roleCoefficient * (oldBuffAtk + newBuffAtk);
+      // 2. 三攻计算部分
+      const baseAtk = 36 + 1.8 * buffLevel;
+      const oldBuffAtk = (baseAtk + jadeBuffAtkFlat * 0.1) * (1 + jadePctAtk / 100) * statFactor;
+      const newBuffAtk = baseAtk * statFactor * gainFactor;
+      const atk = roleCoefficient * (oldBuffAtk + newBuffAtk);
 
-  // 3. 力智计算部分
-  const baseStat = 150 + 11 * buffLevel;
-  const oldBuffStat = (baseStat + jadeBuffStatFlat) * (1 + jadePctBuffStat / 100) * statFactor;
-  const newBuffStat = baseStat * statFactor * gainFactor;
-  const stat = roleCoefficient * (oldBuffStat + newBuffStat);
+      // 3. 力智计算部分
+      const baseStat = 150 + 11 * buffLevel;
+      const oldBuffStat = (baseStat + jadeBuffStatFlat) * (1 + jadePctBuffStat / 100) * statFactor;
+      const newBuffStat = baseStat * statFactor * gainFactor;
+      const stat = roleCoefficient * (oldBuffStat + newBuffStat);
 
-  // 4. 使用 Math.round 对最终结果进行标准四舍五入喵！
-  return {
-    atk: Math.round(atk),
-    stat: Math.round(stat),
-  };
-}
+      // 4. 使用 Math.round 对最终结果进行标准四舍五入喵！
+      return {
+        atk: Math.round(atk),
+        stat: Math.round(stat),
+      };
+    }
 
- /**
- * DNF 辅助职业一觉（太阳）力智加成计算函数
- * 
- * @param {Object} params - 配置参数对象
- * @param {number} params.awakeLevel         - 一觉技能等级（原 L）
- * @param {number} params.applicableStat     - 太阳适用四维（原 S，已计入相关被动与加成）
- * @param {number} params.totalGain          - 进图总增益量（原 B，基础增益量 * (1 + 增幅%)）
- * @param {number} [params.jadeSunStatFlat=0]- 辟邪玉：太阳固定力智（按机制生效 10%）
- * @param {number} [params.jadePctSunStat=0] - 辟邪玉：太阳百分比力智（%）
- * @returns {number} 最终一觉（太阳）爆发力智加成（四舍五入整数）
- */
-function calcAwaken(
-  awakeLevel,
-  applicableStat,
-  totalGain,
-  jadeSunStatFlat = 0,
-  jadePctSunStat = 0,
-) {
-  // 1. 一觉原生技能基础力智（前 30 级抛物线成长，30 级后线性每级 +92）
-  const baseStat = awakeLevel <= 30
-    ? Math.round((awakeLevel * awakeLevel + 130 * awakeLevel + 130) / 5)
-    : 92 * awakeLevel - 1774;
+    /**
+    * DNF 辅助职业一觉（太阳）力智加成计算函数
+    * 
+    * @param {Object} params - 配置参数对象
+    * @param {number} params.awakeLevel         - 一觉技能等级（原 L）
+    * @param {number} params.applicableStat     - 太阳适用四维（原 S，已计入相关被动与加成）
+    * @param {number} params.totalGain          - 进图总增益量（原 B，基础增益量 * (1 + 增幅%)）
+    * @param {number} [params.jadeSunStatFlat=0]- 辟邪玉：太阳固定力智（按机制生效 10%）
+    * @param {number} [params.jadePctSunStat=0] - 辟邪玉：太阳百分比力智（%）
+    * @returns {number} 最终一觉（太阳）爆发力智加成（四舍五入整数）
+    */
+    function calcAwaken(
+      awakeLevel,
+      applicableStat,
+      totalGain,
+      jadeSunStatFlat = 0,
+      jadePctSunStat = 0,
+    ) {
+      // 1. 一觉原生技能基础力智（前 30 级抛物线成长，30 级后线性每级 +92）
+      const baseStat = awakeLevel <= 30
+        ? Math.round((awakeLevel * awakeLevel + 130 * awakeLevel + 130) / 5)
+        : 92 * awakeLevel - 1774;
 
-  // 2. 太阳专属四维乘区项（分母为 7500）
-  const statFactor = 1 + applicableStat / 7500
+      // 2. 太阳专属四维乘区项（分母为 7500）
+      const statFactor = 1 + applicableStat / 7500
 
-  // 3. 旧一觉奶量（受辟邪玉固定太阳 10% 与百分比加成）
-  const oldAwaken = (baseStat + jadeSunStatFlat * 0.1) * (1 + jadePctSunStat / 100) * statFactor
+      // 3. 旧一觉奶量（受辟邪玉固定太阳 10% 与百分比加成）
+      const oldAwaken = (baseStat + jadeSunStatFlat * 0.1) * (1 + jadePctSunStat / 100) * statFactor
 
-  // 4. 新一觉增益奶量：baseStat * (2 + S/7500) * (9 + B/8500)
-  const newAwaken = baseStat * (statFactor + 1) * (9 + totalGain / 8500)
+      // 4. 新一觉增益奶量：baseStat * (2 + S/7500) * (9 + B/8500)
+      const newAwaken = baseStat * (statFactor + 1) * (9 + totalGain / 8500)
 
-  // 5. 四舍五入返回最终整数结果
-  return Math.round(oldAwaken + newAwaken)
-}
+      // 5. 四舍五入返回最终整数结果
+      return Math.round(oldAwaken + newAwaken)
+    }
 
-    
+
     /**
      * 🛠️ 闭包倍率计算器生成函数 喵！
      * @param {number} cStat - C 的基础力智 (例如 5500)
      * @param {number} cAtk  - C 的基础三攻 (例如 3200)
      * @returns {Function} 
      */
-   function createRateCalculator(cAtk = 3200, cStat = 5500, dmgInc = 1.0) {
-  // 提前折叠预计算常量：
-  // 1. statTerm = 1 / (250 + cStat)
-  // 2. invAtk   = 1 / cAtk
-  const invStat = 1 / (250 + cStat);
-  const invAtk  = 1 / cAtk;
-  const factor  = dmgInc;
+    function createRateCalculator(cAtk = 3200, cStat = 5500, dmgInc = 1.0) {
+      // 提前折叠预计算常量：
+      // 1. statTerm = 1 / (250 + cStat)
+      // 2. invAtk   = 1 / cAtk
+      const invStat = 1 / (250 + cStat);
+      const invAtk = 1 / cAtk;
+      const factor = dmgInc;
 
-  return function calcRate(buffAtk, buffStat) {
-    return (1 + buffStat * invStat) * (1 + buffAtk * invAtk) * factor;
-  };
-}
+      return function calcRate(buffAtk, buffStat) {
+        return (1 + buffStat * invStat) * (1 + buffAtk * invAtk) * factor;
+      };
+    }
 
     /**
  * 🌟 1. 全职业配置表 (JOB_CONFIG)
  * - coeff: 职业高精度系数
  * - buffName: 核心 Buff 基础名称
  * - extras: 特色技能/加成列表
- *   └─ totalName: 非 null 时，表示参与最终组合计算，并作为总计行的名称喵！
+ *   └─ totals: { awk1: '一觉总计名称', awk3: '三觉总计名称' }，参与一觉/三觉加算总计
  */
     /**
      * 🌟 2. 最终奶量全量计算函数喵！
@@ -2188,26 +2394,26 @@ function calcAwaken(
       const inMapTotalBuff = Math.floor((state.buffInGame || 0) * rate);
 
       // 3. 核心算一觉(太阳)与 Buff 基础数值 (站街 vs 图内) 喵！
-      const awk1 = calcAwaken(state.firstAwaken, state.sunStatApplicable, inMapTotalBuff,state.jadeSunStatFlat, state.jadePctSunStat);
+      const awk1 = calcAwaken(state.firstAwaken, state.sunStatApplicable + state.skillLv15Stat, inMapTotalBuff, state.jadeSunStatFlat, state.jadePctSunStat);
 
       const awk3 = Math.floor(awk1 * (1.08 + state.thirdAwaken * 0.01));
 
-    
-      const outMapBuff = calcBuff(state.buffLv, state.buffStat, outMapTotalBuff, config.coeff,
-        state.jadeBuffAtkFlat, state.jadePctAtk,
-        state.jadeBuffStatFlat, state.jadePctBuffStat
-      );
-      const inMapBuff = calcBuff(state.buffLvApplicable, state.buffStatApplicable, inMapTotalBuff, config.coeff,
-        state.jadeBuffAtkFlat, state.jadePctAtk,
-        state.jadeBuffStatFlat, state.jadePctBuffStat
-      );
-  
 
-      // 倍率计算
+      const outMapBuff = calcBuff(state.buffLv, state.buffStat + state.skillLv15Stat, outMapTotalBuff, config.coeff,
+        state.jadeBuffAtkFlat, state.jadePctAtk,
+        state.jadeBuffStatFlat, state.jadePctBuffStat
+      );
+      const inMapBuff = calcBuff(state.buffLvApplicable, state.buffStatApplicable + state.skillLv15Stat, inMapTotalBuff, config.coeff,
+        state.jadeBuffAtkFlat, state.jadePctAtk,
+        state.jadeBuffStatFlat, state.jadePctBuffStat
+      );
+
+
+
       // 物理职业系统奶公式：（无系统奶面板-人物基础属性-婚戒力量15点+防具精通小数点）*3.08+2886
       // 魔法职业系统奶公式：（无系统奶面板-人物基础属性+防具精通小数点）*3.08+2886
       // 辅助职业系统奶公式：（无系统奶面板-人物基础属性+吃系统奶的技能+防具精通小数点）*3.08+2886
-      const calcRate = createRateCalculator(state.cAtk, (state.cStat - 805 ) * 3.08 + 2886 +state.cStat, config.dmgInc);
+      const calcRate = createRateCalculator(state.cAtk, (state.cStat - 805) * 3.08 + 2886 + state.cStat, config.dmgInc);
 
       // 5. 构建结果数组 喵！
       const resultList = [
@@ -2227,8 +2433,7 @@ function calcAwaken(
         }
       ];
 
-
-      const totalList = [
+      const awkList = [
         {
           key: 'awk1',
           name: `${config.awk1Name}`,
@@ -2243,20 +2448,31 @@ function calcAwaken(
           stat: awk3,
           rate: '-'
         }
-
-
       ];
 
-      config.extras.forEach(extra => {
+      const totalList = [];
+
+      (config.extras || []).forEach(extra => {
         const m = extra.mult || 1.0;
         const extraAtk = Math.floor(inMapBuff.atk * m);
         const extraStat = Math.floor(inMapBuff.stat * m);
 
-        // 🌟 totalName 非 null 时
-        if (extra.totalName) {
+        // 🌟 一觉加算总计
+        if (extra.totals && extra.totals.awk1) {
           totalList.push({
-            key: extra.key + '_total',
-            name: extra.totalName,
+            key: extra.key + '_awk1_total',
+            name: extra.totals.awk1,
+            atk: extraAtk,
+            stat: extraStat + awk1,
+            rate: calcRate(extraAtk, extraStat + awk1)
+          });
+        }
+
+        // 🌟 三觉加算总计
+        if (extra.totals && extra.totals.awk3) {
+          totalList.push({
+            key: extra.key + '_awk3_total',
+            name: extra.totals.awk3,
             atk: extraAtk,
             stat: extraStat + awk3,
             rate: calcRate(extraAtk, extraStat + awk3)
@@ -2272,9 +2488,8 @@ function calcAwaken(
         });
       });
 
-
-      // 6. 将 totalList 的总计行追加到 resultList 喵！
-      resultList.push(...totalList);
+      // 6. 追加单独觉醒行与总计行 喵！
+      resultList.push(...awkList, ...totalList);
 
       return resultList;
     }
@@ -2353,6 +2568,18 @@ function calcAwaken(
         mergedPresets[id] = userJobPresets[id];
       });
 
+      // 保留向前兼容：将旧预设数据中的 outMapSkills 映射为 outMapSkill0/outMapSkill1
+      Object.keys(mergedPresets).forEach(id => {
+        const d = mergedPresets[id].data;
+        if (d && d.outMapSkills) {
+          if (d.outMapSkill0 === undefined && d.outMapSkills[0] !== undefined) d.outMapSkill0 = d.outMapSkills[0];
+          if (d.outMapSkill1 === undefined && d.outMapSkills[1] !== undefined) d.outMapSkill1 = d.outMapSkills[1];
+        }
+        if (d && d.passPlatinum15 === undefined) {
+          d.passPlatinum15 = 0;
+        }
+      });
+
       return mergedPresets;
     }
 
@@ -2390,15 +2617,10 @@ function calcAwaken(
      * 🎨 全量 DOM 状态同步函数（含开关与单选框完整联动）喵！
      */
     function applyStateToDOM() {
-      // 1. 修正/同步两个特例开关 (autoCalcSwitch & modeSwitch)
+      // 1. 修正/同步特例开关 (autoCalcSwitch)
       const autoCalcSwitch = document.getElementById('autoCalcSwitch');
       if (autoCalcSwitch) {
         autoCalcSwitch.checked = Boolean(state.isAutoCalc);
-      }
-
-      const modeSwitch = document.getElementById('modeSwitch');
-      if (modeSwitch) {
-        modeSwitch.checked = Boolean(state.isJadeIncluded);
       }
 
       // 2. 遍历 state 中的所有属性
@@ -2428,18 +2650,6 @@ function calcAwaken(
           inputEl.placeholder = (val !== undefined && val !== null && val !== '') ? val : '0';
           inputEl.value = ''; // 彻底清空显示的值
         }
-      }
-
-      // 3. 处理动态技能插槽 (outMap) 的 placeholder 和 value
-      if (state.outMapSkills) {
-        Object.keys(state.outMapSkills).forEach(idx => {
-          const el = document.getElementById(`outMapSkill${idx}`);
-          if (el) {
-            const val = state.outMapSkills[idx];
-            el.placeholder = (val !== undefined && val !== null) ? val : '10';
-            el.value = '';
-          }
-        });
       }
     }
     /**
@@ -2538,6 +2748,14 @@ function calcAwaken(
         Object.assign(state, savedData);
         state.currentJob = jobKey;
         state.isDarkTheme = currentTheme;
+        if (state.baselineLv15 === undefined || state.baselineLv15 === null) {
+          state.baselineLv15 = 1;
+        }
+        if (state.passPlatinum15 === undefined || state.passPlatinum15 === null) {
+          state.passPlatinum15 = 0;
+        }
+        state.skillLv15 = state.baselineLv15;
+        state.skillLv15Stat = 0;
 
         // B. 保存当前选中的预设 ID 到本地记忆喵！
         saveLastSelectedPreset(state.currentJob, selectedId);
@@ -2548,8 +2766,10 @@ function calcAwaken(
         // D. 触发全局流水线重新计算与渲染
         dispatchAndPipeline();
 
-        // 🌟 自动将读取出来的预设设置为基准结果！
-        handleSetBaseResult();
+        // 🌟 切换预设时保留当前基准（便于进行 A/B 方案对比）。若此前无基准则进行保底设置
+        if (!baselineResults) {
+          handleSetBaseResult(null, true);
+        }
 
         console.log(`成功读取预设【${configObj.name}】，值已更新至 Placeholder 喵！`);
       }
@@ -2671,14 +2891,42 @@ function calcAwaken(
 
 
     /**
-     * ➕ 4. 新建当前职业的自定义预设
+     * ➕ 打开新建预设选择模态弹窗
      */
-    function handleAddNewConfig() {
-      if (document.activeElement && typeof document.activeElement.blur === 'function') {
-        document.activeElement.blur();
+    function openAddConfigModal() {
+      const modal = document.getElementById('addConfigModal');
+      if (modal) {
+        modal.style.display = 'flex';
+        void modal.offsetWidth;
+        modal.classList.add('active');
       }
+    }
 
-      const name = prompt('请输入新预设的名称喵（例如：毕业红12打造）：', '自定义预设');
+    /**
+     * ✕ 关闭新建预设选择模态弹窗
+     */
+    function closeAddConfigModal() {
+      const modal = document.getElementById('addConfigModal');
+      if (modal) {
+        modal.classList.remove('active');
+        setTimeout(() => {
+          if (!modal.classList.contains('active')) {
+            modal.style.display = 'none';
+          }
+        }, 240);
+      }
+    }
+
+    /**
+     * ➕ 根据用户选择的模式创建新预设
+     * @param {'current' | 'default'} mode - 'current': 另存当前配置, 'default': 全新默认配置
+     */
+    function createPresetFromOption(mode) {
+      const defaultName = mode === 'current' ? '自定义预设(副本)' : '全新默认配置';
+      const promptTip = mode === 'current'
+        ? '请输入新预设名称（另存为当前配置喵）：'
+        : '请输入新预设名称（增加全新默认配置喵）：';
+      const name = prompt(promptTip, defaultName);
       if (!name || !name.trim()) return false;
 
       const currentJob = state.currentJob;
@@ -2689,26 +2937,44 @@ function calcAwaken(
         allUserStore[currentJob] = {};
       }
 
-      // A. 写入新预设
+      // A. 根据模式生成预设数据：另存为当前配置直接复制当前 state；全新默认配置根据职业 skillData.defaultVal 构建纯净配置
+      const presetData = mode === 'current'
+        ? JSON.parse(JSON.stringify(state))
+        : createJobDefaultConfigData(currentJob);
+
+      // B. 写入新预设
       allUserStore[currentJob][newId] = {
         id: newId,
         name: name.trim(),
         isSystem: false,
-        data: JSON.parse(JSON.stringify(state))
+        data: presetData
       };
 
       saveUserCustomPresets(allUserStore);
 
-      // B. 重新渲染下拉框并自动选中新建的项
+      // C. 重新渲染下拉框并自动选中新建的项
       renderConfigSelect();
       const selectEl = document.getElementById('configLoadSelect');
       if (selectEl) selectEl.value = newId;
 
-      // C. 清空 value 并转写 placeholder
+      // D. 同步状态到 state 与 DOM
+      Object.assign(state, JSON.parse(JSON.stringify(presetData)));
+      state.currentJob = currentJob;
+
       applyStateToDOM();
       dispatchAndPipeline();
-      // 在新建成功并选中后加上这一句：
       saveLastSelectedPreset(currentJob, newId);
+      return false;
+    }
+
+    /**
+     * ➕ 4. 新建当前职业的自定义预设（弹出创建方式选择弹窗）
+     */
+    function handleAddNewConfig() {
+      if (document.activeElement && typeof document.activeElement.blur === 'function') {
+        document.activeElement.blur();
+      }
+      openAddConfigModal();
       return false;
     }
 
@@ -2758,10 +3024,16 @@ function calcAwaken(
 
     /**
      * 📌 点击“将结果设为基准” Handler
+     * @param {HTMLElement} [btn] - 点击的按钮 DOM 节点
+     * @param {boolean} [isSilent=false] - 是否静默设置（不触发视觉动效与额外重复刷新，用于初始化或切职业）
      */
-    function handleSetBaseResult(btn) {
+    function handleSetBaseResult(btn, isSilent = false) {
+      const silent = (isSilent === true);
+      const targetBtn = (btn && btn instanceof HTMLElement) ? btn : document.getElementById('baseBtn');
+
       // 1. 重新计算当前最新的奶量数据作为基准
-      const currentResults = calculateFinalBuff();
+      const calcResult = runCalculations();
+      const currentResults = (calcResult && calcResult.finalBuffList) ? calcResult.finalBuffList : calculateFinalBuff();
 
       // 2. 转换为 key 映射的对象存储
       baselineResults = {};
@@ -2769,19 +3041,25 @@ function calcAwaken(
         baselineResults[item.key] = { ...item };
       });
 
-      // 3. 按钮加上反馈样式
-      if (btn) {
-        btn.textContent = '✓ 已锁定基准';
-        btn.classList.add('applied-success');
-        setTimeout(() => {
-          btn.textContent = '📌 更新基准结果';
-          btn.classList.remove('applied-success');
-        }, 1500);
+      // 3. 按钮加上反馈样式或置为更新基准
+      if (targetBtn) {
+        if (!silent) {
+          targetBtn.textContent = '✓ 已锁定基准';
+          targetBtn.classList.add('applied-success');
+          setTimeout(() => {
+            targetBtn.textContent = '📌 更新基准结果';
+            targetBtn.classList.remove('applied-success');
+          }, 1500);
+        } else {
+          targetBtn.textContent = '📌 更新基准结果';
+          targetBtn.classList.remove('applied-success');
+        }
       }
 
-
-      // 4. 重新触发一次 UI 渲染，刷新基准差值显示喵！
-      dispatchAndPipeline();
+      // 4. 用户手动点击时重新触发一次 UI 渲染，刷新基准差值显示喵！
+      if (!silent) {
+        renderUI(calcResult);
+      }
       return false;
     }
 
@@ -2876,25 +3154,13 @@ function calcAwaken(
           shouldCalc = false;
         }
       }
-      // 🌟 2. 通用回退：自动更新 state 喵！
-      else if (key) {
-        // A. 如果是动态生成的 outMap 技能插槽 (例如 outMapSkill0)
-        if (key.startsWith('outMapSkill')) {
-          const idx = parseInt(key.replace('outMapSkill', ''), 10);
-          if (!isNaN(idx)) {
-            state.outMapSkills[idx] = getValidInputValue(target);
-          }
-        }
-
-        // B. 如果是 State 中定义的普通属性
-        else if (state.hasOwnProperty(key)) {
-          if (target.type === 'checkbox') {
-            state[key] = target.checked;
-          } else if (target.type === 'radio') {
-            state[key] = parseFloat(target.value) || 0;
-          } else if (target.tagName === 'INPUT') {
-            state[key] = getValidInputValue(target);
-          }
+      else if (key && state.hasOwnProperty(key)) {
+        if (target.type === 'checkbox') {
+          state[key] = target.checked;
+        } else if (target.type === 'radio') {
+          state[key] = parseFloat(target.value) || 0;
+        } else if (target.tagName === 'INPUT') {
+          state[key] = getValidInputValue(target);
         }
       }
 
@@ -2978,8 +3244,11 @@ function calcAwaken(
     // ==========================================
     function runCalculations() {
       // A. 自动推算逻辑 (仅在开启自动推算时计算)
+
+
       if (state.isAutoCalc) {
-        const jobData = JOB_SKILLS_DATA[state.currentJob] || JOB_SKILLS_DATA['ma'];
+        const jobData = JOB_CONFIG[state.currentJob] || JOB_CONFIG['ma'];
+        const skills = jobData.skillData || {};
 
         // 🌟 推算规则 1：Buff 适用等级 = Buff 等级
         state.buffLvApplicable = state.buffLv;
@@ -2994,12 +3263,13 @@ function calcAwaken(
         // ① 基础站街四维
         let calcBuffStat = state.buffStat;
 
-        // ② 加上 jobCustomCategorySlots (outMap) 各技能在当前等级下的四维数值
-        if (jobData.outMap && Array.isArray(jobData.outMap)) {
-          jobData.outMap.forEach((skill, idx) => {
-            // 读取插槽里该技能填写的当前等级 (默认 40 或技能上限)
-            const defaultLvl = skill.data.length >= 40 ? 40 : skill.data.length;
-            const lvl = state.outMapSkills[idx] !== undefined ? state.outMapSkills[idx] : defaultLvl;
+        // ② 加上 outMap 各技能在当前等级下的四维数值
+        if (skills.outMap && Array.isArray(skills.outMap)) {
+          skills.outMap.forEach((skill, idx) => {
+            // 读取插槽里该技能填写的当前等级 (优先使用配置默认值)
+            const defaultLvl = skill.defaultVal !== undefined ? skill.defaultVal : (skill.data.length >= 40 ? 40 : skill.data.length);
+            const stateKey = `outMapSkill${idx}`;
+            const lvl = state[stateKey] !== undefined ? state[stateKey] : defaultLvl;
             if (skill.data && skill.data.length > 0) {
               // 下标越界保护
               const valIndex = Math.min(Math.max(lvl - 1, 0), skill.data.length - 1);
@@ -3012,31 +3282,23 @@ function calcAwaken(
         if (state.trainerInstructor === 1) {
           calcBuffStat += 80;
         }
-
-        // ☀️ 太阳适用四维（只包含：站街 + outMap + 教官，不计算 Lv15 差值）
-        state.sunStatApplicable = calcBuffStat;
-
-        // ④ Lv15 技能在 (当前等级 - 白金数量) 时的数值 - 技能在 (基准等级) 时的数值
-        if (jobData.lv15 && jobData.lv15.data) {
-          const lv15Data = jobData.lv15.data;
-
-          // 当前真实有效等级 = 当前技能等级 - 白金数量
-          const actualLv = state.skillLv15 - state.passPlatinum15;
-
-          // 🌟 如果没设置基准 (null)，默认以当前 skillLv15 作为基准等级 喵！
-          const baseLv = state.baselineLv15 !== null ? state.baselineLv15 : state.skillLv15;
-
-          const curIndex = Math.min(Math.max(actualLv - 1, 0), lv15Data.length - 1);
-          const baseIndex = Math.min(Math.max(baseLv - 1, 0), lv15Data.length - 1);
-
-          const curVal = lv15Data[curIndex] || 0;
-          const baseVal = lv15Data[baseIndex] || 0;
-
-          calcBuffStat += (curVal - baseVal);
-        }
-
         // 最终更新到 State 喵！
         state.buffStatApplicable = calcBuffStat;
+
+        // ④ 太阳适用四维推算：推算后的 buffStatApplicable + (baselineLv15 + 白金数量) 对应四维 - baselineLv15 等级对应四维
+        let platinumStatDiff = 0;
+        if (skills.lv15 && skills.lv15.data && skills.lv15.data.length > 0) {
+          const dataArr = skills.lv15.data;
+          const baseLv = (state.baselineLv15 !== null && state.baselineLv15 !== undefined) ? state.baselineLv15 : 1;
+          const targetLv = baseLv + (parseFloat(state.passPlatinum15) || 0);
+
+          const baseVal = dataArr[Math.min(Math.max(baseLv - 1, 0), dataArr.length - 1)] || 0;
+          const targetVal = dataArr[Math.min(Math.max(targetLv - 1, 0), dataArr.length - 1)] || 0;
+          platinumStatDiff = targetVal - baseVal;
+        }
+        state.sunStatApplicable = state.buffStatApplicable + platinumStatDiff;
+
+
       }
       // 在 runCalculations() 内部加入：
 
@@ -3070,34 +3332,28 @@ function calcAwaken(
       // 保留 3 位小数，避免浮点数精度误差喵~
       state.jadeBuffPct = Math.round(state.jadeBuffPct * 1000) / 1000;
 
-      // 4. 根据当前模式双向正推 / 反推
-      if (state.isJadeIncluded) {
-        // 填总数模式：通过 [总数] 反推 [基础]
-        state.baseBuffPct = Math.round((state.totalBuffPct - state.jadeBuffPct) * 1000) / 1000;
-      } else {
-        // 填基础模式：通过 [基础] 正推 [总数]
-        state.totalBuffPct = Math.round((state.baseBuffPct + state.jadeBuffPct) * 1000) / 1000;
-      }
+      // 4. 基础模式：通过 [基础] 正推 [总数]
+      state.totalBuffPct = Math.round(((parseFloat(state.baseBuffPct) || 0) + state.jadeBuffPct) * 1000) / 1000;
 
-      // B. 计算 Lv15 核心技能等级差值提示 (纯 UI 反馈)
-      let lv15Diff = 0;
+      // B. 计算 Lv15 核心技能等级差值 (保存到 state.skillLv15Stat)
+      state.skillLv15Stat = 0;
       if (state.baselineLv15 !== null) {
-        const jobData = JOB_SKILLS_DATA[state.currentJob] || JOB_SKILLS_DATA['ma'];
-        if (jobData.lv15 && jobData.lv15.data) {
-          const dataArr = jobData.lv15.data;
+        const jobData = JOB_CONFIG[state.currentJob] || JOB_CONFIG['ma'];
+        const skills = jobData.skillData || {};
+        if (skills.lv15 && skills.lv15.data) {
+          const dataArr = skills.lv15.data;
           const baseVal = dataArr[Math.min(Math.max(state.baselineLv15 - 1, 0), dataArr.length - 1)] || 0;
           const curVal = dataArr[Math.min(Math.max(state.skillLv15 - 1, 0), dataArr.length - 1)] || 0;
-          lv15Diff = curVal - baseVal;
+          state.skillLv15Stat = curVal - baseVal;
         }
       }
 
-
       const finalBuffList = calculateFinalBuff();
       return {
-        lv15Diff: lv15Diff,
         finalBuffList: finalBuffList
       };
     }
+
     // ==========================================
     // 🎨 4. 视图渲染器 (Render) - 只读取 State / CalcResult 渲染 HTML！
     // ==========================================
@@ -3144,20 +3400,17 @@ function calcAwaken(
         thirdAwakenInput.placeholder = state.thirdAwaken || '40';
       }
 
-      // F. 单选框组 (被动白金、训练教官、黄金乡)：开启自动推算时才启用 喵！
+      // F. 单选框组 (白金徽章、训练教官、黄金乡)：开启自动推算时才启用 喵！
       ['passPlatinum15', 'trainerInstructor', 'goldenLand'].forEach(name => {
         const radios = document.querySelectorAll(`input[name="${name}"]`);
         radios.forEach(radio => radio.disabled = !state.isAutoCalc);
       });
 
-      // G. 动态技能插槽 (outMap)：开启自动推算时才启用 喵！
-      const slotsContainer = document.getElementById('jobCustomCategorySlots');
-      if (slotsContainer) {
-        const customInputs = slotsContainer.querySelectorAll('input');
-        customInputs.forEach(input => {
-          input.disabled = !state.isAutoCalc;
-        });
-      }
+      // G. 技能插槽 (outMap)：开启自动推算时才启用 喵！
+      [0, 1].forEach(idx => {
+        const input = document.getElementById(`outMapSkill${idx}`);
+        if (input) input.disabled = !state.isAutoCalc;
+      });
 
       // H. 自动推算开关提示文本
       const autoStatusText = document.getElementById('autoCalcStatusText');
@@ -3179,48 +3432,46 @@ function calcAwaken(
         }
       }
 
-      // B. 增益量增幅模式提示文本
-      const modeStatusText = document.getElementById('modeStatusText');
-      if (modeStatusText) {
-        modeStatusText.textContent = state.isJadeIncluded
-          ? '输入包含辟邪玉 (填总数)'
-          : '输入不含辟邪玉 (填基础)';
-      }
-
-      // C. 基础增益量增幅 % 输入框 (baseBuffPct)
+      // B. 基础增益量增幅 % 输入框 (baseBuffPct)
       const baseBuffPctInput = document.getElementById('baseBuffPct');
       if (baseBuffPctInput) {
-        baseBuffPctInput.disabled = state.isJadeIncluded;
+        baseBuffPctInput.disabled = false;
         baseBuffPctInput.placeholder = state.baseBuffPct !== undefined ? state.baseBuffPct : '0';
-        if (state.isJadeIncluded) {
-          baseBuffPctInput.value = state.baseBuffPct;
-        }
       }
 
-      // D. 总增益量增幅 % 输入框 (totalBuffPct)
+      // C. 总增益量增幅 % 输入框 (totalBuffPct) - 只读显示计算结果
       const totalBuffPctInput = document.getElementById('totalBuffPct');
       if (totalBuffPctInput) {
-        totalBuffPctInput.disabled = !state.isJadeIncluded;
+        totalBuffPctInput.disabled = true;
         totalBuffPctInput.placeholder = state.totalBuffPct !== undefined ? state.totalBuffPct : '0';
-        if (!state.isJadeIncluded) {
-          totalBuffPctInput.value = state.totalBuffPct;
-        }
+        totalBuffPctInput.value = state.totalBuffPct;
       }
 
       // ==========================================
       // 📊 3. Lv15 差值提示渲染
       // ==========================================
       const tipSpan = document.getElementById('skillLv15StatTip');
-      if (tipSpan && calcResult && calcResult.lv15Diff !== undefined && calcResult.lv15Diff !== null) {
-        if (state.baselineLv15 === null || calcResult.lv15Diff === 0) {
+      if (tipSpan) {
+        if (state.baselineLv15 === null) {
+          tipSpan.style.display = 'none';
           tipSpan.textContent = '';
-          tipSpan.classList.remove('negative');
-        } else if (calcResult.lv15Diff > 0) {
-          tipSpan.textContent = `(+${calcResult.lv15Diff})`;
-          tipSpan.classList.remove('negative');
-        } else {
-          tipSpan.textContent = `(${calcResult.lv15Diff})`;
-          tipSpan.classList.add('negative');
+          tipSpan.className = 'passive-stat-tip';
+        } else if (state.skillLv15Stat !== undefined && state.skillLv15Stat !== null) {
+          tipSpan.style.display = 'inline-flex';
+          const diff = state.skillLv15Stat;
+          if (diff > 0) {
+            tipSpan.className = 'passive-stat-tip positive';
+            tipSpan.textContent = `四维 +${diff}`;
+            tipSpan.title = `基准等级: Lv.${state.baselineLv15}，当前四维增加: +${diff}`;
+          } else if (diff < 0) {
+            tipSpan.className = 'passive-stat-tip negative';
+            tipSpan.textContent = `四维 ${diff}`;
+            tipSpan.title = `基准等级: Lv.${state.baselineLv15}，当前四维减少: ${diff}`;
+          } else {
+            tipSpan.className = 'passive-stat-tip neutral';
+            tipSpan.textContent = `基准 Lv.${state.baselineLv15}`;
+            tipSpan.title = `当前等级等于基准等级 (Lv.${state.baselineLv15})`;
+          }
         }
       }
 
@@ -3244,7 +3495,6 @@ function calcAwaken(
     function onJobSelectChange(target) {
       // 1. 更新当前选中的职业 key 并保存职业记忆
       state.currentJob = target ? target.value : 'ma';
-      state.baselineLv15 = null; // 重置 Lv15 基准等级
       localStorage.setItem('dnf_last_selected_job', state.currentJob);
 
       // 2. 动态渲染新职业的专属技能插槽 DOM (outMap)
@@ -3268,10 +3518,15 @@ function calcAwaken(
       if (targetPresetId && presets[targetPresetId]) {
         const targetPreset = presets[targetPresetId];
 
-        // A. 恢复 State（保持当前职业 key 不被覆盖）
+        // A. 恢复 State（保持当前职业 key 不被覆盖，直接读取配置里的 baselineLv15）
         const jobKey = state.currentJob;
         Object.assign(state, JSON.parse(JSON.stringify(targetPreset.data)));
         state.currentJob = jobKey;
+        if (state.baselineLv15 === undefined || state.baselineLv15 === null) {
+          state.baselineLv15 = 1;
+        }
+        state.skillLv15 = state.baselineLv15;
+        state.skillLv15Stat = 0;
 
         // B. 下拉框选中对应的预设
         const selectEl = document.getElementById('configLoadSelect');
@@ -3284,11 +3539,10 @@ function calcAwaken(
         applyStateToDOM();
       }
 
-      // 6. 运行纯计算引擎与 UI 渲染器 (直接触发刷新) 喵！
+      // 6. 把新职业预设计算结果设为新基准，并渲染 UI 喵！
+      handleSetBaseResult(null, true);
       const calcResult = runCalculations();
       renderUI(calcResult);
-      // 🌟 切换职业读取完预设后，自动设置为基准结果！
-      handleSetBaseResult();
       // 🌟 返回 false 告诉 Dispatcher 不要重复处理啦！
       return false;
     }
@@ -3310,7 +3564,7 @@ function calcAwaken(
         btn.textContent = '✓ 已设基准';
         btn.classList.add('applied-success');
         setTimeout(() => {
-          btn.textContent = '✨ 同步等级';
+          btn.textContent = '✨ 设为基准';
           btn.classList.remove('applied-success');
         }, 1500);
       }
@@ -3383,13 +3637,6 @@ function calcAwaken(
       return false; // 🌟 切换主题不需要重新计算奶量，直接返回 false 喵！
     }
 
-    /**
-     * 切换“增益量模式” (包含/不包含辟邪玉) 时的 Handler
-     */
-
-    function onModeSwitchChange(target) {
-      state.isJadeIncluded = target.checked;
-    }
 
 
 
@@ -3401,42 +3648,43 @@ function calcAwaken(
      * 渲染不同职业的 Lv15 名称和 outMap 技能插槽
      */
     function renderJobSkillsDOM() {
-      const jobData = JOB_SKILLS_DATA[state.currentJob] || JOB_SKILLS_DATA['ma'];
+      const jobData = JOB_CONFIG[state.currentJob] || JOB_CONFIG['ma'];
+      const skills = jobData.skillData || {};
       const lv15Label = document.getElementById('skillLv15Label');
       const lv15Input = document.getElementById('skillLv15');
       const platinumLabel = document.getElementById('platinumLabel');
-
-      if (jobData.lv15) {
-        const skillName = jobData.lv15.name;
+      if (skills.lv15) {
+        const skillName = skills.lv15.name;
         if (lv15Label) lv15Label.textContent = `${skillName} 等级`;
-        if (lv15Input) lv15Input.max = jobData.lv15.data.length;
+        if (lv15Input) lv15Input.max = skills.lv15.data.length;
         if (platinumLabel) platinumLabel.textContent = `${skillName} 白金数量`;
       }
 
-      // 渲染动态 outMap 插槽
-      const slotsContainer = document.getElementById('jobCustomCategorySlots');
-      if (slotsContainer) {
-        slotsContainer.innerHTML = '';
-        if (jobData.outMap && Array.isArray(jobData.outMap)) {
-          jobData.outMap.forEach((skill, idx) => {
-            const defaultLvl = skill.data.length >= 40 ? 40 : skill.data.length;
-            const currentVal = (state.outMapSkills && state.outMapSkills[idx] !== undefined) ? state.outMapSkills[idx] : defaultLvl;
-            const formGroup = document.createElement('div');
-            formGroup.className = 'form-group';
-            formGroup.innerHTML = `
-          <label id="outMapSkill${idx}Label">${skill.name}</label>
-          <input type="text" 
-                 id="outMapSkill${idx}" 
-                 value="" 
-                 placeholder="${currentVal}" 
-                 min="1" 
-                 max="${skill.data.length}" 
-                 inputmode="numeric">
-        `;
-            slotsContainer.appendChild(formGroup);
-          });
+      // 渲染固定 outMap 插槽（有对应技能则显示并更新，无则隐藏）
+      const outMapList = skills.outMap || [];
+      [0, 1].forEach(idx => {
+        const groupEl = document.getElementById(`outMapGroup${idx}`);
+        const labelEl = document.getElementById(`outMapSkill${idx}Label`);
+        const inputEl = document.getElementById(`outMapSkill${idx}`);
+        if (!groupEl || !inputEl || !labelEl) return;
+
+        if (idx < outMapList.length) {
+          const skill = outMapList[idx];
+          const defaultLvl = skill.defaultVal !== undefined ? skill.defaultVal : (skill.data.length >= 40 ? 40 : skill.data.length);
+          const stateKey = `outMapSkill${idx}`;
+          if (state[stateKey] === undefined) {
+            state[stateKey] = defaultLvl;
+          }
+          const currentVal = state[stateKey];
+          groupEl.style.display = '';
+          labelEl.textContent = skill.name;
+          inputEl.placeholder = currentVal;
+          inputEl.max = skill.data.length;
+          inputEl.disabled = !state.isAutoCalc;
+        } else {
+          groupEl.style.display = 'none';
         }
-      }
+      });
     }
 
     /**
@@ -3479,6 +3727,46 @@ function calcAwaken(
     }
 
     /**
+     * 🛠️ 初始化新建预设模式选择弹窗交互
+     */
+    function initAddConfigModal() {
+      const modal = document.getElementById('addConfigModal');
+      const closeBtn = document.getElementById('closeAddConfigModalBtn');
+      const btnSaveCurrent = document.getElementById('btnChoiceSaveCurrent');
+      const btnNewDefault = document.getElementById('btnChoiceNewDefault');
+
+      if (closeBtn) {
+        closeBtn.addEventListener('click', closeAddConfigModal);
+      }
+      if (modal) {
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) {
+            closeAddConfigModal();
+          }
+        });
+      }
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeAddConfigModal();
+        }
+      });
+
+      if (btnSaveCurrent) {
+        btnSaveCurrent.addEventListener('click', () => {
+          closeAddConfigModal();
+          setTimeout(() => createPresetFromOption('current'), 60);
+        });
+      }
+
+      if (btnNewDefault) {
+        btnNewDefault.addEventListener('click', () => {
+          closeAddConfigModal();
+          setTimeout(() => createPresetFromOption('default'), 60);
+        });
+      }
+    }
+
+    /**
      * 🚀 应用初始化总入口 (全量状态恢复 + DOM 同步) 喵！
      */
     function initApp() {
@@ -3493,7 +3781,7 @@ function calcAwaken(
       // 🌟 2. 恢复上次选择的职业（带有效性校验保底）喵！
       const lastPresetMap = getLastSelectedPresets();
       const savedJob = localStorage.getItem('dnf_last_selected_job');
-      if (savedJob && JOB_SKILLS_DATA[savedJob]) {
+      if (savedJob && JOB_CONFIG[savedJob]) {
         state.currentJob = savedJob;
       }
 
@@ -3534,12 +3822,15 @@ function calcAwaken(
       // 5. 启动全局统一事件监听代理 (Dispatcher)
       initGlobalEventListeners();
 
-      // 6. 初始化使用帮助弹窗并进行首次打开自检
+      // 6. 初始化弹窗并进行首次打开自检
       initHelpModal();
+      initAddConfigModal();
 
       // 7. 首次触发计算与视图渲染喵~！
+      // 🌟 首次加载自动将初始配置计算结果设为基准（即开即用）
+      handleSetBaseResult(null, true);
       dispatchAndPipeline();
-    }// 页面 DOM 加载完毕后启动应用！
+    } // 页面 DOM 加载完毕后启动应用！
     document.addEventListener('DOMContentLoaded', initApp);
   </script>
 </body>
