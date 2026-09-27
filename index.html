@@ -1527,7 +1527,7 @@
 
   <div class="calculator-container">
     <div class="top-bar">
-      <h1 class="header-title">⚔️ DNF 奶量计算器</h1>
+      <h1 class="header-title"> DNF 奶量计算器</h1>
       <div class="top-bar-actions">
         <button class="help-btn" id="helpBtn" title="查看使用帮助与操作指南">❓ 使用帮助</button>
         <button class="theme-toggle-btn" id="themeBtn">🌙 暗色主题</button>
@@ -1569,7 +1569,7 @@
 
             <!-- 1. ⚙️ 角色基础 (图外) -->
             <div class="panel">
-              <div class="panel-subtitle">⚙️ 角色基础 (图外)</div>
+              <div class="panel-subtitle">角色基础 (图外)</div>
 
               <div class="form-grid">
                 <div class="form-group">
@@ -1601,7 +1601,7 @@
 
                 <!-- 🌟 中间带文字的横向分割线 -->
                 <div class="panel-divider-text">
-                  <span>🧮 自动推算</span>
+                  <span>自动推算</span>
                 </div>
 
                 <!-- ✨ 白金徽章 -->
@@ -1674,7 +1674,7 @@
             <!-- 2. 🛡️ 图内适用修正 -->
             <div class="panel">
               <div class="panel-subtitle" style="color: var(--accent-blue);">
-                <span>🛡️ 图内适用修正</span>
+                <span>图内适用修正</span>
                 <label class="toggle-switch-container">
                   <span id="autoCalcStatusText">自动推算 (开启)</span>
                   <div class="switch">
@@ -1723,7 +1723,7 @@
             <!-- 🧮 增益量算式面板 -->
             <div class="panel">
               <div class="panel-subtitle">
-                <span>🧮 增益量增幅</span>
+                <span>增益量增幅</span>
               </div>
 
               <div class="buff-pct-row">
@@ -1750,7 +1750,7 @@
 
             <!-- 🔮 辟邪玉面板 -->
             <div class="panel">
-              <div class="panel-subtitle" style="color: var(--accent-purple);">🔮 辟邪玉</div>
+              <div class="panel-subtitle" style="color: var(--accent-purple);">辟邪玉</div>
 
               <div class="jade-matrix-grid">
                 <div class="form-group">
@@ -1792,7 +1792,7 @@
 
             <!-- 📜 C模板 面板卡片 -->
             <div class="panel">
-              <div class="panel-subtitle" style="color: #ef4444;">📜 C模板 (只影响倍率)</div>
+              <div class="panel-subtitle" style="color: #ef4444;">C模板 (只影响倍率)</div>
               <div class="form-grid">
                 <div class="form-group">
                   <label>三攻</label>
@@ -1815,7 +1815,7 @@
       <div class="dashboard-right">
         <div class="output-box sticky-output">
           <div class="output-header">
-            <h3>📊 最终奶量</h3>
+            <h3>最终奶量</h3>
             <button id="baseBtn" class="btn-set-base">📌 更新基准结果</button>
           </div>
 
@@ -1864,11 +1864,16 @@
             </div>
           </li>
 
-          <li>
-            <div>
-              填写<strong class="help-hl-purple">Lv15级技能</strong>时，若佩戴了对应<strong class="help-hl-blue">白金徽章</strong>，因其会影响站街属性与技能等级，<strong class="help-hl-red">所以必须摘掉填写！</strong>
-            </div>
-          </li>
+         <li>
+  <div>
+    因为<strong class="help-hl-purple">站街四维</strong>统计的是徽章栏左侧的白金徽章属性，所以：
+    <ul>
+      <li>如果左侧<strong>没有佩戴</strong>白金徽章：需要加上 16 点四维（右侧每个白金徽章 +8 点四维，两个就是 16 点）。</li>
+      <li>如果左侧佩戴的是<strong>非 LV15 级</strong>的白金徽章：可以直接填写站街四维。</li>
+      <li>如果左侧佩戴的是 <strong>LV15 级</strong>的白金徽章或高级白金徽章：需要手动摘掉，然后加上 16 点四维（计算器里的<strong class="help-hl-purple">Lv15级技能</strong>等级也代表没有佩戴白金徽章的等级）。</li>
+    </ul>
+  </div>
+</li>
 
           <li>
             <div><strong class="help-hl-purple">基础%</strong>是<strong class="help-hl-blue">除了辟邪玉外所有的增益量增幅%</strong>，所以要<strong class="help-hl-red">摘掉辟邪玉填写！</strong></div>
@@ -2300,6 +2305,7 @@
 
       // 2. 三攻计算部分
       const baseAtk = 36 + 1.8 * buffLevel;
+      // 乘 0.1 是三攻玉的bug
       const oldBuffAtk = (baseAtk + jadeBuffAtkFlat * 0.1) * (1 + jadePctAtk / 100) * statFactor;
       const newBuffAtk = baseAtk * statFactor * gainFactor;
       const atk = roleCoefficient * (oldBuffAtk + newBuffAtk);
